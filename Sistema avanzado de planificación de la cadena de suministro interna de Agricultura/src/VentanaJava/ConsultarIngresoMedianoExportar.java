@@ -1,11 +1,18 @@
 package VentanaJava;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -49,6 +56,11 @@ public class ConsultarIngresoMedianoExportar extends javax.swing.JFrame {
 
         ExportarPlan.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
         ExportarPlan.setText("Exportar Plan");
+        ExportarPlan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExportarPlanActionPerformed(evt);
+            }
+        });
 
         Salir.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
         Salir.setText("Salir");
@@ -64,14 +76,14 @@ public class ConsultarIngresoMedianoExportar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Granja", "Galera", "Fecha a Ingresar", "Cantidad a Ingresar"
+                "Granja", "Galera", "Fecha a Ingresar", "Cantidad a Ingresar", "Rol"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -98,19 +110,19 @@ public class ConsultarIngresoMedianoExportar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(45, 45, 45)
                 .addComponent(ExportarPlan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Salir)
                 .addGap(78, 78, 78))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(52, 52, 52))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(141, 141, 141))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,12 +130,12 @@ public class ConsultarIngresoMedianoExportar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Salir)
-                    .addComponent(ExportarPlan))
-                .addGap(38, 38, 38))
+                    .addComponent(ExportarPlan)
+                    .addComponent(Salir))
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -143,11 +155,11 @@ public class ConsultarIngresoMedianoExportar extends javax.swing.JFrame {
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
             if (!con.isClosed()) {
-                PreparedStatement planes = con.prepareStatement("SELECT Date_format(`ingreso mediano plazo`.`Fecha de ingreso`,'%d/%m/%Y'), `ingreso mediano plazo`.`Cantidad a ingresar`, `galera`.`Nombre Granja`, `galera`.`Numero de Galera` FROM `cargill`.`ingreso mediano plazo` inner join `cargill`.`galera` on `ingreso mediano plazo`.`Galera_idGalera`= `galera`.`idGalera` where month(`ingreso mediano plazo`.`Fecha de ingreso`) = ?;");
+                PreparedStatement planes = con.prepareStatement("SELECT Date_format(`ingreso mediano plazo`.`Fecha de ingreso`,'%d/%m/%Y'), `ingreso mediano plazo`.`Cantidad a ingresar`, `ingreso mediano plazo`.`Rol`, `galera`.`Nombre Granja`, `galera`.`Numero de Galera` FROM `cargill`.`ingreso mediano plazo` inner join `cargill`.`galera` on `ingreso mediano plazo`.`Galera_idGalera`= `galera`.`idGalera` where month(`ingreso mediano plazo`.`Fecha de ingreso`) = ?;");
                 planes.setInt(1,mesSeleccionado);
                 ResultSet planesconsultados = planes.executeQuery();
                 while( planesconsultados.next() ) {
-                    model.addRow(new Object[]{planesconsultados.getString("Date_format(`ingreso mediano plazo`.`Fecha de ingreso`,'%d/%m/%Y')"),planesconsultados.getString("Nombre Granja"),Integer.parseInt(planesconsultados.getString("Numero de Galera")),Integer.parseInt(planesconsultados.getString("Cantidad a ingresar"))});
+                    model.addRow(new Object[]{planesconsultados.getString("Date_format(`ingreso mediano plazo`.`Fecha de ingreso`,'%d/%m/%Y')"),planesconsultados.getString("Nombre Granja"),Integer.parseInt(planesconsultados.getString("Numero de Galera")),Integer.parseInt(planesconsultados.getString("Cantidad a ingresar")),planesconsultados.getString("Rol")});
                 }
                 planesconsultados.close();
                 planes.close();
@@ -157,6 +169,40 @@ public class ConsultarIngresoMedianoExportar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_TablaConsultaIngresoLargoAncestorAdded
+
+    private void ExportarPlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExportarPlanActionPerformed
+        DefaultTableModel model=(DefaultTableModel) TablaConsultaIngresoLargo.getModel();
+        int filas=TablaConsultaIngresoLargo.getRowCount();        
+        JFileChooser GuardarArchivo = new JFileChooser();
+        int opcion=GuardarArchivo.showSaveDialog(this);
+        if(opcion == JFileChooser.APPROVE_OPTION){
+            String direccion = GuardarArchivo.getSelectedFile().toString();
+            XSSFWorkbook libro=new XSSFWorkbook();
+            XSSFSheet hoja= libro.createSheet();
+            XSSFRow fila = hoja.createRow(0);
+            fila.createCell(0).setCellValue("Granja");
+            fila.createCell(1).setCellValue("Galera");
+            fila.createCell(2).setCellValue("Fecha de Ingreso");
+            fila.createCell(3).setCellValue("Cantidad a Ingresar");
+            fila.createCell(4).setCellValue("Rol");
+            
+            
+            XSSFRow hileras;
+            for(int i=0; i<filas; i++){
+                hileras = hoja.createRow((i+1));
+                for(int e=0; e<5;e++){
+                    hileras.createCell(e).setCellValue(model.getValueAt(i, e).toString());
+                }
+            }
+            try{
+                libro.write(new FileOutputStream(new File(direccion+".xlsx")));
+                Desktop.getDesktop().open(new File(direccion+".xlsx"));
+                this.dispose();
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_ExportarPlanActionPerformed
 
     /**
      * @param args the command line arguments

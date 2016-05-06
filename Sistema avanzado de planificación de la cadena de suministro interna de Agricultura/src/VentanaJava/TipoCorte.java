@@ -194,10 +194,10 @@ public class TipoCorte extends javax.swing.JFrame {
             if(x==1){
 		if (!con.isClosed()&& FechaInicial.getDate() != null && FechaFinal.getDate()!= null && rendimientodeshuesado.getText()!= null && PorcentajeDeshuesado.getText()!= null && porcentajelimpio.getText()!= null && RendimientoLimpio.getText()!= null && RendimientoCortes.getText()!= null && PorcentajeCortes.getText()!= null) {
                 
-                        PreparedStatement cantidadcortesreales = con.prepareStatement("select * from cortes real");
+                        PreparedStatement cantidadcortesreales = con.prepareStatement("select * from `cortes real`");
         	        ResultSet resultadocantidadcortesreales = cantidadcortesreales.executeQuery();
                 	while( resultadocantidadcortesreales.next() ) {
-                    		idnecesidadcortes = idnecesidadcortes + 1;
+                    		idnecesidadcortes = Integer.parseInt(resultadocantidadcortesreales.getString("ID cortes"));
                 	}
                 
                 	resultadocantidadcortesreales.close();
@@ -208,7 +208,7 @@ public class TipoCorte extends javax.swing.JFrame {
                         java.sql.Date sqlFechaFinal = new java.sql.Date(javaFechaFinal.getTime());
                         
                 
-                	PreparedStatement necesidaddeshuesado = con.prepareStatement("INSERT INTO necesidades por rango real (ID cortes, Fecha de inicio, Fecha de finalización, Porcentaje de necesidad, Porcentaje de rendimiento, Costes Estándar_Nombre) VALUES (?,?,?,?,?,?);");
+                	PreparedStatement necesidaddeshuesado = con.prepareStatement("INSERT INTO `cortes real` (`ID cortes`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Porcentaje de rendimiento`, `Costes Estándar_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidaddeshuesado.setInt(1, idnecesidadcortes + 1);
                 	necesidaddeshuesado.setDate(2, sqlFechaInicial);	
 	                necesidaddeshuesado.setDate(3, sqlFechaFinal);
@@ -218,7 +218,7 @@ public class TipoCorte extends javax.swing.JFrame {
                         int z = necesidaddeshuesado.executeUpdate();
 	                necesidaddeshuesado.close();
 
-			PreparedStatement necesidadlimpio = con.prepareStatement("INSERT INTO necesidades por rango real (ID cortes, Fecha de inicio, Fecha de finalización, Porcentaje de necesidad, Porcentaje de rendimiento, Costes Estándar_Nombre) VALUES (?,?,?,?,?,?);");
+			PreparedStatement necesidadlimpio = con.prepareStatement("INSERT INTO `cortes real` (`ID cortes`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Porcentaje de rendimiento`, `Costes Estándar_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidadlimpio.setInt(1, idnecesidadcortes + 2);
                 	necesidadlimpio.setDate(2, sqlFechaInicial);	
 	                necesidadlimpio.setDate(3, sqlFechaFinal);
@@ -229,7 +229,7 @@ public class TipoCorte extends javax.swing.JFrame {
 	                necesidadlimpio.close();
 
 
-			PreparedStatement necesidadcortes = con.prepareStatement("INSERT INTO necesidades por rango real (ID cortes, Fecha de inicio, Fecha de finalización, Porcentaje de necesidad, Porcentaje de rendimiento, Costes Estándar_Nombre) VALUES (?,?,?,?,?,?);");
+			PreparedStatement necesidadcortes = con.prepareStatement("INSERT INTO `cortes real` (`ID cortes`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Porcentaje de rendimiento`, `Costes Estándar_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidadcortes.setInt(1, idnecesidadcortes + 3);
                 	necesidadcortes.setDate(2, sqlFechaInicial);	
 	                necesidadcortes.setDate(3, sqlFechaFinal);
@@ -239,21 +239,19 @@ public class TipoCorte extends javax.swing.JFrame {
                         int w = necesidadcortes.executeUpdate();
 	                necesidadcortes.close();	
 	                con.close();
-        	    }
-                }
-       		else {
-                	JOptionPane.showMessageDialog(null, "Campos obligatorios incompletos","Por favor ingrese los datos en todos los campos mostrados", JOptionPane.ERROR_MESSAGE);
+                        this.dispose();
+        	}else {
+                	JOptionPane.showMessageDialog(null, "Por favor ingrese los datos en todos los campos mostrados","Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
                 	con.close();
-            	}
+                }
+            }
             if(x!=1){
-    		JOptionPane.showMessageDialog(null, "Datos incongruentes","La sumatoria de porcentajes requeridos no da 1", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "La sumatoria de porcentajes requeridos no da 1", "Datos incongruentes",JOptionPane.ERROR_MESSAGE);
 	    }
                 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error","Los datos ingresados no están en el formato aceptado", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        this.dispose();
+            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado","Error", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_GuardarActionPerformed
 
     /**

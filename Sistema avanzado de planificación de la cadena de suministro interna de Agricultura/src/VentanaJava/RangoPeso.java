@@ -277,13 +277,11 @@ public class RangoPeso extends javax.swing.JFrame {
             float x = Float.parseFloat(PorcentajePequeño.getText())+Float.parseFloat(PorcentajeMediano.getText())+Float.parseFloat(PorcentajeGrande.getText());              
             if(x==1){
 		if (!con.isClosed()&& FechaInicial.getDate() != null && FechaFinal.getDate()!= null && PorcentajePequeño.getText()!= null && VelocidadPequeño.getText()!= null && PorcentajeMediano.getText()!= null && VelocidadMediano.getText()!= null && VelocidadGrande.getText()!= null && PorcentajeGrande.getText()!= null) {
-                
-                        SimpleDateFormat formatter;
-                	formatter = new SimpleDateFormat("dd-MM-yyyy");       
-	                PreparedStatement cantidadrangosreal = con.prepareStatement("select * from necesidades por rango real");
+                  
+	                PreparedStatement cantidadrangosreal = con.prepareStatement("select * from `necesidades por rango real`");
         	        ResultSet resultadocantidadrangosreal = cantidadrangosreal.executeQuery();
                 	while( resultadocantidadrangosreal.next() ) {
-                    	idnecesidadporrango = idnecesidadporrango + 1;
+                    	idnecesidadporrango = Integer.parseInt(resultadocantidadrangosreal.getString("Id necesidad"));
                 	}
                 
                 	resultadocantidadrangosreal.close();
@@ -293,7 +291,7 @@ public class RangoPeso extends javax.swing.JFrame {
                         java.util.Date javaFechaFinal = FechaFinal.getDate();
                         java.sql.Date sqlFechaFinal = new java.sql.Date(javaFechaFinal.getTime());
                 
-                	PreparedStatement necesidadporrangopequeño = con.prepareStatement("INSERT INTO necesidades por rango real (id necesidad, Fecha de inicio, Fecha de finalización, Porcentaje de necesidad, Velocidad de Procesamiento, Rango de peso_Nombre) VALUES (?,?,?,?,?,?);");
+                	PreparedStatement necesidadporrangopequeño = con.prepareStatement("INSERT INTO `necesidades por rango real` (`Id necesidad`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Velocidad de Procesamiento`, `Rango de peso_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidadporrangopequeño.setInt(1, idnecesidadporrango + 1);
                 	necesidadporrangopequeño.setDate(2, sqlFechaInicial);	
 	                necesidadporrangopequeño.setDate(3, sqlFechaFinal);
@@ -304,7 +302,7 @@ public class RangoPeso extends javax.swing.JFrame {
 	
 	                necesidadporrangopequeño.close();
 
-			PreparedStatement necesidadporrangomediano = con.prepareStatement("INSERT INTO necesidades por rango real (id necesidad, Fecha de inicio, Fecha de finalización, Porcentaje de necesidad, Velocidad de Procesamiento, Rango de peso_Nombre) VALUES (?,?,?,?,?,?);");
+			PreparedStatement necesidadporrangomediano = con.prepareStatement("INSERT INTO `necesidades por rango real` (`Id necesidad`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Velocidad de Procesamiento`, `Rango de peso_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidadporrangomediano.setInt(1, idnecesidadporrango + 2);
                 	necesidadporrangomediano.setDate(2, sqlFechaInicial);	
 	                necesidadporrangomediano.setDate(3, sqlFechaFinal);
@@ -316,7 +314,7 @@ public class RangoPeso extends javax.swing.JFrame {
 	                necesidadporrangomediano.close();
 
 
-			PreparedStatement necesidadporrangogrande = con.prepareStatement("INSERT INTO necesidades por rango real (id necesidad, Fecha de inicio, Fecha de finalización, Porcentaje de necesidad, Velocidad de Procesamiento, Rango de peso_Nombre) VALUES (?,?,?,?,?,?);");
+			PreparedStatement necesidadporrangogrande = con.prepareStatement("INSERT INTO `necesidades por rango real` (`Id necesidad`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Velocidad de Procesamiento`, `Rango de peso_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidadporrangogrande.setInt(1, idnecesidadporrango + 3);
                 	necesidadporrangogrande.setDate(2, sqlFechaInicial);	
 	                necesidadporrangogrande.setDate(3, sqlFechaFinal);
@@ -326,20 +324,19 @@ public class RangoPeso extends javax.swing.JFrame {
                         int w = necesidadporrangogrande.executeUpdate();
 	                necesidadporrangogrande.close();	
 	                con.close();
-        	    }
-                    this.dispose();
-                }
-       		else {
+                        this.dispose();
+        	    }else {
                 	JOptionPane.showMessageDialog(null, "Por favor ingrese los datos en todos los campos mostrados","Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
                 	con.close();
             	}
+            }    
             if(x!=1){
     		JOptionPane.showMessageDialog(null,"La sumatoria de porcentajes requeridos no da 1", "Datos incongruentes", JOptionPane.ERROR_MESSAGE);
                 con.close();
             }
                 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado"+e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
         
         

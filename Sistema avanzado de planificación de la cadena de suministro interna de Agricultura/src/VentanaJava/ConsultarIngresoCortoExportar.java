@@ -1,11 +1,18 @@
 package VentanaJava;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -49,6 +56,11 @@ public class ConsultarIngresoCortoExportar extends javax.swing.JFrame {
 
         ExportarPlan.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
         ExportarPlan.setText("Exportar Plan");
+        ExportarPlan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExportarPlanActionPerformed(evt);
+            }
+        });
 
         Salir.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
         Salir.setText("Salir");
@@ -140,7 +152,7 @@ public class ConsultarIngresoCortoExportar extends javax.swing.JFrame {
                 planes.setString(1,fechaSeleccionada);
                 ResultSet planesconsultados = planes.executeQuery();
                 while( planesconsultados.next() ) {
-                    model.addRow(new Object[]{planesconsultados.getString("Nombre Granja"),Integer.parseInt(planesconsultados.getString("Numero de Galera")),planesconsultados.getString("Date_format(`cosecha corto plazo`.`Fecha de cosecha`,'%d/%m/%Y')"),Integer.parseInt(planesconsultados.getString("Cantidad a ingresar"))});
+                    model.addRow(new Object[]{planesconsultados.getString("Nombre Granja"),Integer.parseInt(planesconsultados.getString("Numero de Galera")),planesconsultados.getString("Date_format(`ingreso corto plazo`.`Fecha de ingreso`,'%d/%m/%Y')"),Integer.parseInt(planesconsultados.getString("Cantidad a ingresar"))});
                 }
                 planesconsultados.close();
                 planes.close();
@@ -150,6 +162,38 @@ public class ConsultarIngresoCortoExportar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_TablaPlanesIngresoCortoPlazoAncestorAdded
+
+    private void ExportarPlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExportarPlanActionPerformed
+        DefaultTableModel model=(DefaultTableModel) TablaPlanesIngresoCortoPlazo.getModel();
+        int filas=TablaPlanesIngresoCortoPlazo.getRowCount();        
+        JFileChooser GuardarArchivo = new JFileChooser();
+        int opcion=GuardarArchivo.showSaveDialog(this);
+        if(opcion == JFileChooser.APPROVE_OPTION){
+            String direccion = GuardarArchivo.getSelectedFile().toString();
+            XSSFWorkbook libro=new XSSFWorkbook();
+            XSSFSheet hoja= libro.createSheet();
+            XSSFRow fila = hoja.createRow(0);
+            fila.createCell(0).setCellValue("Granja");
+            fila.createCell(1).setCellValue("Galera");
+            fila.createCell(2).setCellValue("Fecha de Ingreso");
+            fila.createCell(3).setCellValue("Cantidad a Ingresar");
+            
+            XSSFRow hileras;
+            for(int i=0; i<filas; i++){
+                hileras = hoja.createRow((i+1));
+                for(int e=0; e<4;e++){
+                    hileras.createCell(e).setCellValue(model.getValueAt(i, e).toString());
+                }
+            }
+            try{
+                libro.write(new FileOutputStream(new File(direccion+".xlsx")));
+                Desktop.getDesktop().open(new File(direccion+".xlsx"));
+                this.dispose();
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_ExportarPlanActionPerformed
 
     /**
      * @param args the command line arguments
