@@ -347,6 +347,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                     resultadonumerocortesreal.close();
                     numerocortesreal.close();
                 }
+                
                         
                 
             }
