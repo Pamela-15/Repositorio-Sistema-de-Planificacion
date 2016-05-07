@@ -278,6 +278,77 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 
                 int cantidadcortesreal, cantidadrangosreal;
                 
+                PreparedStatement numerocortesreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? ));");
+                numerocortesreal.setDate(1,sqlFechaInicial);
+                numerocortesreal.setDate(2,sqlFechaFinal);
+                numerocortesreal.setDate(3,sqlFechaInicial);
+                numerocortesreal.setDate(4,sqlFechaFinal);
+                numerocortesreal.setDate(5,sqlFechaInicial);
+                numerocortesreal.setDate(6,sqlFechaFinal);
+                ResultSet resultadonumerocortesreal=numerocortesreal.executeQuery();
+                cantidadrangosreal=resultadonumerocortesreal.getInt("count(*)");
+                resultadonumerocortesreal.close();
+                numerocortesreal.close();
+                
+                if(cantidadrangosreal>0){
+                    rangos=new String[cantidadrangosreal][4];
+                    e=0;
+                    numerocortesreal = con.prepareStatement("SELECT `necesidades por rango real`.`Fecha de inicio`, `necesidades por rango real`.`Fecha de finalización`, `necesidades por rango real`.`Porcentaje de necesidad`, `necesidades por rango real`.`Rango de peso_Nombre` FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? ));");
+                    numerocortesreal.setDate(1,sqlFechaInicial);
+                    numerocortesreal.setDate(2,sqlFechaFinal);
+                    numerocortesreal.setDate(3,sqlFechaInicial);
+                    numerocortesreal.setDate(4,sqlFechaFinal);
+                    numerocortesreal.setDate(5,sqlFechaInicial);
+                    numerocortesreal.setDate(6,sqlFechaFinal);
+                    resultadonumerocortesreal=numerocortesreal.executeQuery();
+                    while(resultadonumerocortesreal.next()){
+                        rangos[e][0]=resultadonumerocortesreal.getString("Fecha de inicio");
+                        rangos[e][1]=resultadonumerocortesreal.getString("Fecha de finalización");
+                        rangos[e][2]=resultadonumerocortesreal.getString("Porcentaje de necesidad");
+                        rangos[e][3]=resultadonumerocortesreal.getString("Rango de peso_Nombre");
+                        e++;
+                    }
+                    resultadonumerocortesreal.close();
+                    numerocortesreal.close();
+                }
+                
+                
+                numerocortesreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`cortes real` where (((`cortes real`.`Fecha de inicio`>=? and `cortes real`.`Fecha de inicio`<=?) or (`cortes real`.`Fecha de finalización`>=? and `cortes real`.`Fecha de finalización`<=?)) or (`cortes real`.`Fecha de inicio`<=? and `cortes real`.`Fecha de finalización`>= ? ));");
+                numerocortesreal.setDate(1,sqlFechaInicial);
+                numerocortesreal.setDate(2,sqlFechaFinal);
+                numerocortesreal.setDate(3,sqlFechaInicial);
+                numerocortesreal.setDate(4,sqlFechaFinal);
+                numerocortesreal.setDate(5,sqlFechaInicial);
+                numerocortesreal.setDate(6,sqlFechaFinal);
+                resultadonumerocortesreal=numerocortesreal.executeQuery();
+                cantidadcortesreal=resultadonumerocortesreal.getInt("count(*)");
+                resultadonumerocortesreal.close();
+                numerocortesreal.close();
+                
+                if(cantidadcortesreal>0){
+                    cortes=new String[cantidadcortesreal][5];
+                    e=0;
+                    numerocortesreal = con.prepareStatement("SELECT `cortes real`.`Fecha de inicio`, `cortes real`.`Fecha de finalización`, `cortes real`.`Porcentaje de necesidad`, `cortes real`.`Porcentaje de rendimiento`, `cortes real`.`Costes estándar_Nombre` FROM `cargill`.`cortes real`where (((`cortes real`.`Fecha de inicio`>=? and `cortes real`.`Fecha de inicio`<=?) or (`cortes real`.`Fecha de finalización`>=? and `cortes real`.`Fecha de finalización`<=?)) or (`cortes real`.`Fecha de inicio`<=? and `cortes real`.`Fecha de finalización`>= ? ));");
+                    numerocortesreal.setDate(1,sqlFechaInicial);
+                    numerocortesreal.setDate(2,sqlFechaFinal);
+                    numerocortesreal.setDate(3,sqlFechaInicial);
+                    numerocortesreal.setDate(4,sqlFechaFinal);
+                    numerocortesreal.setDate(5,sqlFechaInicial);
+                    numerocortesreal.setDate(6,sqlFechaFinal);
+                    resultadonumerocortesreal=numerocortesreal.executeQuery();
+                    while(resultadonumerocortesreal.next()){
+                        cortes[e][0]=resultadonumerocortesreal.getString("Fecha de inicio");
+                        cortes[e][1]=resultadonumerocortesreal.getString("Fecha de finalización");
+                        cortes[e][2]=resultadonumerocortesreal.getString("Porcentaje de necesidad");
+                        cortes[e][3]=resultadonumerocortesreal.getString("Porcentaje de rendimiento");
+                        cortes[e][4]=resultadonumerocortesreal.getString("Costes estándar_Nombre");
+                        e++;
+                    }
+                    resultadonumerocortesreal.close();
+                    numerocortesreal.close();
+                }
+                        
+                
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado"+e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
