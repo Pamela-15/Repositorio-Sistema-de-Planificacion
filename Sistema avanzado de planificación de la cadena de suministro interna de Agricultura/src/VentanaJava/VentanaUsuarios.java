@@ -21,6 +21,7 @@ public class VentanaUsuarios extends javax.swing.JFrame {
      * Creates new form VentanaUsuarios
      */
     public VentanaUsuarios() {
+        //public static String usuarioActivo = InsertarUsuario.getText();
         initComponents();
     }
 
