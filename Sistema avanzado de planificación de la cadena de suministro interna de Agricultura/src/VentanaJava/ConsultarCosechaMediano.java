@@ -118,6 +118,7 @@ public class ConsultarCosechaMediano extends javax.swing.JFrame {
         String eleccion=ListaPlanesCosechaLargo.getSelectedValue().toString();
         int x=Integer.parseInt(eleccion);        
         mostrarCosechaLargoExportar(x);
+        this.dispose();
         
     }//GEN-LAST:event_ConsultarActionPerformed
     public void mostrarCosechaLargoExportar(int mes) {
@@ -131,7 +132,7 @@ public class ConsultarCosechaMediano extends javax.swing.JFrame {
 
     private void ListaPlanesCosechaLargoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_ListaPlanesCosechaLargoAncestorAdded
         DefaultListModel modelo = new DefaultListModel();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String driver = "com.mysql.jdbc.Driver";
         String connection = "jdbc:mysql://localhost:3306/Cargill";
@@ -141,7 +142,7 @@ public class ConsultarCosechaMediano extends javax.swing.JFrame {
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
             if (!con.isClosed()) {
-                PreparedStatement cosechalargo = con.prepareStatement("SELECT distinct month(`cosecha mediano plazo`.`Fecha de cosecha` ) FROM `cargill`.`cosecha mediano plazo`; where `Fecha de cosecha`>? ");
+                PreparedStatement cosechalargo = con.prepareStatement("SELECT distinct month(`cosecha mediano plazo`.`Fecha de cosecha` ) FROM `cargill`.`cosecha mediano plazo` where `Fecha de cosecha`> ? ");
                 cosechalargo.setString(1, dateFormat.format(date));
                 ResultSet planescosechalargo = cosechalargo.executeQuery();
                 while( planescosechalargo.next() ) {

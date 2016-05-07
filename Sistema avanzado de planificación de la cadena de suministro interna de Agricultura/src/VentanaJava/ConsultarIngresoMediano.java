@@ -118,6 +118,7 @@ public class ConsultarIngresoMediano extends javax.swing.JFrame {
         String eleccion=ListaIngresoMediano.getSelectedValue().toString();
         int x=Integer.parseInt(eleccion);        
         mostrarIngresoMedianoExportar(x);
+        this.dispose();
     }//GEN-LAST:event_ConsultarActionPerformed
 
     public void mostrarIngresoMedianoExportar(int mes) {
@@ -142,7 +143,7 @@ public class ConsultarIngresoMediano extends javax.swing.JFrame {
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
             if (!con.isClosed()) {
-                PreparedStatement ingresolargo = con.prepareStatement("SELECT distinct month(`ingreso mediano plazo`.`Fecha de ingreso`) FROM `cargill`.`ingreso mediano plazo`; where `Fecha de ingreso`>? ");
+                PreparedStatement ingresolargo = con.prepareStatement("SELECT distinct month(`ingreso mediano plazo`.`Fecha de ingreso`) FROM `cargill`.`ingreso mediano plazo` where `Fecha de ingreso`>? ");
                 ingresolargo.setString(1, dateFormat.format(date));
                 ResultSet planesingresolargo = ingresolargo.executeQuery();
                 while( planesingresolargo.next() ) {

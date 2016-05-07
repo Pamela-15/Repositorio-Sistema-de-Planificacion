@@ -242,13 +242,13 @@ public class AgregarGalera extends javax.swing.JFrame {
                 PreparedStatement cantidadgaleras = con.prepareStatement("select * from galera ");
                 ResultSet resultadocantidadgaleras = cantidadgaleras.executeQuery();
                 while( resultadocantidadgaleras.next() ) {
-                    idgalera = idgalera + 1;
+                    idgalera = Integer.parseInt(resultadocantidadgaleras.getString("idGalera"));
                 }
                 
                 resultadocantidadgaleras.close();
                 cantidadgaleras.close();
                 
-                PreparedStatement galera = con.prepareStatement("INSERT INTO galera (idGalera, Nombre Galera, Numero de Galera, Zona, Capacidad, Supervisor, Carrusel) VALUES (?,?,?,?,?,?,?);");
+                PreparedStatement galera = con.prepareStatement("INSERT INTO `galera` (`idGalera`, `Nombre Granja`, `Numero de Galera`, `Zona`, `Capacidad`, `Supervisor`, `Carrusel`,`ActivacionGalera`) VALUES (?,?,?,?,?,?,?,?);");
                 galera.setInt(1, idgalera + 1);
                 galera.setString(2, NombreGranja.getText());
                 galera.setInt(3, Integer.parseInt(NumeroGalera.getText()));
@@ -256,6 +256,7 @@ public class AgregarGalera extends javax.swing.JFrame {
 		galera.setInt(5,Integer.parseInt(Capacidad.getText()));
 		galera.setString(6, Supervisores.getSelectedItem().toString());
 		galera.setString(7, Carrusel.getSelectedItem().toString());
+                galera.setString(8,"Activa");
                 int x = galera.executeUpdate();
 
                 galera.close();
@@ -263,13 +264,13 @@ public class AgregarGalera extends javax.swing.JFrame {
                 this.dispose();
             }
             else {
-                JOptionPane.showMessageDialog(null, "Campos obligatorios incompletos","Por favor ingrese los datos en todos los campos mostrados", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Por favor ingrese los datos en todos los campos mostrados","Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
                 con.close();
             }
                 
                 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error","Los datos ingresados no están en el formato aceptado", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado"+e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
         
         

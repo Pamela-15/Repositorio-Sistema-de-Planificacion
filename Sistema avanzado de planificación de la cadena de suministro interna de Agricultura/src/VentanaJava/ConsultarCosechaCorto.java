@@ -119,6 +119,7 @@ public class ConsultarCosechaCorto extends javax.swing.JFrame {
     private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
         String eleccion=ListaPlanes.getSelectedValue().toString();
         mostrarCosechaCortoExportar(eleccion);
+        this.dispose();
     }//GEN-LAST:event_ConsultarActionPerformed
     public void mostrarCosechaCortoExportar(String fecha) {
         ConsultarCosechaCortoExportar lol=new ConsultarCosechaCortoExportar(fecha);

@@ -116,6 +116,7 @@ public class ConsultarIngresoCorto extends javax.swing.JFrame {
     private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
         String eleccion=ListaIngresoCorto.getSelectedValue().toString();
         mostrarIngresoCortoExportar(eleccion);
+        this.dispose();
     }//GEN-LAST:event_ConsultarActionPerformed
 
     public void mostrarIngresoCortoExportar(String fecha) {

@@ -1,11 +1,18 @@
 package VentanaJava;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -84,14 +91,14 @@ public class ConsultarCosechaCortoExportar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Secuencia", "Fecha de Cosecha", "Granja", "Galera", "Cantidad a cosechar"
+                "Secuencia", "Fecha de Cosecha", "Granja", "Galera", "Cantidad a cosechar", "Peso Promedio"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, true, false
+                true, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -118,19 +125,20 @@ public class ConsultarCosechaCortoExportar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(147, 147, 147))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(123, 123, 123)
                 .addComponent(ExportarPlan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Salir)
                 .addGap(133, 133, 133))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(189, 189, 189))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,11 +171,11 @@ public class ConsultarCosechaCortoExportar extends javax.swing.JFrame {
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
             if (!con.isClosed()) {
-                PreparedStatement planes = con.prepareStatement("SELECT Date_format(`cosecha corto plazo`.`Fecha de cosecha`,'%d/%m/%Y'), `cosecha corto plazo`.`Cantidad a cosechar`,`cosecha corto plazo`.`Secuencia`, `galera`.`Nombre Granja`, `galera`.`Numero de Galera` FROM `cargill`.`cosecha corto plazo` inner join `cargill`.`galera` on `cosecha corto plazo`.`Galera_idGalera`= `galera`.`idGalera` where `cosecha corto plazo`.`Fecha de cosecha` = ?");
+                PreparedStatement planes = con.prepareStatement("SELECT Date_format(`cosecha corto plazo`.`Fecha de cosecha`,'%d/%m/%Y'), `cosecha corto plazo`.`Cantidad a cosechar`,`cosecha corto plazo`.`Peso Promedio`,`cosecha corto plazo`.`Secuencia`, `galera`.`Nombre Granja`, `galera`.`Numero de Galera` FROM `cargill`.`cosecha corto plazo` inner join `cargill`.`galera` on `cosecha corto plazo`.`Galera_idGalera`= `galera`.`idGalera` where `cosecha corto plazo`.`Fecha de cosecha` = ?");
                 planes.setString(1,fecha);
                 ResultSet planesconsultados = planes.executeQuery();
                 while( planesconsultados.next() ) {
-                    model.addRow(new Object[]{planesconsultados.getString("Secuencia"),planesconsultados.getString("Date_format(`cosecha corto plazo`.`Fecha de cosecha`,'%d/%m/%Y')"),planesconsultados.getString("Nombre Granja"),Integer.parseInt(planesconsultados.getString("Numero de Galera")),Integer.parseInt(planesconsultados.getString("Cantidad a cosechar"))});
+                    model.addRow(new Object[]{planesconsultados.getString("Secuencia"),planesconsultados.getString("Date_format(`cosecha corto plazo`.`Fecha de cosecha`,'%d/%m/%Y')"),planesconsultados.getString("Nombre Granja"),Integer.parseInt(planesconsultados.getString("Numero de Galera")),Integer.parseInt(planesconsultados.getString("Cantidad a cosechar")),Float.parseFloat(planesconsultados.getString("Peso Promedio"))});
                 }
                 planesconsultados.close();
                 planes.close();
@@ -181,19 +189,37 @@ public class ConsultarCosechaCortoExportar extends javax.swing.JFrame {
     private void ExportarPlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExportarPlanActionPerformed
         DefaultTableModel model=(DefaultTableModel) TablaPlanesCosechaCorto.getModel();
         int filas=TablaPlanesCosechaCorto.getRowCount();
-        String[][] tablaplan=new String[filas][5];
-        for(int i =0;i<=filas;i=i+1){
-            for(int e=0;e<=5;e=e+1){
-                tablaplan[i][e]=model.getValueAt(i, e).toString();
-            }    
+        JFileChooser GuardarArchivo = new JFileChooser();
+        int opcion=GuardarArchivo.showSaveDialog(this);
+        if(opcion == JFileChooser.APPROVE_OPTION){
+            String direccion = GuardarArchivo.getSelectedFile().toString();
+            XSSFWorkbook libro=new XSSFWorkbook();
+            XSSFSheet hoja= libro.createSheet();
+            XSSFRow fila = hoja.createRow(0);
+            fila.createCell(0).setCellValue("Secuencia");
+            fila.createCell(1).setCellValue("Fecha de Cosecha");
+            fila.createCell(2).setCellValue("Granja");
+            fila.createCell(3).setCellValue("Galera");
+            fila.createCell(4).setCellValue("Cantidad a Cosechar");
+            fila.createCell(5).setCellValue("Peso Promedio");
+            
+            XSSFRow hileras;
+            for(int i=0; i<filas; i++){
+                hileras = hoja.createRow((i+1));
+                for(int e=0; e<6;e++){
+                    hileras.createCell(e).setCellValue(model.getValueAt(i, e).toString());
+                }
+            }
+            try{
+                libro.write(new FileOutputStream(new File(direccion+".xlsx")));
+                Desktop.getDesktop().open(new File(direccion+".xlsx"));
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        mostrarExportar(tablaplan);
+        this.dispose();
     }//GEN-LAST:event_ExportarPlanActionPerformed
-    public void mostrarExportar(String[][] datos) {
-        //ConsultarCosechaCortoExportar lol=new ConsultarCosechaCortoExportar(fecha);
-        //lol.setVisible(true);
-        //lol.setLocationRelativeTo(null);
-    }
+    
     
     
     /**
