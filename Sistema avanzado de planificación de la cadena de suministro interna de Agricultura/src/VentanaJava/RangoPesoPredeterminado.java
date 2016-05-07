@@ -316,7 +316,7 @@ public class RangoPesoPredeterminado extends javax.swing.JFrame {
             }
         });
     }
-
+//Hola
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelar;
     private javax.swing.JButton Guardar;
