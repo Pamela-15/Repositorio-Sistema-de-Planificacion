@@ -407,7 +407,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                         }
                     }
                 }
-                
+              //cierro calculo de necesidad  
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado"+e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
