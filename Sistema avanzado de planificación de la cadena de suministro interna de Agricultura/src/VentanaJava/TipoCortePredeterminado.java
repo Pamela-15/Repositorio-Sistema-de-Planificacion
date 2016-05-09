@@ -5,6 +5,12 @@
  */
 package VentanaJava;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 /**
  *
  * @author lopez.p.2
@@ -29,18 +35,18 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
 
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        ReqPlantaDeshuesado = new javax.swing.JTextField();
+        PorcentajeRequeridoDeshuesado = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        Cancelar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        Guardar = new javax.swing.JButton();
+        PorcentajeRequeridolimpio = new javax.swing.JTextField();
+        ReqPlantaLimpio = new javax.swing.JTextField();
+        ReqPlantaCortes = new javax.swing.JTextField();
+        PorcentajeRequeridoCortes = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -53,10 +59,15 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
         jLabel5.setText("Porcentaje Requerido");
 
         jLabel6.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel6.setText("Requerimiento de Planta");
+        jLabel6.setText("Rendimiento de Planta");
 
-        jButton2.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton2.setText("Cancelar");
+        Cancelar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Cancelar.setText("Cancelar");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -70,8 +81,13 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Cortes");
 
-        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton1.setText("Guardar");
+        Guardar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -91,39 +107,39 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField9)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(PorcentajeRequeridolimpio)
+                        .addComponent(PorcentajeRequeridoCortes)
+                        .addComponent(PorcentajeRequeridoDeshuesado, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ReqPlantaDeshuesado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ReqPlantaCortes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ReqPlantaLimpio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(183, 183, 183)
-                    .addComponent(jButton1)
-                    .addGap(73, 73, 73)
-                    .addComponent(jButton2)
-                    .addContainerGap(148, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(169, 169, 169)
+                .addComponent(Guardar)
+                .addGap(89, 89, 89)
+                .addComponent(Cancelar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel4)
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
@@ -131,31 +147,86 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(ReqPlantaDeshuesado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PorcentajeRequeridoDeshuesado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ReqPlantaLimpio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PorcentajeRequeridolimpio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 94, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(225, 225, 225)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jButton1))
-                    .addContainerGap(37, Short.MAX_VALUE)))
+                        .addComponent(PorcentajeRequeridoCortes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ReqPlantaCortes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Guardar)
+                    .addComponent(Cancelar))
+                .addGap(0, 30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_CancelarActionPerformed
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        int idnecesidadcortes = 0;
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            float x = Float.parseFloat(PorcentajeRequeridoDeshuesado.getText())+Float.parseFloat(PorcentajeRequeridolimpio.getText())+Float.parseFloat(PorcentajeRequeridoCortes.getText());              
+            if(x==1){
+		if (!con.isClosed()&& ReqPlantaCortes.getText()!= null && ReqPlantaDeshuesado.getText()!= null && ReqPlantaLimpio.getText()!= null && PorcentajeRequeridolimpio.getText()!= null && PorcentajeRequeridoDeshuesado.getText()!= null && PorcentajeRequeridoCortes.getText()!= null) {
+                
+                                      
+                	PreparedStatement necesidaddeshuesado = con.prepareStatement("UPDATE `cargill`.`costes estándar` SET `Nombre de corte` = ?, `Porcentaje de Necesidad` = ?,`Porcentaje de rendimiento` = ? WHERE `Nombre de corte` = ?;");
+                	necesidaddeshuesado.setString(1, "Pollo Deshuesado");
+        	        necesidaddeshuesado.setFloat(2, Float.parseFloat(PorcentajeRequeridoDeshuesado.getText()));
+			necesidaddeshuesado.setFloat(3, Float.parseFloat(ReqPlantaDeshuesado.getText()));
+			necesidaddeshuesado.setString(4,"Pollo Deshuesado");
+                        int z = necesidaddeshuesado.executeUpdate();
+	                necesidaddeshuesado.close();
+
+			PreparedStatement necesidadlimpio = con.prepareStatement("UPDATE `cargill`.`costes estándar` SET `Nombre de corte` = ?, `Porcentaje de Necesidad` = ?,`Porcentaje de rendimiento` = ? WHERE `Nombre de corte` = ?;");
+                	necesidadlimpio.setString(1, "Pollo Limpio");
+        	        necesidadlimpio.setFloat(2, Float.parseFloat(PorcentajeRequeridolimpio.getText()));
+			necesidadlimpio.setFloat(3, Float.parseFloat(ReqPlantaLimpio.getText()));
+			necesidadlimpio.setString(4,"Pollo Limpio");
+                        int y = necesidadlimpio.executeUpdate();
+	                necesidadlimpio.close();
+
+
+			PreparedStatement necesidadcortes = con.prepareStatement("UPDATE `cargill`.`costes estándar` SET `Nombre de corte` = ?, `Porcentaje de Necesidad` = ?,`Porcentaje de rendimiento` = ? WHERE `Nombre de corte` = ?;");
+                	necesidadcortes.setString(1, "Cortes");
+        	        necesidadcortes.setFloat(2, Float.parseFloat(PorcentajeRequeridoCortes.getText()));
+			necesidadcortes.setFloat(3, Float.parseFloat(ReqPlantaCortes.getText()));
+			necesidadcortes.setString(4,"Cortes");
+                        int w = necesidadcortes.executeUpdate();
+	                necesidadcortes.close();	
+	                con.close();
+                        this.dispose();
+        	}else {
+                	JOptionPane.showMessageDialog(null, "Por favor ingrese los datos en todos los campos mostrados","Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
+                	con.close();
+                }
+            }
+            if(x!=1){
+    		JOptionPane.showMessageDialog(null, "La sumatoria de porcentajes requeridos no da 1", "Datos incongruentes",JOptionPane.ERROR_MESSAGE);
+	    }
+                
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado","Error", JOptionPane.ERROR_MESSAGE);
+        }   
+    }//GEN-LAST:event_GuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,8 +264,14 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton Cancelar;
+    private javax.swing.JButton Guardar;
+    private javax.swing.JTextField PorcentajeRequeridoCortes;
+    private javax.swing.JTextField PorcentajeRequeridoDeshuesado;
+    private javax.swing.JTextField PorcentajeRequeridolimpio;
+    private javax.swing.JTextField ReqPlantaCortes;
+    private javax.swing.JTextField ReqPlantaDeshuesado;
+    private javax.swing.JTextField ReqPlantaLimpio;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -202,11 +279,5 @@ public class TipoCortePredeterminado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }
