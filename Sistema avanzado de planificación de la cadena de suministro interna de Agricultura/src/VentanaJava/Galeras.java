@@ -299,7 +299,7 @@ public class Galeras extends javax.swing.JFrame {
                 Connection con = DriverManager.getConnection(connection, user, password);
                 if (!con.isClosed()) {
                     PreparedStatement inactivargalera = con.prepareStatement("UPDATE `galera` SET `ActivacionGalera` = ? WHERE `idGalera` = ?;");
-                    inactivargalera.setInt(1, 0);
+                    inactivargalera.setString(1, "Inactiva");
                     inactivargalera.setInt(2, galeraseleccionada);
                     int x = inactivargalera.executeUpdate();
                     inactivargalera.close();
@@ -328,11 +328,11 @@ public class Galeras extends javax.swing.JFrame {
                 Class.forName(driver);
                 Connection con = DriverManager.getConnection(connection, user, password);
                 if (!con.isClosed()) {
-                    PreparedStatement inactivargalera = con.prepareStatement("UPDATE `galera` SET `ActivacionGalera` = ? WHERE `idGalera` = ?;");
-                    inactivargalera.setInt(1, 1);
-                    inactivargalera.setInt(2, galeraseleccionada);
-                    int x = inactivargalera.executeUpdate();
-                    inactivargalera.close();
+                    PreparedStatement activargalera = con.prepareStatement("UPDATE `galera` SET `ActivacionGalera` = ? WHERE `idGalera` = ?;");
+                    activargalera.setString(1, "Activa");
+                    activargalera.setInt(2, galeraseleccionada);
+                    int x = activargalera.executeUpdate();
+                    activargalera.close();
                     con.close();
                     ActualizarTabla();
             }

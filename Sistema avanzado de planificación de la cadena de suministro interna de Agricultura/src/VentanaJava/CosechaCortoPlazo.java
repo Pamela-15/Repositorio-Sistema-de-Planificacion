@@ -108,9 +108,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         mostrarConsultarReporte(idUsuarioAutenticado);
     }//GEN-LAST:event_ConsultarReporteActionPerformed
     public void mostrarGenerarReporte(int usuario) {
-        PlanCosechaCortoPlazo plan=new PlanCosechaCortoPlazo();
-        plan.setVisible(true);
-        plan.setLocationRelativeTo(null);
+        //PlanCosechaCortoPlazo plan=new PlanCosechaCortoPlazo();
+       // plan.setVisible(true);
+        //plan.setLocationRelativeTo(null);
     }
     public void mostrarConsultarReporte(int usuario) {
         ConsultarCosechaCorto plan=new ConsultarCosechaCorto();

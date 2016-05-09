@@ -16,6 +16,7 @@ public class ModificarContrasena extends javax.swing.JFrame {
      * Creates new form ModificarContrasena
      */
     public ModificarContrasena() {
+        
         initComponents();
     }
 
