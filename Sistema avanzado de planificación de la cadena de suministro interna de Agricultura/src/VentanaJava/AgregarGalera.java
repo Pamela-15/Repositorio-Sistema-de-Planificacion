@@ -258,7 +258,8 @@ public class AgregarGalera extends javax.swing.JFrame {
 		galera.setString(7, Carrusel.getSelectedItem().toString());
                 galera.setString(8,"Activa");
                 int x = galera.executeUpdate();
-
+                
+                VentanaJava.Galeras.ActualizarTabla();
                 galera.close();
                 con.close();
                 this.dispose();

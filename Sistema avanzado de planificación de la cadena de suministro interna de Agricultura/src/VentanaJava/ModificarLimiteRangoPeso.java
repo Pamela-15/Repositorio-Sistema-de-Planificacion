@@ -5,16 +5,24 @@
  */
 package VentanaJava;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author lopez.p.2
  */
 public class ModificarLimiteRangoPeso extends javax.swing.JFrame {
+    String LimiteModificar;
 
     /**
      * Creates new form ModificarLimiteRangoPeso
      */
-    public ModificarLimiteRangoPeso() {
+    public ModificarLimiteRangoPeso(String x) {
+        LimiteModificar=x;
         initComponents();
     }
 
@@ -30,12 +38,12 @@ public class ModificarLimiteRangoPeso extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        LimiteSuperior = new javax.swing.JTextField();
+        LimiteInferior = new javax.swing.JTextField();
+        Guardar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        Cancelar = new javax.swing.JButton();
+        Rango = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,18 +56,36 @@ public class ModificarLimiteRangoPeso extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel3.setText("Límite Superior");
 
-        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton1.setText("Guardar");
+        Guardar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Cambria", 0, 22)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Límites de Rangos de Peso");
 
-        jButton2.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton2.setText("Cancelar");
+        Cancelar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Cancelar.setText("Cancelar");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango.setEditable(false);
+        Rango.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                RangoAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,48 +96,113 @@ public class ModificarLimiteRangoPeso extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(Guardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(Cancelar)
+                        .addContainerGap(81, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                            .addComponent(LimiteInferior, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                            .addComponent(LimiteSuperior)
+                            .addComponent(Rango, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel4)
-                .addGap(13, 13, 13)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Rango, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LimiteInferior, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1)
+                        .addComponent(LimiteSuperior)
                         .addGap(1, 1, 1))
                     .addComponent(jLabel3))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(Guardar)
+                    .addComponent(Cancelar))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_CancelarActionPerformed
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+
+            if (!con.isClosed()&& LimiteInferior.getText()!= null && LimiteSuperior.getText()!= null) {
+
+                PreparedStatement limite = con.prepareStatement("UPDATE `rango de peso` SET `Límite Inferior` = ?, `Límite Superior` = ? WHERE `Rango de Peso` = ?");
+                limite.setString(3, Rango.getText());
+                limite.setFloat(1, Float.parseFloat(LimiteInferior.getText()));
+                limite.setFloat(2, Float.parseFloat(LimiteSuperior.getText()));
+                int x = limite.executeUpdate();
+                limite.close();
+                con.close();
+                VentanaJava.LímitesRangosDePeso.ActualizarTabla();
+                this.dispose();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Campos obligatorios incompletos","Por favor ingrese los datos en todos los campos mostrados", JOptionPane.ERROR_MESSAGE);
+                con.close();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error" + e.getMessage(),"Los datos ingresados no están en el formato aceptado", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_GuardarActionPerformed
+
+    private void RangoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_RangoAncestorAdded
+        Rango.setText(LimiteModificar);
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+
+            if (!con.isClosed()&& LimiteInferior.getText() != null && LimiteSuperior.getText()!= null) {
+
+                PreparedStatement limite = con.prepareStatement("select * from `rango de peso` Where `Rango de Peso` = ? ");
+                limite.setString(1,LimiteModificar);
+                ResultSet resultadolimite = limite.executeQuery();
+                while( resultadolimite.next() ) {
+                    LimiteInferior.setText("" + resultadolimite.getFloat("Límite Inferior"));
+                    LimiteSuperior.setText("" + resultadolimite.getFloat("Límite Superior"));
+                }
+                resultadolimite.close();
+                limite.close();
+                con.close();
+            }     
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error" + e.getMessage(),"Los datos ingresados no están en el formato aceptado", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_RangoAncestorAdded
 
     /**
      * @param args the command line arguments
@@ -143,20 +234,21 @@ public class ModificarLimiteRangoPeso extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarLimiteRangoPeso().setVisible(true);
+                String a = "";
+                new ModificarLimiteRangoPeso(a).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton Cancelar;
+    private javax.swing.JButton Guardar;
+    private javax.swing.JTextField LimiteInferior;
+    private javax.swing.JTextField LimiteSuperior;
+    private javax.swing.JTextField Rango;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

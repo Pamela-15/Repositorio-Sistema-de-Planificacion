@@ -5,6 +5,13 @@
  */
 package VentanaJava;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author lopez.p.2
@@ -31,8 +38,9 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        TablaLimites = new javax.swing.JTable();
+        ModificarLimites = new javax.swing.JButton();
+        Cancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,13 +48,10 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Límites de Rango de Peso");
 
-        jTable1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablaLimites.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        TablaLimites.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Pequeño", null, null},
-                {"Mediano", null, null},
-                {"Grande", null, null},
-                {"Extra Grande", null, null}
+
             },
             new String [] {
                 "Rango de Peso", "Límite Inferior", "Límite Superior"
@@ -60,13 +65,35 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jTable1.setName(""); // NOI18N
-        jScrollPane2.setViewportView(jTable1);
+        TablaLimites.setName(""); // NOI18N
+        TablaLimites.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                TablaLimitesAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jScrollPane2.setViewportView(TablaLimites);
 
         jScrollPane1.setViewportView(jScrollPane2);
 
-        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton1.setText("Modificar Límites de Rango de Peso");
+        ModificarLimites.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        ModificarLimites.setText("Modificar Límites de Rango de Peso");
+        ModificarLimites.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarLimitesActionPerformed(evt);
+            }
+        });
+
+        Cancelar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Cancelar.setText("Cancelar");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -76,9 +103,11 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(ModificarLimites)
+                        .addGap(75, 75, 75)
+                        .addComponent(Cancelar)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -89,7 +118,9 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ModificarLimites)
+                    .addComponent(Cancelar))
                 .addContainerGap())
         );
 
@@ -97,7 +128,7 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 721, Short.MAX_VALUE)
+            .addGap(0, 884, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -117,6 +148,82 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void TablaLimitesAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_TablaLimitesAncestorAdded
+        DefaultTableModel model=(DefaultTableModel) TablaLimites.getModel();
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/Cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            if (!con.isClosed()) {
+                PreparedStatement limites = con.prepareStatement("select * from `rango de peso` ");
+                ResultSet datoslimites = limites.executeQuery();
+                while( datoslimites.next() ) {
+                    model.addRow(new Object[]{datoslimites.getString("Rango de Peso"), datoslimites.getFloat("Límite Inferior"),datoslimites.getFloat("Límite Superior")});
+                }
+                datoslimites.close();
+                limites.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_TablaLimitesAncestorAdded
+
+    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_CancelarActionPerformed
+
+    private void ModificarLimitesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarLimitesActionPerformed
+         String filaseleccionada="";
+       
+        DefaultTableModel model=(DefaultTableModel) TablaLimites.getModel();
+
+        if( TablaLimites.getSelectedRow() < 0 ){
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna fila para modificar","Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            filaseleccionada=model.getValueAt(TablaLimites.getSelectedRow(),0).toString();
+            ModificarLimiteRangoPeso abrir = new ModificarLimiteRangoPeso(filaseleccionada);
+            abrir.setVisible(true);        
+        }
+    }//GEN-LAST:event_ModificarLimitesActionPerformed
+
+    private void mostrarModificarGalera(int x) {
+        ModificarGalera modificar=new ModificarGalera(x);
+        modificar.setVisible(true);
+        modificar.setLocationRelativeTo(this);
+    }
+      
+      public static void ActualizarTabla(){
+        DefaultTableModel model=(DefaultTableModel) TablaLimites.getModel();
+        int filas=TablaLimites.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                model.removeRow(0);
+            }
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/Cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            if (!con.isClosed()) {
+                PreparedStatement limites = con.prepareStatement("select * from `rango de peso` ");
+                ResultSet datoslimites = limites.executeQuery();
+                while( datoslimites.next() ) {
+                    model.addRow(new Object[]{datoslimites.getString("Rango de Peso"), datoslimites.getFloat("Límite Inferior"),datoslimites.getFloat("Límite Superior")});
+                }
+                datoslimites.close();
+                limites.close();
+                con.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    
     /**
      * @param args the command line arguments
      */
@@ -153,11 +260,12 @@ public class LímitesRangosDePeso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton Cancelar;
+    private javax.swing.JButton ModificarLimites;
+    public static javax.swing.JTable TablaLimites;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
