@@ -118,6 +118,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
         float medianamesingreso, medianatotalingreso, factormes, medianajoven, medianamedia, medianavieja, factoredadm, factoredadj, factoredadv, huevosv, huevosm, huevosj,huevostotal, factorporedad;
         String [][] lista,listabackup, rangos, cortes, rangospredeterminado, cortespredeterminado, plan;
         int [] disponible;
+        cantidadgalerasingresar=0;
         Calendar calendar = Calendar.getInstance();
         Calendar iniciointervalo = Calendar.getInstance();
         Calendar finintervalo = Calendar.getInstance();

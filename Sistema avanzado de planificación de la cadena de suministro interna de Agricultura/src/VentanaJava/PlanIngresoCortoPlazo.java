@@ -11,12 +11,19 @@ package VentanaJava;
  * @author Acer
  */
 public class PlanIngresoCortoPlazo extends javax.swing.JFrame {
-
+    int cantidadgalerasingresar;
+    int idusuario;
+    String[][] plan;
+    float huevosfaltantes;
     /**
      * Creates new form PlanIngresoCortoPlazo
      */
-    public PlanIngresoCortoPlazo() {
+    public PlanIngresoCortoPlazo(int cantidadlineas,int usuario, String[][] planingreso,float error) {
         initComponents();
+        cantidadgalerasingresar=cantidadlineas;
+        idusuario=usuario;
+        plan=planingreso;
+        huevosfaltantes=error;
     }
 
     /**
@@ -140,7 +147,11 @@ public class PlanIngresoCortoPlazo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlanIngresoCortoPlazo().setVisible(true);
+                int a=0;
+                int b=0;
+                String[][] d=new String[1][1];
+                float c=0;
+                new PlanIngresoCortoPlazo(a,b,d,c).setVisible(true);
             }
         });
     }
