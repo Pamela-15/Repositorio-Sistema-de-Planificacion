@@ -150,7 +150,7 @@ public class PlanIngresoCortoPlazo extends javax.swing.JFrame {
                 int a=0;
                 int b=0;
                 String[][] d=new String[1][1];
-                float c=0;
+                float c=0;//por default
                 new PlanIngresoCortoPlazo(a,b,d,c).setVisible(true);
             }
         });

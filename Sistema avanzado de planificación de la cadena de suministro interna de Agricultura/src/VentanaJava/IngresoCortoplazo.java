@@ -532,7 +532,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
         mostrarConsultarPlan(idUsuarioAutenticado);
     }//GEN-LAST:event_ConsultarActionPerformed
     public void mostrarGenerarPlan(int cantidadlineas,int usuario, String[][] planingreso,float error) {
-        PlanIngresoCortoPlazo plan=new PlanIngresoCortoPlazo(cantidadlineas,usuario,planingreso,error);
+        PlanIngresoCortoPlazo plan=new PlanIngresoCortoPlazo(cantidadlineas,usuario,planingreso,error);//cantidad de lineas con info del plan, idusuario por aquello, el plan en string, y la diferencia entre aves necesarias y aves colocadas
         plan.setVisible(true);
         plan.setLocationRelativeTo(null);
     }
