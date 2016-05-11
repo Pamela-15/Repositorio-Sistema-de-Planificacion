@@ -272,6 +272,10 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 factorporedad=((huevosv/huevostotal)*factoredadv)+((huevosm/huevostotal)*factoredadm)+((huevosj/huevostotal)*factoredadj);
                 
                 float[] demandanum = new float[7];
+                float[] desglosesemanal = new float[7];
+                
+                //PreparedStatement diassemana=con.prepareStatement("Select ")
+                
                 desfasesemanal.setTime(hoy);
                 diasemana=desfasesemanal.get(Calendar.DAY_OF_WEEK);
                 PreparedStatement demanda = con.prepareStatement ("SELECT `demanda`.`Demanda` FROM `cargill`.`demanda` where `demanda`.`Semana`=?;");
@@ -304,9 +308,9 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 PreparedStatement cortesespecificos =con.prepareStatement ("SELECT `costes estándar`.`Nombre de corte`, `costes estándar`.`Porcentaje de Necesidad`, `costes estándar`.`Porcentaje de rendimiento` FROM `cargill`.`costes estándar`;");
                 ResultSet resultadocortesespecificos=cortesespecificos.executeQuery();
                 while(resultadocortesespecificos.next()){
-                    rangospredeterminado[e][0]=resultadocortesespecificos.getString("Nombre de corte");
-                    rangospredeterminado[e][1]=resultadocortesespecificos.getString("Porcentaje de Necesidad");
-                    rangospredeterminado[e][2]=resultadocortesespecificos.getString("Porcentaje de rendimiento");
+                    cortespredeterminado[e][0]=resultadocortesespecificos.getString("Nombre de corte");
+                    cortespredeterminado[e][1]=resultadocortesespecificos.getString("Porcentaje de Necesidad");
+                    cortespredeterminado[e][2]=resultadocortesespecificos.getString("Porcentaje de rendimiento");
                     e++;
                 }
                 resultadocortesespecificos.close();
@@ -417,22 +421,22 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                         calendar.setTime(hoy);
                         calendar.add(Calendar.DAY_OF_YEAR, m);
                         fechaA = calendar.getTime();
-                        fechaB = new java.sql.Date(javaFechaFinal.getTime());
+                        fechaB = new java.sql.Date(fechaA.getTime());
                         if((fechaB.after(fechascortes[n][0])||fechaB.equals(fechascortes[n][0])) && (fechaB.equals(fechascortes[n][1])||fechaB.before(fechascortes[n][1]))){
                             necesidadActualizadaAves[m][0]=(demandanum[n]*Float.parseFloat(cortes[n][0])*Float.parseFloat(cortes[n][1]))+(demandanum[n]*Float.parseFloat(cortes[n+1][0])*Float.parseFloat(cortes[n+1][1]))+(demandanum[n]*Float.parseFloat(cortes[n+2][0])*Float.parseFloat(cortes[n+2][1]));
                         }else{
-                            necesidadActualizadaAves[m][0]=(demandanum[n]*Float.parseFloat(rangospredeterminado[0][1])*Float.parseFloat(rangospredeterminado[0][2]))+(demandanum[n]*Float.parseFloat(rangospredeterminado[1][1])*Float.parseFloat(rangospredeterminado[1][2]))+(demandanum[n]*Float.parseFloat(rangospredeterminado[2][1])*Float.parseFloat(rangospredeterminado[2][2]));
+                            necesidadActualizadaAves[m][0]=(demandanum[n]*Float.parseFloat(cortespredeterminado[0][1])*Float.parseFloat(cortespredeterminado[0][2]))+(demandanum[n]*Float.parseFloat(cortespredeterminado[1][1])*Float.parseFloat(cortespredeterminado[1][2]))+(demandanum[n]*Float.parseFloat(cortespredeterminado[2][1])*Float.parseFloat(cortespredeterminado[2][2]));
                         }
                     }
                     for(o=0;o<cantidadrangosreal;o=o+3){
                         calendar.setTime(hoy);
                         calendar.add(Calendar.DAY_OF_YEAR, m);
                         fechaA = calendar.getTime();
-                        fechaB = new java.sql.Date(javaFechaFinal.getTime());
-                        if((fechaB.after(fechasrangos[n][0])||fechaB.equals(fechasrangos[n][0])) && (fechaB.equals(fechasrangos[n][1])||fechaB.before(fechasrangos[n][1]))){
-                            necesidadActualizadaAves[m][1]=((necesidadActualizadaAves[m][2]*Float.parseFloat(rangos[o][0]))/pesopromedioPequeño)+((necesidadActualizadaAves[m][2]*Float.parseFloat(rangos[o+1][0]))/pesopromedioMediano)+((necesidadActualizadaAves[m][2]*Float.parseFloat(rangos[o+2][0]))/pesopromedioGrande);
+                        fechaB = new java.sql.Date(fechaA.getTime());
+                        if((fechaB.after(fechasrangos[o][0])||fechaB.equals(fechasrangos[o][0])) && (fechaB.equals(fechasrangos[o][1])||fechaB.before(fechasrangos[o][1]))){
+                            necesidadActualizadaAves[m][1]=((necesidadActualizadaAves[m][0]*Float.parseFloat(rangos[o][0]))/pesopromedioPequeño)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangos[o+1][0]))/pesopromedioMediano)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangos[o+2][0]))/pesopromedioGrande);
                         }else{
-                            necesidadActualizadaAves[m][1]=((necesidadActualizadaAves[m][2]*Float.parseFloat(rangos[0][3]))/pesopromedioPequeño)+((necesidadActualizadaAves[m][2]*Float.parseFloat(rangos[1][0]))/pesopromedioMediano)+((necesidadActualizadaAves[m][2]*Float.parseFloat(rangos[2][0]))/pesopromedioGrande);
+                            necesidadActualizadaAves[m][1]=((necesidadActualizadaAves[m][0]*Float.parseFloat(rangospredeterminado[0][3]))/pesopromedioPequeño)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangospredeterminado[1][3]))/pesopromedioMediano)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangospredeterminado[2][3]))/pesopromedioGrande);
                         }
                     }
                 }
@@ -524,7 +528,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
             }   
         } catch (Exception e) {
             jDialog1.setVisible(false);
-            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado"+e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_GenerarActionPerformed
 
