@@ -15,12 +15,14 @@ import javax.swing.JOptionPane;
  *
  * @author lopez.p.2
  */
-public class AgregarSecuencia extends javax.swing.JFrame {
+public class ModificarSecuencia extends javax.swing.JFrame {
+    int idSecuenciaModificar;
 
     /**
-     * Creates new form AgregarSecuencia
+     * Creates new form ModificarSecuencia
      */
-    public AgregarSecuencia() {
+    public ModificarSecuencia(int x) {
+        idSecuenciaModificar=x;
         initComponents();
     }
 
@@ -33,10 +35,11 @@ public class AgregarSecuencia extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel4 = new javax.swing.JLabel();
         FechaInicial = new com.toedter.calendar.JDateChooser();
         FechaFinal = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
+        Guardar = new javax.swing.JButton();
+        Cancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -91,17 +94,38 @@ public class AgregarSecuencia extends javax.swing.JFrame {
         Rango16 = new javax.swing.JComboBox<>();
         Horas11 = new javax.swing.JTextField();
         Secuencia14 = new javax.swing.JLabel();
-        Guardar = new javax.swing.JButton();
-        Cancelar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel4.setFont(new java.awt.Font("Cambria", 0, 22)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Registrar Secuencia de Transporte");
+        FechaInicial.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                FechaInicialAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel1.setText("Fecha Inicial");
+
+        Guardar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
+
+        Cancelar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Cancelar.setText("Cancelar");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel2.setText("Fecha Final");
@@ -397,58 +421,47 @@ public class AgregarSecuencia extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(jPanel1);
 
-        Guardar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        Guardar.setText("Guardar");
-        Guardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GuardarActionPerformed(evt);
-            }
-        });
-
-        Cancelar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        Cancelar.setText("Cancelar");
-        Cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelarActionPerformed(evt);
-            }
-        });
+        jLabel4.setFont(new java.awt.Font("Cambria", 0, 22)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Modificar Secuencia de Transporte");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(FechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(19, 19, 19)
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(FechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(FechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(FechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(42, 42, 42))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(166, 166, 166)
-                .addComponent(Guardar)
-                .addGap(58, 58, 58)
-                .addComponent(Cancelar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(121, 121, 121)
+                        .addComponent(Guardar)
+                        .addGap(58, 58, 58)
+                        .addComponent(Cancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27))
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(FechaInicial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -467,19 +480,11 @@ public class AgregarSecuencia extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Cancelar)
                     .addComponent(Guardar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void Rango1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rango1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Rango1ActionPerformed
-
-    private void Rango9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rango9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Rango9ActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         int idSecuencia = 0;
@@ -516,7 +521,7 @@ public class AgregarSecuencia extends javax.swing.JFrame {
                 RegistrarSecuencia1.setInt(6, Integer.parseInt(Horas1.getText()));
                 int x1 = RegistrarSecuencia1.executeUpdate();
                 RegistrarSecuencia1.close();
-                
+
                 PreparedStatement RegistrarSecuencia2 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
                 RegistrarSecuencia2.setInt(1, idSecuencia + 1);
                 RegistrarSecuencia2.setDate(2, sqlFechaInicial);
@@ -526,7 +531,7 @@ public class AgregarSecuencia extends javax.swing.JFrame {
                 RegistrarSecuencia2.setInt(6, Integer.parseInt(Horas2.getText()));
                 int x2 = RegistrarSecuencia2.executeUpdate();
                 RegistrarSecuencia2.close();
-                
+
                 PreparedStatement RegistrarSecuencia3 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
                 RegistrarSecuencia3.setInt(1, idSecuencia + 1);
                 RegistrarSecuencia3.setDate(2, sqlFechaInicial);
@@ -536,8 +541,8 @@ public class AgregarSecuencia extends javax.swing.JFrame {
                 RegistrarSecuencia3.setInt(6, Integer.parseInt(Horas3.getText()));
                 int x3 = RegistrarSecuencia3.executeUpdate();
                 RegistrarSecuencia3.close();
-               
-                if(Horas4.getText().equals("")){ 
+
+                if(Horas4.getText().equals("")){
                 }else{
                     PreparedStatement RegistrarSecuencia4 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
                     RegistrarSecuencia4.setInt(1, idSecuencia + 1);
@@ -549,161 +554,161 @@ public class AgregarSecuencia extends javax.swing.JFrame {
                     int x4 = RegistrarSecuencia4.executeUpdate();
                     RegistrarSecuencia4.close();
                 }
-                
-                if(Horas5.getText().equals("")){ 
-                }else{    
-                PreparedStatement RegistrarSecuencia5 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia5.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia5.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia5.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia5.setString(4, Secuencia5.getText());
-                RegistrarSecuencia5.setString(5, (String) Rango5.getSelectedItem());
-                RegistrarSecuencia5.setInt(6, Integer.parseInt(Horas5.getText()));
-                int x5 = RegistrarSecuencia5.executeUpdate();
-                RegistrarSecuencia5.close();
-                }
-                
-                if(Horas6.getText().equals("")){ 
+
+                if(Horas5.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia6 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia6.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia6.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia6.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia6.setString(4, Secuencia6.getText());
-                RegistrarSecuencia6.setString(5, (String) Rango6.getSelectedItem());
-                RegistrarSecuencia6.setInt(6, Integer.parseInt(Horas6.getText()));
-                int x6 = RegistrarSecuencia6.executeUpdate();
-                RegistrarSecuencia6.close();
+                    PreparedStatement RegistrarSecuencia5 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia5.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia5.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia5.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia5.setString(4, Secuencia5.getText());
+                    RegistrarSecuencia5.setString(5, (String) Rango5.getSelectedItem());
+                    RegistrarSecuencia5.setInt(6, Integer.parseInt(Horas5.getText()));
+                    int x5 = RegistrarSecuencia5.executeUpdate();
+                    RegistrarSecuencia5.close();
                 }
-                
-                if(Horas7.getText().equals("")){ 
+
+                if(Horas6.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia7 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia7.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia7.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia7.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia7.setString(4, Secuencia7.getText());
-                RegistrarSecuencia7.setString(5, (String) Rango7.getSelectedItem());
-                RegistrarSecuencia7.setInt(6, Integer.parseInt(Horas7.getText()));
-                int x7 = RegistrarSecuencia7.executeUpdate();
-                RegistrarSecuencia7.close();
+                    PreparedStatement RegistrarSecuencia6 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia6.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia6.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia6.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia6.setString(4, Secuencia6.getText());
+                    RegistrarSecuencia6.setString(5, (String) Rango6.getSelectedItem());
+                    RegistrarSecuencia6.setInt(6, Integer.parseInt(Horas6.getText()));
+                    int x6 = RegistrarSecuencia6.executeUpdate();
+                    RegistrarSecuencia6.close();
                 }
-                
-                if(Horas8.getText().equals("")){ 
+
+                if(Horas7.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia8 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia8.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia8.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia8.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia8.setString(4, Secuencia8.getText());
-                RegistrarSecuencia8.setString(5, (String) Rango8.getSelectedItem());
-                RegistrarSecuencia8.setInt(6, Integer.parseInt(Horas8.getText()));
-                int x8 = RegistrarSecuencia8.executeUpdate();
-                RegistrarSecuencia8.close();
+                    PreparedStatement RegistrarSecuencia7 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia7.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia7.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia7.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia7.setString(4, Secuencia7.getText());
+                    RegistrarSecuencia7.setString(5, (String) Rango7.getSelectedItem());
+                    RegistrarSecuencia7.setInt(6, Integer.parseInt(Horas7.getText()));
+                    int x7 = RegistrarSecuencia7.executeUpdate();
+                    RegistrarSecuencia7.close();
                 }
-                
-                if(Horas9.getText().equals("")){ 
+
+                if(Horas8.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia9 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia9.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia9.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia9.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia9.setString(4, Secuencia9.getText());
-                RegistrarSecuencia9.setString(5, (String) Rango9.getSelectedItem());
-                RegistrarSecuencia9.setInt(6, Integer.parseInt(Horas9.getText()));
-                int x9 = RegistrarSecuencia9.executeUpdate();
-                RegistrarSecuencia9.close();
+                    PreparedStatement RegistrarSecuencia8 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia8.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia8.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia8.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia8.setString(4, Secuencia8.getText());
+                    RegistrarSecuencia8.setString(5, (String) Rango8.getSelectedItem());
+                    RegistrarSecuencia8.setInt(6, Integer.parseInt(Horas8.getText()));
+                    int x8 = RegistrarSecuencia8.executeUpdate();
+                    RegistrarSecuencia8.close();
                 }
-                
-                if(Horas10.getText().equals("")){ 
+
+                if(Horas9.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia10 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia10.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia10.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia10.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia10.setString(4, Secuencia10.getText());
-                RegistrarSecuencia10.setString(5, (String) Rango10.getSelectedItem());
-                RegistrarSecuencia10.setInt(6, Integer.parseInt(Horas10.getText()));
-                int x10 = RegistrarSecuencia10.executeUpdate();
-                RegistrarSecuencia10.close();
+                    PreparedStatement RegistrarSecuencia9 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia9.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia9.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia9.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia9.setString(4, Secuencia9.getText());
+                    RegistrarSecuencia9.setString(5, (String) Rango9.getSelectedItem());
+                    RegistrarSecuencia9.setInt(6, Integer.parseInt(Horas9.getText()));
+                    int x9 = RegistrarSecuencia9.executeUpdate();
+                    RegistrarSecuencia9.close();
                 }
-                
-                if(Horas11.getText().equals("")){ 
-                }else{ 
-                PreparedStatement RegistrarSecuencia11 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia11.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia11.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia11.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia11.setString(4, Secuencia11.getText());
-                RegistrarSecuencia11.setString(5, (String) Rango11.getSelectedItem());
-                RegistrarSecuencia11.setInt(6, Integer.parseInt(Horas11.getText()));
-                int x11 = RegistrarSecuencia11.executeUpdate();
-                RegistrarSecuencia11.close();
-                }
-                
-                if(Horas12.getText().equals("")){ 
+
+                if(Horas10.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia12 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia12.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia12.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia12.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia12.setString(4, Secuencia12.getText());
-                RegistrarSecuencia12.setString(5, (String) Rango12.getSelectedItem());
-                RegistrarSecuencia12.setInt(6, Integer.parseInt(Horas12.getText()));
-                int x12 = RegistrarSecuencia12.executeUpdate();
-                RegistrarSecuencia12.close();
+                    PreparedStatement RegistrarSecuencia10 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia10.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia10.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia10.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia10.setString(4, Secuencia10.getText());
+                    RegistrarSecuencia10.setString(5, (String) Rango10.getSelectedItem());
+                    RegistrarSecuencia10.setInt(6, Integer.parseInt(Horas10.getText()));
+                    int x10 = RegistrarSecuencia10.executeUpdate();
+                    RegistrarSecuencia10.close();
                 }
-                
-                if(Horas13.getText().equals("")){ 
+
+                if(Horas11.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia13 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia13.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia13.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia13.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia13.setString(4, Secuencia13.getText());
-                RegistrarSecuencia13.setString(5, (String) Rango13.getSelectedItem());
-                RegistrarSecuencia13.setInt(6, Integer.parseInt(Horas13.getText()));
-                int x13 = RegistrarSecuencia13.executeUpdate();
-                RegistrarSecuencia13.close();
+                    PreparedStatement RegistrarSecuencia11 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia11.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia11.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia11.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia11.setString(4, Secuencia11.getText());
+                    RegistrarSecuencia11.setString(5, (String) Rango11.getSelectedItem());
+                    RegistrarSecuencia11.setInt(6, Integer.parseInt(Horas11.getText()));
+                    int x11 = RegistrarSecuencia11.executeUpdate();
+                    RegistrarSecuencia11.close();
                 }
-                
-                if(Horas14.getText().equals("")){ 
+
+                if(Horas12.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia14 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia14.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia14.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia14.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia14.setString(4, Secuencia14.getText());
-                RegistrarSecuencia14.setString(5, (String) Rango14.getSelectedItem());
-                RegistrarSecuencia14.setInt(6, Integer.parseInt(Horas14.getText()));
-                int x14 = RegistrarSecuencia14.executeUpdate();
-                RegistrarSecuencia14.close();
+                    PreparedStatement RegistrarSecuencia12 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia12.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia12.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia12.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia12.setString(4, Secuencia12.getText());
+                    RegistrarSecuencia12.setString(5, (String) Rango12.getSelectedItem());
+                    RegistrarSecuencia12.setInt(6, Integer.parseInt(Horas12.getText()));
+                    int x12 = RegistrarSecuencia12.executeUpdate();
+                    RegistrarSecuencia12.close();
                 }
-                
-                if(Horas15.getText().equals("")){ 
+
+                if(Horas13.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia15 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia15.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia15.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia15.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia15.setString(4, Secuencia15.getText());
-                RegistrarSecuencia15.setString(5, (String) Rango15.getSelectedItem());
-                RegistrarSecuencia15.setInt(6, Integer.parseInt(Horas15.getText()));
-                int x15 = RegistrarSecuencia15.executeUpdate();
-                RegistrarSecuencia15.close();
+                    PreparedStatement RegistrarSecuencia13 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia13.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia13.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia13.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia13.setString(4, Secuencia13.getText());
+                    RegistrarSecuencia13.setString(5, (String) Rango13.getSelectedItem());
+                    RegistrarSecuencia13.setInt(6, Integer.parseInt(Horas13.getText()));
+                    int x13 = RegistrarSecuencia13.executeUpdate();
+                    RegistrarSecuencia13.close();
                 }
-                
-                if(Horas16.getText().equals("")){ 
+
+                if(Horas14.getText().equals("")){
                 }else{
-                PreparedStatement RegistrarSecuencia16 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
-                RegistrarSecuencia16.setInt(1, idSecuencia + 1);
-                RegistrarSecuencia16.setDate(2, sqlFechaInicial);
-                RegistrarSecuencia16.setDate(3, sqlFechaFinal);
-                RegistrarSecuencia16.setString(4, Secuencia16.getText());
-                RegistrarSecuencia16.setString(5, (String) Rango16.getSelectedItem());
-                RegistrarSecuencia16.setInt(6, Integer.parseInt(Horas16.getText()));
-                int x16 = RegistrarSecuencia16.executeUpdate();
-                RegistrarSecuencia16.close();
+                    PreparedStatement RegistrarSecuencia14 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia14.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia14.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia14.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia14.setString(4, Secuencia14.getText());
+                    RegistrarSecuencia14.setString(5, (String) Rango14.getSelectedItem());
+                    RegistrarSecuencia14.setInt(6, Integer.parseInt(Horas14.getText()));
+                    int x14 = RegistrarSecuencia14.executeUpdate();
+                    RegistrarSecuencia14.close();
+                }
+
+                if(Horas15.getText().equals("")){
+                }else{
+                    PreparedStatement RegistrarSecuencia15 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia15.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia15.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia15.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia15.setString(4, Secuencia15.getText());
+                    RegistrarSecuencia15.setString(5, (String) Rango15.getSelectedItem());
+                    RegistrarSecuencia15.setInt(6, Integer.parseInt(Horas15.getText()));
+                    int x15 = RegistrarSecuencia15.executeUpdate();
+                    RegistrarSecuencia15.close();
+                }
+
+                if(Horas16.getText().equals("")){
+                }else{
+                    PreparedStatement RegistrarSecuencia16 = con.prepareStatement("INSERT INTO `secuencia de transporte real` (`idSecuencia`, `Fecha de inicio`, `Fecha de finalización`, `Secuencia`, `Rango de peso_Nombre`, `Horas de procesamiento` ) VALUES (?,?,?,?,?,?);");
+                    RegistrarSecuencia16.setInt(1, idSecuencia + 1);
+                    RegistrarSecuencia16.setDate(2, sqlFechaInicial);
+                    RegistrarSecuencia16.setDate(3, sqlFechaFinal);
+                    RegistrarSecuencia16.setString(4, Secuencia16.getText());
+                    RegistrarSecuencia16.setString(5, (String) Rango16.getSelectedItem());
+                    RegistrarSecuencia16.setInt(6, Integer.parseInt(Horas16.getText()));
+                    int x16 = RegistrarSecuencia16.executeUpdate();
+                    RegistrarSecuencia16.close();
                 }
                 con.close();
                 VentanaJava.SecuenciaTransporte.ActualizarTabla();
@@ -718,12 +723,221 @@ public class AgregarSecuencia extends javax.swing.JFrame {
         }
 
         this.dispose();
-
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void Rango1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rango1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Rango1ActionPerformed
+
+    private void Rango9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rango9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Rango9ActionPerformed
+
+    private void FechaInicialAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_FechaInicialAncestorAdded
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+                        
+            if (!con.isClosed()) {
+                PreparedStatement secuencia = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia.setInt(1,idSecuenciaModificar);
+                secuencia.setInt(2,1);
+                ResultSet resultadosecuencia = secuencia.executeQuery();
+                while( resultadosecuencia.next() ) {
+                    Horas1.setText("" + resultadosecuencia.getInt("Horas de procesamiento"));
+                    Rango1.setSelectedItem(resultadosecuencia.getString("Rango de peso_Nombre")); 
+                    
+                    java.sql.Date FechaInicioSql = resultadosecuencia.getDate("Fecha de inicio");
+                    java.util.Date FechaInicioJava = new java.util.Date(FechaInicioSql.getTime());
+                    java.sql.Date FechaFinSql = resultadosecuencia.getDate("Fecha de finalización");
+                    java.util.Date FechaFinJava = new java.util.Date(FechaInicioSql.getTime());
+                    
+                    FechaInicial.setDate(FechaInicioJava);
+                    FechaFinal.setDate(FechaFinJava);
+                }
+                resultadosecuencia.close();
+                secuencia.close();
+                
+                PreparedStatement secuencia2 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia2.setInt(1,idSecuenciaModificar);
+                secuencia2.setInt(2,2);
+                ResultSet resultadosecuencia2 = secuencia2.executeQuery();
+                while( resultadosecuencia2.next() ) {
+                    Horas2.setText("" + resultadosecuencia2.getInt("Horas de procesamiento"));
+                    Rango2.setSelectedItem(resultadosecuencia2.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia2.close();
+                secuencia2.close();
+                
+                PreparedStatement secuencia3 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia3.setInt(1,idSecuenciaModificar);
+                secuencia3.setInt(2,3);
+                ResultSet resultadosecuencia3 = secuencia3.executeQuery();
+                while( resultadosecuencia3.next() ) {
+                    Horas3.setText("" + resultadosecuencia3.getInt("Horas de procesamiento"));
+                    Rango3.setSelectedItem(resultadosecuencia3.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia3.close();
+                secuencia3.close();
+                
+                PreparedStatement secuencia4 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia4.setInt(1,idSecuenciaModificar);
+                secuencia4.setInt(2,4);
+                ResultSet resultadosecuencia4 = secuencia4.executeQuery();
+                while( resultadosecuencia4.next() ) {
+                    Horas4.setText("" + resultadosecuencia4.getInt("Horas de procesamiento"));
+                    Rango4.setSelectedItem(resultadosecuencia4.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia4.close();
+                secuencia4.close();
+                
+                PreparedStatement secuencia5 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia5.setInt(1,idSecuenciaModificar);
+                secuencia5.setInt(2,5);
+                ResultSet resultadosecuencia5 = secuencia5.executeQuery();
+                while( resultadosecuencia5.next() ) {
+                    Horas5.setText("" + resultadosecuencia5.getInt("Horas de procesamiento"));
+                    Rango5.setSelectedItem(resultadosecuencia5.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia5.close();
+                secuencia5.close();
+                
+                PreparedStatement secuencia6 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia6.setInt(1,idSecuenciaModificar);
+                secuencia6.setInt(2,6);
+                ResultSet resultadosecuencia6 = secuencia6.executeQuery();
+                while( resultadosecuencia6.next() ) {
+                    Horas6.setText("" + resultadosecuencia6.getInt("Horas de procesamiento"));
+                    Rango6.setSelectedItem(resultadosecuencia6.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia6.close();
+                secuencia6.close();
+                
+                PreparedStatement secuencia7 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia7.setInt(1,idSecuenciaModificar);
+                secuencia7.setInt(2,7);
+                ResultSet resultadosecuencia7 = secuencia6.executeQuery();
+                while( resultadosecuencia7.next() ) {
+                    Horas7.setText("" + resultadosecuencia7.getInt("Horas de procesamiento"));
+                    Rango7.setSelectedItem(resultadosecuencia7.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia7.close();
+                secuencia7.close();
+                
+                PreparedStatement secuencia8 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia8.setInt(1,idSecuenciaModificar);
+                secuencia8.setInt(2,8);
+                ResultSet resultadosecuencia8 = secuencia8.executeQuery();
+                while( resultadosecuencia8.next() ) {
+                    Horas8.setText("" + resultadosecuencia8.getInt("Horas de procesamiento"));
+                    Rango8.setSelectedItem(resultadosecuencia8.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia8.close();
+                secuencia8.close();
+                
+                PreparedStatement secuencia9 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia9.setInt(1,idSecuenciaModificar);
+                secuencia9.setInt(2,9);
+                ResultSet resultadosecuencia9 = secuencia9.executeQuery();
+                while( resultadosecuencia9.next() ) {
+                    Horas9.setText("" + resultadosecuencia9.getInt("Horas de procesamiento"));
+                    Rango9.setSelectedItem(resultadosecuencia9.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia9.close();
+                secuencia9.close();
+                
+                PreparedStatement secuencia10 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia10.setInt(1,idSecuenciaModificar);
+                secuencia10.setInt(2,10);
+                ResultSet resultadosecuencia10 = secuencia10.executeQuery();
+                while( resultadosecuencia10.next() ) {
+                    Horas10.setText("" + resultadosecuencia10.getInt("Horas de procesamiento"));
+                    Rango10.setSelectedItem(resultadosecuencia10.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia10.close();
+                secuencia10.close();
+                
+                PreparedStatement secuencia11 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia11.setInt(1,idSecuenciaModificar);
+                secuencia11.setInt(2,11);
+                ResultSet resultadosecuencia11 = secuencia11.executeQuery();
+                while( resultadosecuencia11.next() ) {
+                    Horas11.setText("" + resultadosecuencia11.getInt("Horas de procesamiento"));
+                    Rango11.setSelectedItem(resultadosecuencia11.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia11.close();
+                secuencia11.close();
+                
+                PreparedStatement secuencia12 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia12.setInt(1,idSecuenciaModificar);
+                secuencia12.setInt(2,12);
+                ResultSet resultadosecuencia12 = secuencia12.executeQuery();
+                while( resultadosecuencia12.next() ) {
+                    Horas12.setText("" + resultadosecuencia12.getInt("Horas de procesamiento"));
+                    Rango12.setSelectedItem(resultadosecuencia12.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia12.close();
+                secuencia12.close();
+                
+                PreparedStatement secuencia13 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia13.setInt(1,idSecuenciaModificar);
+                secuencia13.setInt(2,13);
+                ResultSet resultadosecuencia13 = secuencia13.executeQuery();
+                while( resultadosecuencia13.next() ) {
+                    Horas13.setText("" + resultadosecuencia13.getInt("Horas de procesamiento"));
+                    Rango13.setSelectedItem(resultadosecuencia13.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia13.close();
+                secuencia13.close();
+                
+                PreparedStatement secuencia14 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia14.setInt(1,idSecuenciaModificar);
+                secuencia14.setInt(2,14);
+                ResultSet resultadosecuencia14 = secuencia14.executeQuery();
+                while( resultadosecuencia14.next() ) {
+                    Horas14.setText("" + resultadosecuencia14.getInt("Horas de procesamiento"));
+                    Rango14.setSelectedItem(resultadosecuencia14.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia14.close();
+                secuencia14.close();
+                
+                PreparedStatement secuencia15 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia15.setInt(1,idSecuenciaModificar);
+                secuencia15.setInt(2,15);
+                ResultSet resultadosecuencia15 = secuencia15.executeQuery();
+                while( resultadosecuencia15.next() ) {
+                    Horas15.setText("" + resultadosecuencia15.getInt("Horas de procesamiento"));
+                    Rango15.setSelectedItem(resultadosecuencia15.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia15.close();
+                secuencia15.close();
+                
+                PreparedStatement secuencia16 = con.prepareStatement("select * from `secuencia de transporte real` Where `idSecuencia` = ? && `Secuencia` = ? ");
+                secuencia16.setInt(1,idSecuenciaModificar);
+                secuencia16.setInt(2,16);
+                ResultSet resultadosecuencia16 = secuencia16.executeQuery();
+                while( resultadosecuencia16.next() ) {
+                    Horas16.setText("" + resultadosecuencia16.getInt("Horas de procesamiento"));
+                    Rango16.setSelectedItem(resultadosecuencia16.getString("Rango de peso_Nombre")); 
+                }
+                resultadosecuencia16.close();
+                secuencia16.close();
+                
+                con.close();
+            }              
+                
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Los datos ingresados no están en el formato aceptado " + e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_FechaInicialAncestorAdded
 
     /**
      * @param args the command line arguments
@@ -742,21 +956,21 @@ public class AgregarSecuencia extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AgregarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AgregarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AgregarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AgregarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarSecuencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AgregarSecuencia().setVisible(true);
+                int a=0;
+                new ModificarSecuencia(a).setVisible(true);
             }
         });
     }

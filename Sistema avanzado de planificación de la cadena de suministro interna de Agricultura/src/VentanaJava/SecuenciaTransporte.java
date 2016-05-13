@@ -69,9 +69,19 @@ public class SecuenciaTransporte extends javax.swing.JFrame {
 
         ModificarSecuencia.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
         ModificarSecuencia.setText("Modificar Secuencia");
+        ModificarSecuencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarSecuenciaActionPerformed(evt);
+            }
+        });
 
         CambiarSecuenciaPredeterminada.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
         CambiarSecuenciaPredeterminada.setText("Cambiar Secuencia Predeterminada");
+        CambiarSecuenciaPredeterminada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarSecuenciaPredeterminadaActionPerformed(evt);
+            }
+        });
 
         TablaSecuencia.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         TablaSecuencia.setModel(new javax.swing.table.DefaultTableModel(
@@ -239,11 +249,10 @@ public class SecuenciaTransporte extends javax.swing.JFrame {
                 
                 java.util.Date javafechaFiltro = Filtro.getDate();
                 java.sql.Date sqlfechaFiltro = new java.sql.Date(javafechaFiltro.getTime());
-                String fechaFiltro = sqlfechaFiltro.toString();
-                System.out.println(fechaFiltro);
+                System.out.println(sqlfechaFiltro);
                 
                 
-                PreparedStatement filtro = con.prepareStatement("select * from `secuencia de transporte real` WHERE `Fecha de inicio` <= "+fechaFiltro+" AND `Fecha de finalización`>= "+fechaFiltro+"");
+                PreparedStatement filtro = con.prepareStatement("select * from `secuencia de transporte real` WHERE `Fecha de inicio` <= "+sqlfechaFiltro+" AND `Fecha de finalización`>= "+sqlfechaFiltro+"");
                 ResultSet datossecuencia = filtro.executeQuery();
                 while( datossecuencia.next() ) {
                     model.addRow(new Object[]{datossecuencia.getString("Fecha de inicio"), datossecuencia.getString("Fecha de finalización"),datossecuencia.getInt("Secuencia"),datossecuencia.getString("Rango de peso_Nombre"),datossecuencia.getInt("Horas de procesamiento"),datossecuencia.getInt("idSecuencia")});
@@ -270,6 +279,61 @@ public class SecuenciaTransporte extends javax.swing.JFrame {
  
     }//GEN-LAST:event_BuscarActionPerformed
 
+    private void CambiarSecuenciaPredeterminadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarSecuenciaPredeterminadaActionPerformed
+        SecuenciaPredeterminada abrir = new SecuenciaPredeterminada();
+        abrir.setVisible(true);
+    }//GEN-LAST:event_CambiarSecuenciaPredeterminadaActionPerformed
+
+    private void ModificarSecuenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarSecuenciaActionPerformed
+        int filaseleccionada=0;
+       
+        DefaultTableModel model=(DefaultTableModel) TablaSecuencia.getModel();
+
+        if( TablaSecuencia.getSelectedRow() < 0 ){
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna fila para modificar","Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            filaseleccionada=Integer.parseInt(model.getValueAt(TablaSecuencia.getSelectedRow(),0).toString());
+            mostrarModificarSecuencia(filaseleccionada);            
+        }
+    }//GEN-LAST:event_ModificarSecuenciaActionPerformed
+
+    public static void ActualizarTabla(){
+        DefaultTableModel model=(DefaultTableModel) TablaSecuencia.getModel();
+        int filas=TablaSecuencia.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                model.removeRow(0);
+            }
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/Cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            if (!con.isClosed()) {
+                PreparedStatement secuencia = con.prepareStatement("select * from `secuencia de transporte real` ");
+                ResultSet datossecuencia = secuencia.executeQuery();
+                while( datossecuencia.next() ) {
+                    model.addRow(new Object[]{datossecuencia.getString("Fecha de inicio"), datossecuencia.getString("Fecha de finalización"),datossecuencia.getString("Secuencia"),datossecuencia.getString("Rango de peso_Nombre"),datossecuencia.getInt("Horas de procesamiento"),datossecuencia.getString("idSecuencia"),});
+                }
+                datossecuencia.close();
+                secuencia.close();
+                con.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+     
+    }
+    
+    private void mostrarModificarSecuencia(int x) {
+        ModificarSecuencia modificar=new ModificarSecuencia(x);
+        modificar.setVisible(true);
+        modificar.setLocationRelativeTo(this);
+    }
+    
+    
      /*private TableRowSorter trsFiltro;
      
      public void filtro() {
@@ -319,7 +383,7 @@ public class SecuenciaTransporte extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser Filtro;
     private javax.swing.JButton ModificarSecuencia;
     private javax.swing.JButton RegistrarSecuencia;
-    private javax.swing.JTable TablaSecuencia;
+    public static javax.swing.JTable TablaSecuencia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -108,6 +108,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Modificar Secuencia"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ModificarSecuenciaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="CambiarSecuenciaPredeterminada">
       <Properties>
@@ -116,6 +119,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Cambiar Secuencia Predeterminada"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CambiarSecuenciaPredeterminadaActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
 
@@ -185,6 +191,9 @@
                 <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="TablaSecuenciaAncestorAdded"/>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TablaSecuenciaMouseClicked"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

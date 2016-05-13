@@ -5,6 +5,14 @@
  */
 package VentanaJava;
 
+import static VentanaJava.Galeras.TablaGaleras;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author lopez.p.2
@@ -30,17 +38,17 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         RegistrarNuevoIngreso = new javax.swing.JButton();
         ModificarDatosIngreso = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        TablaIngreso = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        TablaPesaje = new javax.swing.JTable();
         RegistrarNuevoPesaje = new javax.swing.JButton();
         ModificarDatosPesaje = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -48,7 +56,7 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        TablaMortalidad = new javax.swing.JTable();
         jScrollPane9 = new javax.swing.JScrollPane();
         jTextPane3 = new javax.swing.JTextPane();
         RegistrarNuevasModalidades = new javax.swing.JButton();
@@ -62,75 +70,86 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         jPanel2.setToolTipText("Filtro");
         jPanel2.setName(""); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "No. Galera", "Fecha de Ingreso", "Cantidad de Aves", "Edad de Reproductora"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Short.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        jScrollPane2.setViewportView(jScrollPane1);
-
         RegistrarNuevoIngreso.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         RegistrarNuevoIngreso.setText("Registrar Nuevo Ingreso");
+        RegistrarNuevoIngreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarNuevoIngresoActionPerformed(evt);
+            }
+        });
 
         ModificarDatosIngreso.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         ModificarDatosIngreso.setText("Modificar Datos de Ingreso");
 
         jScrollPane5.setViewportView(jTextPane1);
 
+        TablaIngreso.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        TablaIngreso.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "No. Galera", "Fecha de Ingreso", "Cantidad de Aves", "Edad de Reproductora", "id Ingresos"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        TablaIngreso.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                TablaIngresoAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jScrollPane11.setViewportView(TablaIngreso);
+
+        jScrollPane10.setViewportView(jScrollPane11);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(RegistrarNuevoIngreso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ModificarDatosIngreso)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(RegistrarNuevoIngreso)
+                        .addGap(18, 18, 18)
+                        .addComponent(ModificarDatosIngreso)))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarNuevoIngreso)
                     .addComponent(ModificarDatosIngreso))
-                .addContainerGap())
+                .addGap(32, 32, 32))
         );
 
         jTabbedPane1.addTab("Ingreso", jPanel2);
 
-        jTable2.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        TablaPesaje.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        TablaPesaje.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "No. Galera", "Fecha de Pesaje", "Peso Promedio", "Desviación Estándar"
@@ -144,7 +163,16 @@ public class ProcesosEngorde extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable2);
+        TablaPesaje.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                TablaPesajeAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jScrollPane4.setViewportView(TablaPesaje);
 
         jScrollPane3.setViewportView(jScrollPane4);
 
@@ -165,7 +193,7 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(RegistrarNuevoPesaje)
@@ -182,7 +210,7 @@ public class ProcesosEngorde extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarNuevoPesaje)
@@ -192,18 +220,24 @@ public class ProcesosEngorde extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Pesaje", jPanel3);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        TablaMortalidad.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "No. Galera", "Fecha de Registro", "Cantidad de Aves muertas", "Cantidad de Aves Seleccionadas"
             }
         ));
-        jScrollPane8.setViewportView(jTable3);
+        TablaMortalidad.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                TablaMortalidadAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jScrollPane8.setViewportView(TablaMortalidad);
 
         jScrollPane7.setViewportView(jScrollPane8);
 
@@ -211,6 +245,11 @@ public class ProcesosEngorde extends javax.swing.JFrame {
 
         RegistrarNuevasModalidades.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         RegistrarNuevasModalidades.setText("Registrar Nuevas Mortalidades");
+        RegistrarNuevasModalidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarNuevasModalidadesActionPerformed(evt);
+            }
+        });
 
         ModificarDatosMortalidades.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         ModificarDatosMortalidades.setText("Modificar Datos de Mortalidades");
@@ -219,7 +258,7 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -236,7 +275,7 @@ public class ProcesosEngorde extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarNuevasModalidades)
@@ -254,15 +293,17 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 23, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -270,29 +311,127 @@ public class ProcesosEngorde extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 721, Short.MAX_VALUE)
+            .addGap(0, 963, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 382, Short.MAX_VALUE)
+            .addGap(0, 508, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void RegistrarNuevoPesajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarNuevoPesajeActionPerformed
-        // TODO add your handling code here:
+        Pesaje abrir = new Pesaje();
+        abrir.setVisible(true);
     }//GEN-LAST:event_RegistrarNuevoPesajeActionPerformed
+
+    private void RegistrarNuevoIngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarNuevoIngresoActionPerformed
+        Ingreso abrir = new Ingreso();
+        abrir.setVisible(true);
+    }//GEN-LAST:event_RegistrarNuevoIngresoActionPerformed
+
+    private void RegistrarNuevasModalidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarNuevasModalidadesActionPerformed
+        Mortalidad abrir = new Mortalidad();
+        abrir.setVisible(true);
+    }//GEN-LAST:event_RegistrarNuevasModalidadesActionPerformed
+
+    private void TablaPesajeAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_TablaPesajeAncestorAdded
+        DefaultTableModel model=(DefaultTableModel) TablaPesaje.getModel();
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/Cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            if (!con.isClosed()) {    
+                
+                PreparedStatement pesaje = con.prepareStatement("select * from ingresos ");
+                ResultSet datospesaje = pesaje.executeQuery();
+                while( datospesaje.next()) {
+                    int idGaleraSQL = datospesaje.getInt("Galera_idGalera");
+                PreparedStatement galera = con.prepareStatement("select * from galera WHERE idGalera = ?");
+                galera.setInt(1, idGaleraSQL);
+                ResultSet numeroGalera = galera.executeQuery(); 
+                while( numeroGalera.next()) {
+                    model.addRow(new Object[]{numeroGalera.getString("Numero de Galera"), datospesaje.getString("idGalera"), datospesaje.getString("Numero de Galera"),datospesaje.getString("Nombre Granja")});
+                }
+                numeroGalera.close();
+                galera.close();
+                }
+                datospesaje.close();
+                pesaje.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_TablaPesajeAncestorAdded
+
+    private void TablaMortalidadAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_TablaMortalidadAncestorAdded
+        DefaultTableModel model=(DefaultTableModel) TablaGaleras.getModel();
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/Cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            if (!con.isClosed()) {
+                PreparedStatement galeras = con.prepareStatement("select * from galera ");
+                ResultSet datosgaleras = galeras.executeQuery();
+                while( datosgaleras.next() ) {
+                    model.addRow(new Object[]{datosgaleras.getString("idGalera"), datosgaleras.getString("Numero de Galera"),datosgaleras.getString("Nombre Granja"),datosgaleras.getString("Zona"),datosgaleras.getInt("Capacidad"),datosgaleras.getString("Supervisor"),datosgaleras.getString("Carrusel"),datosgaleras.getString("ActivacionGalera")});
+                }
+                datosgaleras.close();
+                galeras.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_TablaMortalidadAncestorAdded
+
+    private void TablaIngresoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_TablaIngresoAncestorAdded
+        DefaultTableModel model=(DefaultTableModel) TablaIngreso.getModel();
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/Cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+            if (!con.isClosed()) {    
+                
+                PreparedStatement ingreso = con.prepareStatement("select * from ingresos ");
+                ResultSet datosIngreso = ingreso.executeQuery();
+                while( datosIngreso.next()) {
+                    int idGaleraSQL = datosIngreso.getInt("Galera_idGalera");
+                PreparedStatement galera = con.prepareStatement("select * from galera WHERE idGalera = ?");
+                galera.setInt(1, idGaleraSQL);
+                ResultSet numeroGalera = galera.executeQuery(); 
+                while( numeroGalera.next()) {
+                    model.addRow(new Object[]{numeroGalera.getString("Numero de Galera"), datosIngreso.getDate("Fecha de Ingreso"), datosIngreso.getInt("Cantidad de aves"),datosIngreso.getInt("Edad de reproductora"),datosIngreso.getInt("idIngresos")});
+                }
+                numeroGalera.close();
+                galera.close();
+                }
+                datosIngreso.close();
+                ingreso.close();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_TablaIngresoAncestorAdded
 
     /**
      * @param args the command line arguments
@@ -336,13 +475,16 @@ public class ProcesosEngorde extends javax.swing.JFrame {
     private javax.swing.JButton RegistrarNuevasModalidades;
     private javax.swing.JButton RegistrarNuevoIngreso;
     private javax.swing.JButton RegistrarNuevoPesaje;
+    private javax.swing.JTable TablaIngreso;
+    public static javax.swing.JTable TablaMortalidad;
+    public static javax.swing.JTable TablaPesaje;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -351,9 +493,6 @@ public class ProcesosEngorde extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane jTextPane3;

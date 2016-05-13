@@ -5,6 +5,12 @@
  */
 package VentanaJava;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author lopez.p.2
@@ -27,386 +33,782 @@ public class SecuenciaPredeterminada extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        Cancelar = new javax.swing.JButton();
+        Guardar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jComboBox11 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jLabel12 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel8 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jComboBox10 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
-        jTextField12 = new javax.swing.JTextField();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
-        jTextField17 = new javax.swing.JTextField();
-        jTextField18 = new javax.swing.JTextField();
-        jComboBox7 = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jLabel14 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
-        jTextField14 = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        jTextField19 = new javax.swing.JTextField();
-        jTextField20 = new javax.swing.JTextField();
-        jTextField21 = new javax.swing.JTextField();
-        jTextField22 = new javax.swing.JTextField();
-        jTextField23 = new javax.swing.JTextField();
-        jComboBox9 = new javax.swing.JComboBox<>();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jComboBox12 = new javax.swing.JComboBox<>();
-        jComboBox13 = new javax.swing.JComboBox<>();
-        jComboBox14 = new javax.swing.JComboBox<>();
-        jLabel21 = new javax.swing.JLabel();
-        jComboBox15 = new javax.swing.JComboBox<>();
-        jComboBox16 = new javax.swing.JComboBox<>();
-        jLabel22 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        Secuencia3 = new javax.swing.JLabel();
+        Horas1 = new javax.swing.JTextField();
+        Rango7 = new javax.swing.JComboBox<>();
+        Rango3 = new javax.swing.JComboBox<>();
+        Rango5 = new javax.swing.JComboBox<>();
+        Rango8 = new javax.swing.JComboBox<>();
+        Secuencia6 = new javax.swing.JLabel();
+        Secuencia4 = new javax.swing.JLabel();
+        Rango4 = new javax.swing.JComboBox<>();
+        Rango6 = new javax.swing.JComboBox<>();
+        Secuencia5 = new javax.swing.JLabel();
+        Rango1 = new javax.swing.JComboBox<>();
+        Secuencia2 = new javax.swing.JLabel();
+        Horas4 = new javax.swing.JTextField();
+        Horas2 = new javax.swing.JTextField();
+        Secuencia1 = new javax.swing.JLabel();
+        Horas3 = new javax.swing.JTextField();
+        Horas5 = new javax.swing.JTextField();
+        Horas6 = new javax.swing.JTextField();
+        Horas7 = new javax.swing.JTextField();
+        Horas8 = new javax.swing.JTextField();
+        Rango2 = new javax.swing.JComboBox<>();
+        Secuencia7 = new javax.swing.JLabel();
+        Secuencia8 = new javax.swing.JLabel();
+        Horas13 = new javax.swing.JTextField();
+        Secuencia12 = new javax.swing.JLabel();
+        Horas14 = new javax.swing.JTextField();
+        Rango12 = new javax.swing.JComboBox<>();
+        Horas15 = new javax.swing.JTextField();
+        Rango14 = new javax.swing.JComboBox<>();
+        Horas16 = new javax.swing.JTextField();
+        Secuencia13 = new javax.swing.JLabel();
+        Rango10 = new javax.swing.JComboBox<>();
+        Secuencia11 = new javax.swing.JLabel();
+        Rango9 = new javax.swing.JComboBox<>();
+        Secuencia15 = new javax.swing.JLabel();
+        Horas9 = new javax.swing.JTextField();
+        Secuencia10 = new javax.swing.JLabel();
+        Secuencia16 = new javax.swing.JLabel();
+        Rango15 = new javax.swing.JComboBox<>();
+        Horas12 = new javax.swing.JTextField();
+        Rango11 = new javax.swing.JComboBox<>();
+        Horas10 = new javax.swing.JTextField();
+        Rango13 = new javax.swing.JComboBox<>();
+        Secuencia9 = new javax.swing.JLabel();
+        Rango16 = new javax.swing.JComboBox<>();
+        Horas11 = new javax.swing.JTextField();
+        Secuencia14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Secuencia No.");
+        Cancelar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Cancelar.setText("Cancelar");
+        Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton2.setText("Cancelar");
-
-        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
-        jButton1.setText("Guardar");
-
-        jLabel5.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("1");
+        Guardar.setFont(new java.awt.Font("Calibri Light", 0, 22)); // NOI18N
+        Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Cambria", 0, 22)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Secuencia de Transporte Predeterminada");
 
-        jLabel17.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("8");
-
-        jComboBox11.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox11.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
-
-        jComboBox4.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
-
-        jComboBox6.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
-
-        jLabel11.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("5");
-
-        jComboBox5.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
-
-        jLabel12.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("6");
-
         jLabel6.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Rango de Peso");
+
+        jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Secuencia No.");
 
         jLabel7.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Horas de Procesamiento");
 
-        jComboBox1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        jPanel1.setPreferredSize(new java.awt.Dimension(599, 833));
 
-        jLabel8.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("2");
+        Secuencia3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia3.setText("3");
 
-        jComboBox2.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango7.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jLabel16.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("7");
+        Rango3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jLabel9.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("3");
+        Rango5.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jComboBox10.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango8.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jComboBox3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Secuencia6.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia6.setText("6");
 
-        jLabel10.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("4");
+        Secuencia4.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia4.setText("4");
 
-        jComboBox7.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango4.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jLabel13.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("14");
+        Rango6.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jComboBox8.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Secuencia5.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia5.setText("5");
 
-        jLabel14.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("10");
+        Rango1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                Rango1AncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        Rango1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Rango1ActionPerformed(evt);
+            }
+        });
 
-        jLabel15.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("9");
+        Secuencia2.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia2.setText("2");
 
-        jComboBox9.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Secuencia1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia1.setText("1");
 
-        jLabel18.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("15");
+        Rango2.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jLabel19.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("16");
+        Secuencia7.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia7.setText("7");
 
-        jLabel20.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("11");
+        Secuencia8.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia8.setText("8");
 
-        jComboBox12.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Secuencia12.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia12.setText("12");
 
-        jComboBox13.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox13.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango12.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jComboBox14.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox14.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango14.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango14.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jLabel21.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("12");
+        Secuencia13.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia13.setText("13");
 
-        jComboBox15.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox15.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango10.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
 
-        jComboBox16.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jComboBox16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Secuencia11.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia11.setText("11");
 
-        jLabel22.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("13");
+        Rango9.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        Rango9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Rango9ActionPerformed(evt);
+            }
+        });
+
+        Secuencia15.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia15.setText("15");
+
+        Secuencia10.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia10.setText("10");
+
+        Secuencia16.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia16.setText("16");
+
+        Rango15.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango15.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+
+        Rango11.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango11.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+
+        Rango13.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango13.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+
+        Secuencia9.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia9.setText("9");
+
+        Rango16.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Rango16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+
+        Secuencia14.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        Secuencia14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Secuencia14.setText("14");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Secuencia14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia16, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Rango12, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango11, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango10, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango9, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango13, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango14, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango15, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(Horas15, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas14, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas13, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas12, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas11, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas10, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas9, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas16, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Secuencia6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Secuencia8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Rango4, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango7, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Rango8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(Horas7, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas6, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Horas8, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 130, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia1)
+                    .addComponent(Horas1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia2)
+                    .addComponent(Horas2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia3)
+                    .addComponent(Horas3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia4)
+                    .addComponent(Horas4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia5)
+                    .addComponent(Horas5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia6)
+                    .addComponent(Horas6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia7)
+                    .addComponent(Horas7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia8)
+                    .addComponent(Horas8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia9)
+                    .addComponent(Horas9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia10)
+                    .addComponent(Horas10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia11)
+                    .addComponent(Horas11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia12)
+                    .addComponent(Horas12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia13)
+                    .addComponent(Horas13, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia14)
+                    .addComponent(Horas14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia15)
+                    .addComponent(Horas15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rango16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Secuencia16)
+                    .addComponent(Horas16, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jScrollPane2.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel19))
-                        .addGap(68, 68, 68)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox14, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox13, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox9, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox15, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox7, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox16, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox12, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox8, javax.swing.GroupLayout.Alignment.TRAILING, 0, 107, Short.MAX_VALUE))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField20, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField22, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox10, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox11, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField10)
-                            .addComponent(jTextField11)
-                            .addComponent(jTextField12)
-                            .addComponent(jTextField15)
-                            .addComponent(jTextField16)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField18))))
-                .addContainerGap(36, Short.MAX_VALUE))
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(31, 31, 31)
-                .addComponent(jButton2)
-                .addGap(112, 112, 112))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(Guardar)
+                        .addGap(31, 31, 31)
+                        .addComponent(Cancelar)
+                        .addGap(167, 167, 167))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
+                    .addComponent(jLabel3)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel3))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
-                    .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17)
-                    .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel14))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel20))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel21))
-                                .addGap(11, 11, 11)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel22))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField21, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel13))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel18)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(54, 54, 54)
-                                .addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jComboBox14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel19))
-                            .addComponent(jTextField23, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel15)))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(Guardar)
+                    .addComponent(Cancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Rango1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rango1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Rango1ActionPerformed
+
+    private void Rango9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rango9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Rango9ActionPerformed
+
+    private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_CancelarActionPerformed
+
+    private void Rango1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_Rango1AncestorAdded
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+                           
+            if (!con.isClosed()) {
+                PreparedStatement secuencia1 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 1 ");
+                ResultSet resultadosecuencia1 = secuencia1.executeQuery();
+                while( resultadosecuencia1.next() ) {
+                    Rango1.setSelectedItem(resultadosecuencia1.getString("Rango de peso_Nombre"));
+                    Horas1.setText("" + resultadosecuencia1.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia1.close();
+                secuencia1.close();                
+                
+                PreparedStatement secuencia2 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 2 ");
+                ResultSet resultadosecuencia2 = secuencia2.executeQuery();
+                while( resultadosecuencia2.next() ) {
+                    Rango2.setSelectedItem(resultadosecuencia2.getString("Rango de peso_Nombre"));
+                    Horas2.setText("" + resultadosecuencia2.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia2.close();
+                secuencia2.close(); 
+                
+                PreparedStatement secuencia3 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 3 ");
+                ResultSet resultadosecuencia3 = secuencia3.executeQuery();
+                while( resultadosecuencia3.next() ) {
+                    Rango3.setSelectedItem(resultadosecuencia3.getString("Rango de peso_Nombre"));
+                    Horas3.setText("" + resultadosecuencia3.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia3.close();
+                secuencia3.close(); 
+                
+                PreparedStatement secuencia4 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 4 ");
+                ResultSet resultadosecuencia4 = secuencia4.executeQuery();
+                while( resultadosecuencia4.next() ) {
+                    Rango4.setSelectedItem(resultadosecuencia4.getString("Rango de peso_Nombre"));
+                    Horas4.setText("" + resultadosecuencia4.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia4.close();
+                secuencia4.close(); 
+                
+                PreparedStatement secuencia5 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 5 ");
+                ResultSet resultadosecuencia5 = secuencia5.executeQuery();
+                while( resultadosecuencia5.next() ) {
+                    Rango5.setSelectedItem(resultadosecuencia5.getString("Rango de peso_Nombre"));
+                    Horas5.setText("" + resultadosecuencia5.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia5.close();
+                secuencia5.close(); 
+                
+                PreparedStatement secuencia6 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 6 ");
+                ResultSet resultadosecuencia6 = secuencia6.executeQuery();
+                while( resultadosecuencia6.next() ) {
+                    Rango6.setSelectedItem(resultadosecuencia6.getString("Rango de peso_Nombre"));
+                    Horas6.setText("" + resultadosecuencia6.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia6.close();
+                secuencia6.close(); 
+                
+                PreparedStatement secuencia7 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 7 ");
+                ResultSet resultadosecuencia7 = secuencia7.executeQuery();
+                while( resultadosecuencia7.next() ) {
+                    Rango7.setSelectedItem(resultadosecuencia7.getString("Rango de peso_Nombre"));
+                    Horas7.setText("" + resultadosecuencia7.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia7.close();
+                secuencia7.close(); 
+                
+                PreparedStatement secuencia8 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 8 ");
+                ResultSet resultadosecuencia8 = secuencia8.executeQuery();
+                while( resultadosecuencia8.next() ) {
+                    Rango8.setSelectedItem(resultadosecuencia8.getString("Rango de peso_Nombre"));
+                    Horas8.setText("" + resultadosecuencia8.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia8.close();
+                secuencia8.close(); 
+                
+                PreparedStatement secuencia9 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 9 ");
+                ResultSet resultadosecuencia9 = secuencia9.executeQuery();
+                while( resultadosecuencia9.next() ) {
+                    Rango9.setSelectedItem(resultadosecuencia9.getString("Rango de peso_Nombre"));
+                    Horas9.setText("" + resultadosecuencia9.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia9.close();
+                secuencia9.close(); 
+                
+                PreparedStatement secuencia10 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 10 ");
+                ResultSet resultadosecuencia10 = secuencia10.executeQuery();
+                while( resultadosecuencia10.next() ) {
+                    Rango10.setSelectedItem(resultadosecuencia10.getString("Rango de peso_Nombre"));
+                    Horas10.setText("" + resultadosecuencia10.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia10.close();
+                secuencia10.close(); 
+                
+                PreparedStatement secuencia11 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 11 ");
+                ResultSet resultadosecuencia11 = secuencia11.executeQuery();
+                while( resultadosecuencia11.next() ) {
+                    Rango11.setSelectedItem(resultadosecuencia11.getString("Rango de peso_Nombre"));
+                    Horas11.setText("" + resultadosecuencia11.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia11.close();
+                secuencia11.close(); 
+                
+                PreparedStatement secuencia12 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 12 ");
+                ResultSet resultadosecuencia12 = secuencia12.executeQuery();
+                while( resultadosecuencia12.next() ) {
+                    Rango12.setSelectedItem(resultadosecuencia12.getString("Rango de peso_Nombre"));
+                    Horas12.setText("" + resultadosecuencia12.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia12.close();
+                secuencia12.close(); 
+                
+                PreparedStatement secuencia13 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 13 ");
+                ResultSet resultadosecuencia13 = secuencia13.executeQuery();
+                while( resultadosecuencia13.next() ) {
+                    Rango13.setSelectedItem(resultadosecuencia13.getString("Rango de peso_Nombre"));
+                    Horas13.setText("" + resultadosecuencia13.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia13.close();
+                secuencia13.close(); 
+                
+                PreparedStatement secuencia14 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 14 ");
+                ResultSet resultadosecuencia14 = secuencia14.executeQuery();
+                while( resultadosecuencia14.next() ) {
+                    Rango14.setSelectedItem(resultadosecuencia14.getString("Rango de peso_Nombre"));
+                    Horas14.setText("" + resultadosecuencia14.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia14.close();
+                secuencia14.close(); 
+                
+                PreparedStatement secuencia15 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 15 ");
+                ResultSet resultadosecuencia15 = secuencia15.executeQuery();
+                while( resultadosecuencia15.next() ) {
+                    Rango15.setSelectedItem(resultadosecuencia15.getString("Rango de peso_Nombre"));
+                    Horas15.setText("" + resultadosecuencia15.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia15.close();
+                secuencia15.close(); 
+                
+                PreparedStatement secuencia16 = con.prepareStatement("select * from `secuencia de transporte estándar` WHERE `Secuencia` = 16 ");
+                ResultSet resultadosecuencia16 = secuencia16.executeQuery();
+                while( resultadosecuencia16.next() ) {
+                    Rango16.setSelectedItem(resultadosecuencia16.getString("Rango de peso_Nombre"));
+                    Horas16.setText("" + resultadosecuencia16.getInt("Horas de procesamiento"));
+                }
+                resultadosecuencia16.close();
+                secuencia16.close(); 
+                
+                con.close();
+            }              
+                
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Los datos ingresados no están en el formato aceptado" ,"Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_Rango1AncestorAdded
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+
+            if (!con.isClosed()&& Horas1.getText() != null && Horas2.getText()!= null && Horas3.getText()!= null) {
+
+                PreparedStatement RegistrarSecuencia1 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia1.setString(1, (String) Rango1.getSelectedItem());
+                RegistrarSecuencia1.setInt(2, Integer.parseInt(Horas1.getText()));
+                RegistrarSecuencia1.setInt(3, Integer.parseInt (Secuencia1.getText()));
+                int x1 = RegistrarSecuencia1.executeUpdate();
+                RegistrarSecuencia1.close();
+                
+                PreparedStatement RegistrarSecuencia2 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia2.setString(1, (String) Rango2.getSelectedItem());
+                RegistrarSecuencia2.setInt(2, Integer.parseInt(Horas2.getText()));
+                RegistrarSecuencia2.setInt(3, Integer.parseInt (Secuencia2.getText()));
+                int x2 = RegistrarSecuencia2.executeUpdate();
+                RegistrarSecuencia2.close();
+                
+                PreparedStatement RegistrarSecuencia3 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia3.setString(1, (String) Rango3.getSelectedItem());
+                RegistrarSecuencia3.setInt(2, Integer.parseInt(Horas3.getText()));
+                RegistrarSecuencia3.setInt(3, Integer.parseInt (Secuencia3.getText()));
+                int x3 = RegistrarSecuencia3.executeUpdate();
+                RegistrarSecuencia3.close();
+               
+                if(Horas4.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia4 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia4.setString(1, (String) Rango4.getSelectedItem());
+                RegistrarSecuencia4.setInt(2, Integer.parseInt(Horas4.getText()));
+                RegistrarSecuencia4.setInt(3, Integer.parseInt (Secuencia4.getText()));
+                int x4 = RegistrarSecuencia4.executeUpdate();
+                RegistrarSecuencia4.close();
+                }
+                
+                if(Horas5.getText().equals("")){ 
+                }else{    
+                PreparedStatement RegistrarSecuencia5 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia5.setString(1, (String) Rango5.getSelectedItem());
+                RegistrarSecuencia5.setInt(2, Integer.parseInt(Horas5.getText()));
+                RegistrarSecuencia5.setInt(3, Integer.parseInt (Secuencia5.getText()));
+                int x5 = RegistrarSecuencia5.executeUpdate();
+                RegistrarSecuencia5.close();
+                }
+                
+                if(Horas6.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia6 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia6.setString(1, (String) Rango6.getSelectedItem());
+                RegistrarSecuencia6.setInt(2, Integer.parseInt(Horas6.getText()));
+                RegistrarSecuencia6.setInt(3, Integer.parseInt (Secuencia6.getText()));
+                int x6 = RegistrarSecuencia6.executeUpdate();
+                RegistrarSecuencia6.close();
+                }
+                
+                if(Horas7.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia7 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia7.setString(1, (String) Rango7.getSelectedItem());
+                RegistrarSecuencia7.setInt(2, Integer.parseInt(Horas7.getText()));
+                RegistrarSecuencia7.setInt(3, Integer.parseInt (Secuencia7.getText()));
+                int x7 = RegistrarSecuencia7.executeUpdate();
+                RegistrarSecuencia7.close();
+                }
+                
+                if(Horas8.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia8 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia8.setString(3, Secuencia8.getText());
+                RegistrarSecuencia8.setString(1, (String) Rango8.getSelectedItem());
+                RegistrarSecuencia8.setInt(2, Integer.parseInt(Horas8.getText()));
+                RegistrarSecuencia8.setInt(3, Integer.parseInt (Secuencia8.getText()));
+                int x8 = RegistrarSecuencia8.executeUpdate();
+                RegistrarSecuencia8.close();
+                }
+                
+                if(Horas9.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia9 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia9.setString(1, (String) Rango9.getSelectedItem());
+                RegistrarSecuencia9.setInt(2, Integer.parseInt(Horas9.getText()));
+                RegistrarSecuencia9.setInt(3, Integer.parseInt (Secuencia9.getText()));
+                int x9 = RegistrarSecuencia9.executeUpdate();
+                RegistrarSecuencia9.close();
+                }
+                
+                if(Horas10.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia10 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia10.setString(1, (String) Rango10.getSelectedItem());
+                RegistrarSecuencia10.setInt(2, Integer.parseInt(Horas10.getText()));
+                RegistrarSecuencia10.setInt(3, Integer.parseInt (Secuencia10.getText()));
+                int x10 = RegistrarSecuencia10.executeUpdate();
+                RegistrarSecuencia10.close();
+                }
+                
+                if(Horas11.getText().equals("")){ 
+                }else{ 
+                PreparedStatement RegistrarSecuencia11 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia11.setString(1, (String) Rango11.getSelectedItem());
+                RegistrarSecuencia11.setInt(2, Integer.parseInt(Horas11.getText()));
+                RegistrarSecuencia11.setInt(3, Integer.parseInt (Secuencia11.getText()));
+                int x11 = RegistrarSecuencia11.executeUpdate();
+                RegistrarSecuencia11.close();
+                }
+                
+                if(Horas12.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia12 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia12.setString(1, (String) Rango12.getSelectedItem());
+                RegistrarSecuencia12.setInt(2, Integer.parseInt(Horas12.getText()));
+                RegistrarSecuencia12.setInt(3, Integer.parseInt (Secuencia12.getText()));
+                int x12 = RegistrarSecuencia12.executeUpdate();
+                RegistrarSecuencia12.close();
+                }
+                
+                if(Horas13.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia13 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia13.setString(1, (String) Rango13.getSelectedItem());
+                RegistrarSecuencia13.setInt(2, Integer.parseInt(Horas13.getText()));
+                RegistrarSecuencia13.setInt(3, Integer.parseInt (Secuencia13.getText()));
+                int x13 = RegistrarSecuencia13.executeUpdate();
+                RegistrarSecuencia13.close();
+                }
+                
+                if(Horas14.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia14 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia14.setString(1, (String) Rango14.getSelectedItem());
+                RegistrarSecuencia14.setInt(2, Integer.parseInt(Horas14.getText()));
+                RegistrarSecuencia14.setInt(3, Integer.parseInt (Secuencia14.getText()));
+                int x14 = RegistrarSecuencia14.executeUpdate();
+                RegistrarSecuencia14.close();
+                }
+                
+                if(Horas15.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia15 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia15.setString(1, (String) Rango15.getSelectedItem());
+                RegistrarSecuencia15.setInt(2, Integer.parseInt(Horas15.getText()));
+                RegistrarSecuencia15.setInt(3, Integer.parseInt (Secuencia15.getText()));
+                int x15 = RegistrarSecuencia15.executeUpdate();
+                RegistrarSecuencia15.close();
+                }
+                
+                if(Horas16.getText().equals("")){ 
+                }else{
+                PreparedStatement RegistrarSecuencia16 = con.prepareStatement("REPLACE INTO `secuencia de transporte estándar` SET `Rango de peso_Nombre` = ?, `Horas de procesamiento` = ?, `Secuencia` = ?;");
+                RegistrarSecuencia16.setString(1, (String) Rango16.getSelectedItem());
+                RegistrarSecuencia16.setInt(2, Integer.parseInt(Horas16.getText()));
+                RegistrarSecuencia16.setInt(3, Integer.parseInt (Secuencia16.getText()));
+                int x16 = RegistrarSecuencia16.executeUpdate();
+                RegistrarSecuencia16.close();
+                }
+                
+                con.close();
+                
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "La fecha inicial, fecha final y los datos de las 3 primeras secuencias son obligatorios. Por favor ingrese para continuar","Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
+                con.close();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Los datos ingresados no están en el formato aceptado "+e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        this.dispose();
+
+    }//GEN-LAST:event_GuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -444,59 +846,61 @@ public class SecuenciaPredeterminada extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox11;
-    private javax.swing.JComboBox<String> jComboBox12;
-    private javax.swing.JComboBox<String> jComboBox13;
-    private javax.swing.JComboBox<String> jComboBox14;
-    private javax.swing.JComboBox<String> jComboBox15;
-    private javax.swing.JComboBox<String> jComboBox16;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
+    private javax.swing.JButton Cancelar;
+    private javax.swing.JButton Guardar;
+    private javax.swing.JTextField Horas1;
+    private javax.swing.JTextField Horas10;
+    private javax.swing.JTextField Horas11;
+    private javax.swing.JTextField Horas12;
+    private javax.swing.JTextField Horas13;
+    private javax.swing.JTextField Horas14;
+    private javax.swing.JTextField Horas15;
+    private javax.swing.JTextField Horas16;
+    private javax.swing.JTextField Horas2;
+    private javax.swing.JTextField Horas3;
+    private javax.swing.JTextField Horas4;
+    private javax.swing.JTextField Horas5;
+    private javax.swing.JTextField Horas6;
+    private javax.swing.JTextField Horas7;
+    private javax.swing.JTextField Horas8;
+    private javax.swing.JTextField Horas9;
+    private javax.swing.JComboBox<String> Rango1;
+    private javax.swing.JComboBox<String> Rango10;
+    private javax.swing.JComboBox<String> Rango11;
+    private javax.swing.JComboBox<String> Rango12;
+    private javax.swing.JComboBox<String> Rango13;
+    private javax.swing.JComboBox<String> Rango14;
+    private javax.swing.JComboBox<String> Rango15;
+    private javax.swing.JComboBox<String> Rango16;
+    private javax.swing.JComboBox<String> Rango2;
+    private javax.swing.JComboBox<String> Rango3;
+    private javax.swing.JComboBox<String> Rango4;
+    private javax.swing.JComboBox<String> Rango5;
+    private javax.swing.JComboBox<String> Rango6;
+    private javax.swing.JComboBox<String> Rango7;
+    private javax.swing.JComboBox<String> Rango8;
+    private javax.swing.JComboBox<String> Rango9;
+    private javax.swing.JLabel Secuencia1;
+    private javax.swing.JLabel Secuencia10;
+    private javax.swing.JLabel Secuencia11;
+    private javax.swing.JLabel Secuencia12;
+    private javax.swing.JLabel Secuencia13;
+    private javax.swing.JLabel Secuencia14;
+    private javax.swing.JLabel Secuencia15;
+    private javax.swing.JLabel Secuencia16;
+    private javax.swing.JLabel Secuencia2;
+    private javax.swing.JLabel Secuencia3;
+    private javax.swing.JLabel Secuencia4;
+    private javax.swing.JLabel Secuencia5;
+    private javax.swing.JLabel Secuencia6;
+    private javax.swing.JLabel Secuencia7;
+    private javax.swing.JLabel Secuencia8;
+    private javax.swing.JLabel Secuencia9;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
-    private javax.swing.JTextField jTextField19;
-    private javax.swing.JTextField jTextField20;
-    private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
-    private javax.swing.JTextField jTextField23;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
