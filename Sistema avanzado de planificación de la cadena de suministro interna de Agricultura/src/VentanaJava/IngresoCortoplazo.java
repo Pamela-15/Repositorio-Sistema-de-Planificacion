@@ -153,8 +153,8 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 registros.setDate(1,sqlFechaInicial);
                 registros.setDate(2,sqlFechaFinal);
                 ResultSet cuenta = registros.executeQuery();
+                cuenta.next();
                 cantidad= cuenta.getInt("count(*)");
-                
                 cuenta.close();
                 registros.close();
                 lista= new String[cantidad][8];
@@ -181,6 +181,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 
                 registros = con.prepareStatement(" Select count(*) as cuenta from (SELECT max(`ingresos`.`idIngresos`) as idIngresos,`ingresos`.`Galera_idGalera`,`galera`.`Carrusel`,`galera`.`zona`,`galera`.`Nombre Granja`,`galera`.`Numero de Galera`,`galera`.`Capacidad`, max(`ingresos`.`Fecha de Ingreso`),`galera`.`Carrusel`   as fecha FROM `cargill`.`ingresos` inner join `cargill`.`galera` on `ingresos`.`Galera_idGalera`= `galera`.`idGalera` group by `ingresos`.`Galera_idGalera`)xxx inner join `cargill`.`ingresos` on xxx.idIngresos= `ingresos`.`idIngresos` where ingresos.`Fecha de cosecha` is not null and xxx.`Carrusel`=\"Central\";");
                 cuenta = registros.executeQuery();
+                cuenta.next();
                 cantidadcentral= cuenta.getInt("cuenta");
                 listabackup= new String[cantidadcentral][8];
                 
@@ -202,12 +203,14 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 PreparedStatement medianames = con.prepareStatement ("select b.A,a.rownum, a.`Mortalidad cierre` from(select if(@grupo= MONTH(mortalidad.`Fecha de ingreso`),@rownum:=@rownum+1,@rownum:=1) AS rownum, @grupo:=MONTH(mortalidad.`Fecha de ingreso`) as grupo, mortalidad.`Mortalidad cierre` from cargill.mortalidad order by MONTH(mortalidad.`Fecha de ingreso`), mortalidad.`Mortalidad cierre` ) a, (select MONTH(mortalidad.`Fecha de ingreso`) AS A,ROUND(count(*)/2) medio from cargill.mortalidad group by MONTH(mortalidad.`Fecha de ingreso`)) b where a.rownum= b.medio and a.grupo=b.A and b.A=?;");
                 medianames.setInt(1,mes);
                 ResultSet valormedianames = medianames.executeQuery();
+                valormedianames.next();
                 medianamesingreso=valormedianames.getFloat("Mortalidad cierre");
                 valormedianames.close();
                 medianames.close();
                 
                 PreparedStatement mediana = con.prepareStatement ("select a.rownum, a.`Mortalidad cierre` from ( select @rownum:=@rownum+1 AS rownum, `mortalidad`.`Mortalidad cierre` from ( select @rownum:=1) r, `cargill`.`mortalidad` order by `mortalidad`.`Mortalidad cierre`) a, (select round(count(*)/2) medio from `cargill`.`mortalidad`) b where a.rownum= b.medio;");
                 ResultSet valormediana = mediana.executeQuery();
+                valormediana.next();
                 medianatotalingreso=valormediana.getFloat("Mortalidad cierre");
                 valormediana.close();
                 mediana.close();
@@ -216,18 +219,21 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 
                 PreparedStatement medianav = con.prepareStatement ("select a.rownum, a.`Mortalidad cierre`, a.`Edad reproductora` from ( select @rownum:=@rownum+1 AS rownum, `mortalidad`.`Mortalidad cierre`, `mortalidad`.`Edad reproductora` from ( select @rownum:=0) r, `cargill`.`mortalidad` where `mortalidad`.`Edad reproductora`<66 and `mortalidad`.`Edad reproductora`>45 order by `mortalidad`.`Mortalidad cierre`) a, (select round(count(*)/2) medio from `cargill`.`mortalidad` where `mortalidad`.`Edad reproductora`<66 and `mortalidad`.`Edad reproductora`>45 ) b where a.rownum= b.medio;");
                 ResultSet valormedianav = medianav.executeQuery();
+                valormedianav.next();
                 medianavieja=valormedianav.getFloat("Mortalidad cierre");
                 valormedianav.close();
                 medianav.close();
                 factoredadv=medianavieja/medianatotalingreso;
                 PreparedStatement medianam = con.prepareStatement ("select a.rownum, a.`Mortalidad cierre`, a.`Edad reproductora` from ( select @rownum:=@rownum+1 AS rownum, `mortalidad`.`Mortalidad cierre`, `mortalidad`.`Edad reproductora` from ( select @rownum:=0) r, `cargill`.`mortalidad` where `mortalidad`.`Edad reproductora`<46 and `mortalidad`.`Edad reproductora`>35 order by `mortalidad`.`Mortalidad cierre`) a, (select round(count(*)/2) medio from `cargill`.`mortalidad` where `mortalidad`.`Edad reproductora`<46 and `mortalidad`.`Edad reproductora`>35 ) b where a.rownum= b.medio;");
                 ResultSet valormedianam = medianam.executeQuery();
+                valormedianam.next();
                 medianamedia=valormedianam.getFloat("Mortalidad cierre");
                 valormedianam.close();
                 medianam.close();
                 factoredadm=medianamedia/medianatotalingreso;
                 PreparedStatement medianaj = con.prepareStatement ("select a.rownum, a.`Mortalidad cierre`, a.`Edad reproductora` from ( select @rownum:=@rownum+1 AS rownum, `mortalidad`.`Mortalidad cierre`, `mortalidad`.`Edad reproductora` from ( select @rownum:=0) r, `cargill`.`mortalidad` where `mortalidad`.`Edad reproductora`<36 and `mortalidad`.`Edad reproductora`>24 order by `mortalidad`.`Mortalidad cierre`) a, (select round(count(*)/2) medio from `cargill`.`mortalidad` where `mortalidad`.`Edad reproductora`<36 and `mortalidad`.`Edad reproductora`>24 ) b where a.rownum= b.medio;");
                 ResultSet valormedianaj = medianaj.executeQuery();
+                valormedianaj.next();
                 medianajoven=valormedianaj.getFloat("Mortalidad cierre");
                 valormedianaj.close();
                 medianaj.close();
@@ -281,6 +287,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 PreparedStatement demanda = con.prepareStatement ("SELECT `demanda`.`Demanda` FROM `cargill`.`demanda` where `demanda`.`Semana`=?;");
                 demanda.setInt(1,semana);
                 ResultSet resultadodemanda = demanda.executeQuery();
+                resultadodemanda.next();
                 necesidad=resultadodemanda.getInt("Demanda");
                 resultadodemanda.close();
                 for(o=diasemana;o<=7;o++){
@@ -326,6 +333,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 numerocortesreal.setDate(5,sqlFechaInicial);
                 numerocortesreal.setDate(6,sqlFechaFinal);
                 ResultSet resultadonumerocortesreal=numerocortesreal.executeQuery();
+                resultadonumerocortesreal.next();
                 cantidadrangosreal=resultadonumerocortesreal.getInt("count(*)");
                 resultadonumerocortesreal.close();
                 numerocortesreal.close();
@@ -363,6 +371,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 numerocortesreal.setDate(5,sqlFechaInicial);
                 numerocortesreal.setDate(6,sqlFechaFinal);
                 resultadonumerocortesreal=numerocortesreal.executeQuery();
+                resultadonumerocortesreal.next();
                 cantidadcortesreal=resultadonumerocortesreal.getInt("count(*)");
                 resultadonumerocortesreal.close();
                 numerocortesreal.close();

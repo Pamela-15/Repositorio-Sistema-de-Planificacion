@@ -152,6 +152,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 PreparedStatement demanda = con.prepareStatement ("SELECT `demanda`.`Demanda` FROM `cargill`.`demanda` where `demanda`.`Semana`=?;");
                 demanda.setInt(1,semana);
                 ResultSet resultadodemanda = demanda.executeQuery();
+                resultadodemanda.next();
                 float necesidad=resultadodemanda.getInt("Demanda");
                 resultadodemanda.close();
                 for(o=diasemana;o<=7;o++){
@@ -197,6 +198,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 numerocortesreal.setDate(5,sqlFechaInicial);
                 numerocortesreal.setDate(6,sqlFechaFinal);
                 ResultSet resultadonumerocortesreal=numerocortesreal.executeQuery();
+                resultadonumerocortesreal.next();
                 cantidadrangosreal=resultadonumerocortesreal.getInt("count(*)");
                 resultadonumerocortesreal.close();
                 numerocortesreal.close();
@@ -234,6 +236,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 numerocortesreal.setDate(5,sqlFechaInicial);
                 numerocortesreal.setDate(6,sqlFechaFinal);
                 resultadonumerocortesreal=numerocortesreal.executeQuery();
+                resultadonumerocortesreal.next();
                 cantidadcortesreal=resultadonumerocortesreal.getInt("count(*)");
                 resultadonumerocortesreal.close();
                 numerocortesreal.close();
@@ -311,9 +314,159 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         }
                     }
                 }
-                PreparedStatement galerasdisponibles= con.preparedstatement ();
-                
-                
+                calendar.setTime(hoy);
+                calendar.add(Calendar.DAY_OF_YEAR, -4);
+                Date raleoA=calendar.getTime();
+                java.sql.Date sqlraleoA = new java.sql.Date(raleoA.getTime());
+                calendar.setTime(hoy);
+                calendar.add(Calendar.DAY_OF_YEAR, -10);
+                Date limiteingreso=calendar.getTime();
+                java.sql.Date sqlingreso = new java.sql.Date(limiteingreso.getTime());
+                int cantidadgalerasingresadas;              
+                PreparedStatement cantidadgalerasdisponibles= con.prepareStatement ("SELECT count(*) as cuenta FROM `cargill`.`ingresos` WHERE (ingresos.`Fecha de raleo`<? or ingresos.`Fecha de raleo`is null or `Fecha de raleo`<? ) AND INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
+                cantidadgalerasdisponibles.setDate(1,sqlraleoA);
+                cantidadgalerasdisponibles.setDate(2,sqlFechaInicial);
+                cantidadgalerasdisponibles.setDate(3,sqlingreso);
+                ResultSet resultadocantidadgalerasdisponibles = cantidadgalerasdisponibles.executeQuery();
+                resultadocantidadgalerasdisponibles.next();
+                cantidadgalerasingresadas=resultadocantidadgalerasdisponibles.getInt("cuenta");
+                resultadocantidadgalerasdisponibles.close();
+                cantidadgalerasdisponibles.close();
+                String[][] galeras=new String [cantidadgalerasingresadas][17];
+                float[][] variablespp=new float [cantidadgalerasingresadas][22];
+                java.sql.Date[][] fechasgaleras=new java.sql.Date[cantidadgalerasingresadas][2];
+                int h=0;
+                float cantidadsobrante=0;
+                PreparedStatement galerasdisponibles= con.prepareStatement ("SELECT `ingresos`.`idIngresos`, `ingresos`.`Fecha de ingreso`,`ingresos`.`Cantidad de aves`,`ingresos`.`PesoPollito`,`ingresos`.`Edad de reproductora`,`ingresos`.`Fecha de registro1`,`ingresos`.`Aves muertas1` + `ingresos`.`Aves seleccionadas1` as mortalidad1, `ingresos`.`Peso promedio1`, `ingresos`.`Desviacion estandar1`,`ingresos`.`Galera_idGalera`,`ingresos`.`Fecha de registro2`,`ingresos`.`Aves muertas2`+`ingresos`.`Aves seleccionadas2` as mortalidad2,`ingresos`.`Peso promedio2`, `ingresos`.`Desviacion estandar2`, `ingresos`.`Fecha de registro3`,`ingresos`.`Aves muertas3`+ `ingresos`.`Aves seleccionadas3` as mortalidad3,`ingresos`.`Peso promedio3`,`ingresos`.`Desviacion estandar3`,`ingresos`.`Fecha de registro4`,`ingresos`.`Aves muertas4` + `ingresos`.`Aves seleccionadas4` as mortalidad4,`ingresos`.`Peso promedio4`,`ingresos`.`Desviacion estandar4`,`ingresos`.`Fecha de registro5`,`ingresos`.`Aves muertas5`+`ingresos`.`Aves seleccionadas5` as mortalidad5,`ingresos`.`Peso promedio5`,`ingresos`.`Desviacion estandar5`,`ingresos`.`Fecha de registro6`,`ingresos`.`Aves muertas6`+`ingresos`.`Aves seleccionadas6` as mortalidad6,`ingresos`.`Peso promedio6`,`ingresos`.`Desviacion estandar6`,`ingresos`.`Fecha de registro7`,`ingresos`.`Aves muertas7`+`ingresos`.`Aves seleccionadas7` as mortalidad7,`ingresos`.`Peso promedio7`,`ingresos`.`Desviacion estandar7`,`ingresos`.`Fecha de registro8`,`ingresos`.`Aves muertas8` + `ingresos`.`Aves seleccionadas8` as mortalidad8,`ingresos`.`Peso promedio8`,`ingresos`.`Desviacion estandar8`,`ingresos`.`Fecha de registro9`,`ingresos`.`Aves muertas9` + `ingresos`.`Aves seleccionadas9` as mortalidad9,`ingresos`.`Peso promedio9`,`ingresos`.`Desviacion estandar9`,`ingresos`.`Fecha de registro10`,`ingresos`.`Aves muertas10` + `ingresos`.`Aves seleccionadas10` as mortalidad10,`ingresos`.`Peso promedio10`,`ingresos`.`Desviacion estandar10`,`ingresos`.`Aves cosechadas`,`galera`.`Nombre Granja`, `galera`.`Numero de Galera`, `galera`.`Carrusel`,`proyeccionpeso`.`GDP1`,,`proyeccionpeso`.`GDP2`,`proyeccionpeso`.`GDP3`,`proyeccionpeso`.`GDP4`,`proyeccionpeso`.`GDP5`,,`proyeccionpeso`.`GDP6`,`proyeccionpeso`.`GDP7`,`proyeccionpeso`.`FCM1`,`proyeccionpeso`.`FCM2`,`proyeccionpeso`.`FCM3`,`proyeccionpeso`.`FCM4`,`proyeccionpeso`.`FCM5`,`proyeccionpeso`.`FCM6`,`proyeccionpeso`.`FCM7`,`proyeccionpeso`.`FCE1`,`proyeccionpeso`.`FCE2`,`proyeccionpeso`.`FCE3`,`proyeccionpeso`.`FCE4`,`proyeccionpeso`.`FCE5`,`proyeccionpeso`.`FCE6`,`proyeccionpeso`.`FCE7`,`proyeccionpeso`.`FactorCorrección`, `ingresos`.`Galera_idGalera`  FROM `cargill`.`ingresos` inner join `cargill`.`galera` on `galera`.`idGalera`=`ingresos`.`Galera_idGalera` inner join `cargill`.`proyeccionpeso` on `ingresos`.`Galera_idGalera`=`proyeccionpeso`.`Galera_idGalera` WHERE (ingresos.`Fecha de raleo`<? or ingresos.`Fecha de raleo`is null or `Fecha de raleo`<? ) AND INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
+                galerasdisponibles.setDate(1,sqlraleoA);
+                galerasdisponibles.setDate(2,sqlFechaInicial);
+                galerasdisponibles.setDate(3,sqlingreso);
+                ResultSet resultadogalerasdisponibles = galerasdisponibles.executeQuery();
+                while(resultadogalerasdisponibles.next()){
+                    galeras[h][0]=resultadogalerasdisponibles.getString("idIngresos");
+                    fechasgaleras[h][0]=resultadogalerasdisponibles.getDate("Fecha de ingreso");
+                    galeras[h][1]=resultadogalerasdisponibles.getString("Cantidad de aves");
+                    galeras[h][2]=resultadogalerasdisponibles.getString("PesoPollito");
+                    galeras[h][3]=resultadogalerasdisponibles.getString("Edad de reproductora");
+                    cantidadsobrante=resultadogalerasdisponibles.getFloat("Cantidad de aves");
+                    for(int registro=10;registro<0;registro-- ){
+                        if(resultadogalerasdisponibles.getString("Fecha de registro"+registro)!=null){
+                            fechasgaleras[h][1]=resultadogalerasdisponibles.getDate("Fecha de registro"+registro);
+                            galeras[h][4]=resultadogalerasdisponibles.getString("Peso promedio"+registro);
+                            galeras[h][5]=resultadogalerasdisponibles.getString("Desviacion estandar"+registro);
+                            cantidadsobrante=cantidadsobrante-resultadogalerasdisponibles.getFloat("mortalidad"+registro);
+                            registro=0;
+                        }       
+                    }
+                    if (resultadogalerasdisponibles.getString("Aves cosechadas")!=null){
+                        cantidadsobrante=cantidadsobrante-resultadogalerasdisponibles.getFloat("Aves cosechadas");
+                    }
+                    galeras[h][6]=Float.toString(cantidadsobrante);
+                    galeras[h][7]=resultadogalerasdisponibles.getString("Nombre Ganja");
+                    galeras[h][8]=resultadogalerasdisponibles.getString("Numero de Galera");
+                    galeras[h][9]=resultadogalerasdisponibles.getString("Carrusel");
+                    galeras[h][10]=resultadogalerasdisponibles.getString("Galera_idGalera");
+                    variablespp[h][0]=resultadogalerasdisponibles.getFloat("GDP1");
+                    variablespp[h][1]=resultadogalerasdisponibles.getFloat("FCM1");
+                    variablespp[h][2]=resultadogalerasdisponibles.getFloat("FCE1");
+                    variablespp[h][3]=resultadogalerasdisponibles.getFloat("GDP2");
+                    variablespp[h][4]=resultadogalerasdisponibles.getFloat("FCM2");
+                    variablespp[h][5]=resultadogalerasdisponibles.getFloat("FCE2");
+                    variablespp[h][6]=resultadogalerasdisponibles.getFloat("GDP3");
+                    variablespp[h][7]=resultadogalerasdisponibles.getFloat("FCM3");
+                    variablespp[h][8]=resultadogalerasdisponibles.getFloat("FCE3");
+                    variablespp[h][9]=resultadogalerasdisponibles.getFloat("GDP4");
+                    variablespp[h][10]=resultadogalerasdisponibles.getFloat("FCM4");
+                    variablespp[h][11]=resultadogalerasdisponibles.getFloat("FCE4");
+                    variablespp[h][12]=resultadogalerasdisponibles.getFloat("GDP5");
+                    variablespp[h][13]=resultadogalerasdisponibles.getFloat("FCM5");
+                    variablespp[h][14]=resultadogalerasdisponibles.getFloat("FCE5");
+                    variablespp[h][15]=resultadogalerasdisponibles.getFloat("GDP6");
+                    variablespp[h][16]=resultadogalerasdisponibles.getFloat("FCM6");
+                    variablespp[h][17]=resultadogalerasdisponibles.getFloat("FCE6");
+                    variablespp[h][18]=resultadogalerasdisponibles.getFloat("GDP7");
+                    variablespp[h][19]=resultadogalerasdisponibles.getFloat("FCM7");
+                    variablespp[h][20]=resultadogalerasdisponibles.getFloat("FCE7");
+                    variablespp[h][21]=resultadogalerasdisponibles.getFloat("FactorCorrección");
+                }
+                resultadogalerasdisponibles.close();
+                galerasdisponibles.close();
+                float[][] pesoproyectado= new float [7][cantidadgalerasingresadas];
+                int[][] redp=new int[7][cantidadgalerasingresadas];
+                int[][] redg=new int[7][cantidadgalerasingresadas];
+                int[][] redm=new int[7][cantidadgalerasingresadas];
+                int[][] tamañored=new int[7][3];
+                for(int r=0;r<7;r++){
+                   tamañored[r][0]=0;
+                   tamañored[r][1]=0;
+                   tamañored[r][2]=0;
+                   for(int q=0;r<cantidadgalerasingresadas;q++){
+                       int diasdiferencia=java.lang.Math.round((sqlFechaInicial.getTime()-fechasgaleras[q][0].getTime())/(1000*60*60*24));
+                       int diasaproyectar=java.lang.Math.round((sqlFechaInicial.getTime()-fechasgaleras[q][1].getTime())/(1000*60*60*24));
+                       int semanastotal= diasdiferencia/7;
+                       int dsobrantes= diasdiferencia%7;
+                       int d1=diasaproyectar-dsobrantes;
+                       int dpesocercano=d1%7;
+                       int semanapesocercano=d1/7;
+                       float pesoA=0;
+                       int c=0;
+                       switch (semanastotal){
+                           case 7:
+                               pesoA=dsobrantes*variablespp[q][18]*variablespp[q][19]*variablespp[q][20];
+                               for(c=0;c<semanapesocercano;c++){
+                                   pesoA=pesoA+(variablespp[q][15-(3*c)]*variablespp[q][16-(3*c)]*variablespp[q][17-(3*c)]*7);
+                               }
+                               pesoA=pesoA+(dpesocercano*variablespp[q][15-(3*c)]*variablespp[q][16-(3*c)]*variablespp[q][17-(3*c)]);
+                               break;
+                           case 6:
+                               pesoA=dsobrantes*variablespp[q][15]*variablespp[q][16]*variablespp[q][17];
+                               for(c=0;c<semanapesocercano;c++){
+                                   pesoA=pesoA+(variablespp[q][12-(3*c)]*variablespp[q][13-(3*c)]*variablespp[q][14-(3*c)]*7);
+                               }
+                               pesoA=pesoA+(dpesocercano*variablespp[q][12-(3*c)]*variablespp[q][13-(3*c)]*variablespp[q][14-(3*c)]);
+                               break;
+                           case 5:
+                               pesoA=dsobrantes*variablespp[q][12]*variablespp[q][13]*variablespp[q][14];
+                               for(c=0;c<semanapesocercano;c++){
+                                   pesoA=pesoA+(variablespp[q][9-(3*c)]*variablespp[q][10-(3*c)]*variablespp[q][11-(3*c)]*7);
+                               }
+                               pesoA=pesoA+(dpesocercano*variablespp[q][9-(3*c)]*variablespp[q][10-(3*c)]*variablespp[q][11-(3*c)]);
+                               break;
+                           case 4:
+                               pesoA=dsobrantes*variablespp[q][9]*variablespp[q][10]*variablespp[q][11];
+                               for(c=0;c<semanapesocercano;c++){
+                                   pesoA=pesoA+(variablespp[q][6-(3*c)]*variablespp[q][7-(3*c)]*variablespp[q][8-(3*c)]*7);
+                               }
+                               pesoA=pesoA+(dpesocercano*variablespp[q][6-(3*c)]*variablespp[q][7-(3*c)]*variablespp[q][8-(3*c)]);
+                               break;
+                           case 3:
+                               pesoA=dsobrantes*variablespp[q][6]*variablespp[q][7]*variablespp[q][8];
+                               for(c=0;c<semanapesocercano;c++){
+                                   pesoA=pesoA+(variablespp[q][3-(3*c)]*variablespp[q][4-(3*c)]*variablespp[q][5-(3*c)]*7);
+                               }
+                               pesoA=pesoA+(dpesocercano*variablespp[q][3-(3*c)]*variablespp[q][4-(3*c)]*variablespp[q][5-(3*c)]);
+                               break;
+                           default:
+                               pesoA=dsobrantes*variablespp[q][3]*variablespp[q][4]*variablespp[q][5];
+                               pesoA=pesoA+(dpesocercano*variablespp[q][15-(3*c)]*variablespp[q][16-(3*c)]*variablespp[q][17-(3*c)]);
+                               break;
+                       }
+                       pesoproyectado[r][q]=pesoA;
+                       if(pesoA>Float.parseFloat(rangospredeterminado[0][2])&& pesoA<Float.parseFloat(rangospredeterminado[0][2])){
+                           redp[r][tamañored[r][0]]=Integer.parseInt(galeras[q][10]);
+                           tamañored[r][0]++;
+                       }
+                       if(pesoA>Float.parseFloat(rangospredeterminado[1][2])&& pesoA<Float.parseFloat(rangospredeterminado[1][2])){
+                           redm[r][tamañored[r][1]]=Integer.parseInt(galeras[q][10]);
+                           tamañored[r][1]++;
+                       }
+                       if(pesoA>Float.parseFloat(rangospredeterminado[2][2])&& pesoA<Float.parseFloat(rangospredeterminado[2][2])){
+                           redg[r][tamañored[r][2]]=Integer.parseInt(galeras[q][10]);
+                           tamañored[r][2]++;
+                       }
+                   
+                   } 
+                }
                 
             }   
         } catch (Exception e) {

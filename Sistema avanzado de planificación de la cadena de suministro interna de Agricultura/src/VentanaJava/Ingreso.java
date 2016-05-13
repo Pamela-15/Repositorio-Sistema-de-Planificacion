@@ -44,6 +44,8 @@ public class Ingreso extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         CantidadAves = new javax.swing.JTextField();
         FechaIngreso = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        pesopollito = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,6 +81,9 @@ public class Ingreso extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jLabel3.setText("Cantidad de Aves");
 
+        jLabel6.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        jLabel6.setText("Edad de Reproductora");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,24 +97,29 @@ public class Ingreso extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(54, 54, 54))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(54, 54, 54))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(CantidadAves)
+                                    .addComponent(NoGalera)
+                                    .addComponent(FechaIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(EdadReproductora, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
-                                .addGap(18, 18, 18)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(CantidadAves)
-                            .addComponent(EdadReproductora)
-                            .addComponent(NoGalera)
-                            .addComponent(FechaIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))))
-                .addContainerGap(19, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(pesopollito)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,9 +139,13 @@ public class Ingreso extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
                     .addComponent(EdadReproductora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(pesopollito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Guardar)
                     .addComponent(jButton2))
@@ -151,7 +165,7 @@ public class Ingreso extends javax.swing.JFrame {
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
                            
-            if (!con.isClosed()&& NoGalera.getText() != null && FechaIngreso.getDate()!= null && CantidadAves.getText()!= null && EdadReproductora.getText()!= null) {
+            if (!con.isClosed()&& NoGalera.getText() != null && pesopollito.getText() != null && FechaIngreso.getDate()!= null && CantidadAves.getText()!= null && EdadReproductora.getText()!= null) {
                 
                                
                 PreparedStatement cantidadingresos = con.prepareStatement("select * from ingresos ");
@@ -166,12 +180,13 @@ public class Ingreso extends javax.swing.JFrame {
                 java.util.Date javaFechaIngreso = FechaIngreso.getDate();
                 java.sql.Date sqlFechaIngreso = new java.sql.Date(javaFechaIngreso.getTime());
                 
-                PreparedStatement ingreso = con.prepareStatement("INSERT INTO ingresos (`idIngresos`, `Fecha de Ingreso`, `Cantidad de aves`, `Edad de reproductora`, `Galera_idGalera`) VALUES (?,?,?,?,?);");
+                PreparedStatement ingreso = con.prepareStatement("INSERT INTO ingresos (`idIngresos`, `Fecha de Ingreso`, `Cantidad de aves`, `Edad de reproductora`, `Galera_idGalera`,`PesoPollito` ) VALUES (?,?,?,?,?,?);");
                 ingreso.setInt(1, idingreso + 1);
                 ingreso.setDate(2, sqlFechaIngreso);
                 ingreso.setInt(3, Integer.parseInt(CantidadAves.getText()));
                 ingreso.setInt(4, Integer.parseInt(EdadReproductora.getText()));
 		ingreso.setInt(5, Integer.parseInt(NoGalera.getText()));
+                ingreso.setFloat(6, Float.parseFloat(pesopollito.getText()));
 		int x = ingreso.executeUpdate();
                 ingreso.close();
                 con.close();
@@ -241,5 +256,7 @@ public class Ingreso extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField pesopollito;
     // End of variables declaration//GEN-END:variables
 }
