@@ -173,7 +173,7 @@ public class VentanaUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_IngresarSistemaActionPerformed
 
         public static void idUsuario(){
-        int Usuario = VentanaJava.AdministracionUsuarios.idUsuario();
+        //int Usuario = VentanaJava.AdministracionUsuarios.idUsuario();
     }
     /**
      * @param args the command line arguments
