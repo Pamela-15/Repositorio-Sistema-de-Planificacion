@@ -41,7 +41,6 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
         UsuariosSistema = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TablaAdministracionUsuarios = new javax.swing.JTable();
-        Refresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,13 +99,6 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TablaAdministracionUsuarios);
 
-        Refresh.setText("Refresh");
-        Refresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefreshActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,30 +108,24 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(AgregarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(EliminarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addComponent(AgregarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(ModificarUsuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(EliminarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(278, 278, 278)
                 .addComponent(UsuariosSistema)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Refresh)
-                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(UsuariosSistema)
-                .addGap(7, 7, 7)
-                .addComponent(Refresh)
-                .addGap(35, 35, 35)
+                .addGap(65, 65, 65)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -223,8 +209,8 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_ModificarUsuarioActionPerformed
-
-    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+    
+    public static void ActualizarTabla(){
         DefaultTableModel model=(DefaultTableModel) TablaAdministracionUsuarios.getModel();
         int filas=TablaAdministracionUsuarios.getRowCount();
             for (int i = 0;filas>i; i++) {
@@ -250,8 +236,9 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
-     
-    }//GEN-LAST:event_RefreshActionPerformed
+    }
+    
+    
     public void mostrarAgregarUsuario() {
         AgregarUsuario agregar=new AgregarUsuario();
         agregar.setVisible(true);
@@ -301,8 +288,7 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton AgregarUsuario;
     private javax.swing.JButton EliminarUsuario;
     private javax.swing.JButton ModificarUsuario;
-    private javax.swing.JButton Refresh;
-    private javax.swing.JTable TablaAdministracionUsuarios;
+    public static javax.swing.JTable TablaAdministracionUsuarios;
     private javax.swing.JLabel UsuariosSistema;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables

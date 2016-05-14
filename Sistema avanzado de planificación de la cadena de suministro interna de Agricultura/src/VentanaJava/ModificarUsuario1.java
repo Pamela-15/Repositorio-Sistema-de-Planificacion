@@ -165,6 +165,7 @@ public class ModificarUsuario1 extends javax.swing.JFrame {
                 int x = usuario.executeUpdate();
                 usuario.close();
                 con.close();
+                VentanaJava.AdministracionUsuarios.ActualizarTabla();
             }
             else {
                 JOptionPane.showMessageDialog(null, "Campos obligatorios incompletos","Por favor ingrese los datos en todos los campos mostrados", JOptionPane.ERROR_MESSAGE);

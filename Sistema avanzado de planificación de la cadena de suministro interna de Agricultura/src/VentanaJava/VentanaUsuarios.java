@@ -1,5 +1,6 @@
 package VentanaJava;
 
+import static VentanaJava.VentanaUsuarios.idUsuario;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -122,6 +123,8 @@ public class VentanaUsuarios extends javax.swing.JFrame {
         lol.setLocationRelativeTo(null);
     }
     
+
+    
     private void IngresarSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarSistemaActionPerformed
 	int idUsuario=0;
         String a=InsertarContraseña.getText();
@@ -169,6 +172,9 @@ public class VentanaUsuarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_IngresarSistemaActionPerformed
 
+        public static void idUsuario(){
+        int Usuario = VentanaJava.AdministracionUsuarios.idUsuario();
+    }
     /**
      * @param args the command line arguments
      */

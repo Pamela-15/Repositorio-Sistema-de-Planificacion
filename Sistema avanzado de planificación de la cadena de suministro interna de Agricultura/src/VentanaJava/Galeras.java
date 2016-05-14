@@ -289,7 +289,7 @@ public class Galeras extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna galera para inactivar","Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            galeraseleccionada=Integer.parseInt(model.getValueAt(TablaGaleras.getSelectedRow(),1).toString());
+            galeraseleccionada=Integer.parseInt(model.getValueAt(TablaGaleras.getSelectedRow(),0).toString());
             String driver = "com.mysql.jdbc.Driver";
             String connection = "jdbc:mysql://localhost:3306/Cargill";
             String user = "root";
@@ -319,7 +319,7 @@ public class Galeras extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna galera para inactivar","Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            galeraseleccionada=Integer.parseInt(model.getValueAt(TablaGaleras.getSelectedRow(),1).toString());
+            galeraseleccionada=Integer.parseInt(model.getValueAt(TablaGaleras.getSelectedRow(),0).toString());
             String driver = "com.mysql.jdbc.Driver";
             String connection = "jdbc:mysql://localhost:3306/Cargill";
             String user = "root";

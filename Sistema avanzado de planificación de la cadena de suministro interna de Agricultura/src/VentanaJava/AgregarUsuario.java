@@ -148,6 +148,7 @@ public class AgregarUsuario extends javax.swing.JFrame {
                 int x = usuario.executeUpdate();
                 usuario.close();
                 con.close();
+                VentanaJava.AdministracionUsuarios.ActualizarTabla();
             }
             else {
                 JOptionPane.showMessageDialog(null, "Por favor ingrese los datos en todos los campos mostrados","Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
