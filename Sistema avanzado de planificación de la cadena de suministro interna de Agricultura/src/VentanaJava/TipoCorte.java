@@ -192,7 +192,7 @@ public class TipoCorte extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection(connection, user, password);
             float x = Float.parseFloat(PorcentajeDeshuesado.getText())+Float.parseFloat(porcentajelimpio.getText())+Float.parseFloat(PorcentajeCortes.getText());              
             if(x==1){
-		if (!con.isClosed()&& FechaInicial.getDate() != null && FechaFinal.getDate()!= null && rendimientodeshuesado.getText()!= null && PorcentajeDeshuesado.getText()!= null && porcentajelimpio.getText()!= null && RendimientoLimpio.getText()!= null && RendimientoCortes.getText()!= null && PorcentajeCortes.getText()!= null) {
+		if (!con.isClosed()&& FechaInicial.getDate() != null && rendimientodeshuesado.getText()!= null && PorcentajeDeshuesado.getText()!= null && porcentajelimpio.getText()!= null && RendimientoLimpio.getText()!= null && RendimientoCortes.getText()!= null && PorcentajeCortes.getText()!= null) {
                 
                         PreparedStatement cantidadcortesreales = con.prepareStatement("select * from `cortes real`");
         	        ResultSet resultadocantidadcortesreales = cantidadcortesreales.executeQuery();
@@ -204,9 +204,13 @@ public class TipoCorte extends javax.swing.JFrame {
                 	cantidadcortesreales.close();
                         java.util.Date javaFechaInicial = FechaInicial.getDate();
                         java.sql.Date sqlFechaInicial = new java.sql.Date(javaFechaInicial.getTime());
-                        java.util.Date javaFechaFinal = FechaFinal.getDate();
-                        java.sql.Date sqlFechaFinal = new java.sql.Date(javaFechaFinal.getTime());
-                        
+                        java.sql.Date sqlFechaFinal;
+                        if(FechaFinal.getDate()!=null){
+                            java.util.Date javaFechaFinal = FechaFinal.getDate();
+                            sqlFechaFinal = new java.sql.Date(javaFechaFinal.getTime());
+                        }else{
+                            sqlFechaFinal=sqlFechaInicial;
+                        }
                 
                 	PreparedStatement necesidaddeshuesado = con.prepareStatement("INSERT INTO `cortes real` (`ID cortes`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Porcentaje de rendimiento`, `Costes Estándar_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidaddeshuesado.setInt(1, idnecesidadcortes + 1);

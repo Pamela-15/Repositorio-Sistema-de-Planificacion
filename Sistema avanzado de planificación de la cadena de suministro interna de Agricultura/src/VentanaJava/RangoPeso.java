@@ -275,8 +275,8 @@ public class RangoPeso extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection(connection, user, password);
             float x = Float.parseFloat(PorcentajePequeño.getText())+Float.parseFloat(PorcentajeMediano.getText())+Float.parseFloat(PorcentajeGrande.getText());              
             if(x==1){
-		if (!con.isClosed()&& FechaInicial.getDate() != null && FechaFinal.getDate()!= null && PorcentajePequeño.getText()!= null && VelocidadPequeño.getText()!= null && PorcentajeMediano.getText()!= null && VelocidadMediano.getText()!= null && VelocidadGrande.getText()!= null && PorcentajeGrande.getText()!= null) {
-                  
+		if (!con.isClosed()&& FechaInicial.getDate() != null && PorcentajePequeño.getText()!= null && VelocidadPequeño.getText()!= null && PorcentajeMediano.getText()!= null && VelocidadMediano.getText()!= null && VelocidadGrande.getText()!= null && PorcentajeGrande.getText()!= null) {
+                        
 	                PreparedStatement cantidadrangosreal = con.prepareStatement("select * from `necesidades por rango real`");
         	        ResultSet resultadocantidadrangosreal = cantidadrangosreal.executeQuery();
                 	while( resultadocantidadrangosreal.next() ) {
@@ -287,9 +287,13 @@ public class RangoPeso extends javax.swing.JFrame {
                 	cantidadrangosreal.close();
                         java.util.Date javaFechaInicial = FechaInicial.getDate();
                         java.sql.Date sqlFechaInicial = new java.sql.Date(javaFechaInicial.getTime());
-                        java.util.Date javaFechaFinal = FechaFinal.getDate();
-                        java.sql.Date sqlFechaFinal = new java.sql.Date(javaFechaFinal.getTime());
-                
+                        java.sql.Date sqlFechaFinal;
+                        if(FechaFinal.getDate() != null){
+                            java.util.Date javaFechaFinal = FechaFinal.getDate();
+                            sqlFechaFinal = new java.sql.Date(javaFechaFinal.getTime());
+                        }else{
+                            sqlFechaFinal = sqlFechaInicial;
+                        }
                 	PreparedStatement necesidadporrangopequeño = con.prepareStatement("INSERT INTO `necesidades por rango real` (`Id necesidad`, `Fecha de inicio`, `Fecha de finalización`, `Porcentaje de necesidad`, `Velocidad de Procesamiento`, `Rango de peso_Nombre`) VALUES (?,?,?,?,?,?);");
                 	necesidadporrangopequeño.setInt(1, idnecesidadporrango + 1);
                 	necesidadporrangopequeño.setDate(2, sqlFechaInicial);	
