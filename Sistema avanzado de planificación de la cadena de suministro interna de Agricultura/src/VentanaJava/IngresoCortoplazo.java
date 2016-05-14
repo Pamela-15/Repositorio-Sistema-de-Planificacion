@@ -1,5 +1,6 @@
 package VentanaJava;
 
+import static VentanaJava.AdministracionUsuarios.TablaAdministracionUsuarios;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +9,7 @@ import javax.swing.JOptionPane;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 
 public class IngresoCortoplazo extends javax.swing.JFrame {
     int idUsuarioAutenticado;
