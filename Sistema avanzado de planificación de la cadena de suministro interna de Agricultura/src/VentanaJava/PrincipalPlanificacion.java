@@ -142,7 +142,7 @@ public class PrincipalPlanificacion extends javax.swing.JFrame {
     }//GEN-LAST:event_AdministracionUsuariosActionPerformed
 
     private void PlanificacionEngordeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlanificacionEngordeActionPerformed
-        mostrarplanificacionengorde();
+        mostrarplanificacionengorde(usuarioAutenticado);
     }//GEN-LAST:event_PlanificacionEngordeActionPerformed
 
     private void CambiarContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContrasenaActionPerformed
@@ -155,8 +155,8 @@ public class PrincipalPlanificacion extends javax.swing.JFrame {
         ModificarUsuario1 abrir = new ModificarUsuario1(a);
         abrir.setVisible(true);
     }//GEN-LAST:event_ModificarUsuarioActionPerformed
-    public void mostrarplanificacionengorde() {
-        PlanificacionEngorde lol=new PlanificacionEngorde();
+    public void mostrarplanificacionengorde(int a) {
+        PlanificacionEngorde lol=new PlanificacionEngorde(a);
         lol.setVisible(true);
         lol.setLocationRelativeTo(this);
   }

@@ -10,13 +10,14 @@ package VentanaJava;
  * @author lopez.p.2
  */
 public class PlanificacionEngorde extends javax.swing.JFrame {
-    
+    int idusuario;
+
     /**
      * Creates new form PlanificacionEngorde
      */
-    public PlanificacionEngorde() {
+    public PlanificacionEngorde(int usuario) {
         initComponents();
-        
+        idusuario=usuario;    
     }
 
     /**
@@ -34,23 +35,33 @@ public class PlanificacionEngorde extends javax.swing.JFrame {
         PlanificacionIngresoMedianoPlazo = new javax.swing.JButton();
         PlanificacionIngresoCortoPlazo = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
-        jMenu9 = new javax.swing.JMenu();
-        jMenu10 = new javax.swing.JMenu();
-        jMenu15 = new javax.swing.JMenu();
-        jMenu16 = new javax.swing.JMenu();
-        jMenu17 = new javax.swing.JMenu();
-        jMenu18 = new javax.swing.JMenu();
+        GestionarDatos = new javax.swing.JMenu();
+        GestionarDatosPlantaProcesamiento = new javax.swing.JMenuItem();
+        GestionarDatosProcesosEngorde = new javax.swing.JMenuItem();
+        GestionarDatosSecuenciaTransporte = new javax.swing.JMenuItem();
+        GestionarDatosGaleras = new javax.swing.JMenuItem();
+        GestionarDatosLimitesRangosPeso = new javax.swing.JMenuItem();
+        ImportarDatos = new javax.swing.JMenu();
+        ImportarDatosProyeccionDemanda = new javax.swing.JMenuItem();
+        ImportarDatosHistoricosMortalidad = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         PlanificacionCosechaMedianoPlazo.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         PlanificacionCosechaMedianoPlazo.setText("Planificación Cosecha Mediano Plazo");
+        PlanificacionCosechaMedianoPlazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlanificacionCosechaMedianoPlazoActionPerformed(evt);
+            }
+        });
 
         PlanificacionCosechaCortoPlazo.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         PlanificacionCosechaCortoPlazo.setText("Planificación Cosecha Corto Plazo");
+        PlanificacionCosechaCortoPlazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlanificacionCosechaCortoPlazoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Cambria", 0, 22)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -58,49 +69,99 @@ public class PlanificacionEngorde extends javax.swing.JFrame {
 
         PlanificacionIngresoMedianoPlazo.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         PlanificacionIngresoMedianoPlazo.setText("Planificación Ingreso Mediano Plazo");
+        PlanificacionIngresoMedianoPlazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlanificacionIngresoMedianoPlazoActionPerformed(evt);
+            }
+        });
 
         PlanificacionIngresoCortoPlazo.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         PlanificacionIngresoCortoPlazo.setText("Planificación Ingreso Corto Plazo");
+        PlanificacionIngresoCortoPlazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlanificacionIngresoCortoPlazoActionPerformed(evt);
+            }
+        });
 
         jMenuBar2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
-        jMenu5.setText("Gestionar Datos");
-        jMenu5.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        GestionarDatos.setText("Gestionar Datos");
+        GestionarDatos.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        GestionarDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GestionarDatosActionPerformed(evt);
+            }
+        });
 
-        jMenu8.setText("Planta de Procesamiento");
-        jMenu8.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu5.add(jMenu8);
+        GestionarDatosPlantaProcesamiento.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        GestionarDatosPlantaProcesamiento.setText("Planta de Procesamiento");
+        GestionarDatosPlantaProcesamiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GestionarDatosPlantaProcesamientoActionPerformed(evt);
+            }
+        });
+        GestionarDatos.add(GestionarDatosPlantaProcesamiento);
 
-        jMenu6.setText("Procesos de Engorde");
-        jMenu6.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu5.add(jMenu6);
+        GestionarDatosProcesosEngorde.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        GestionarDatosProcesosEngorde.setText("Procesos de Engorde ");
+        GestionarDatosProcesosEngorde.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GestionarDatosProcesosEngordeActionPerformed(evt);
+            }
+        });
+        GestionarDatos.add(GestionarDatosProcesosEngorde);
 
-        jMenu9.setText("Secuencia de Transporte");
-        jMenu9.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu5.add(jMenu9);
+        GestionarDatosSecuenciaTransporte.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        GestionarDatosSecuenciaTransporte.setText("Secuencia de Transporte");
+        GestionarDatosSecuenciaTransporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GestionarDatosSecuenciaTransporteActionPerformed(evt);
+            }
+        });
+        GestionarDatos.add(GestionarDatosSecuenciaTransporte);
 
-        jMenu10.setText("Galeras");
-        jMenu10.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu5.add(jMenu10);
+        GestionarDatosGaleras.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        GestionarDatosGaleras.setText("Galeras");
+        GestionarDatosGaleras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GestionarDatosGalerasActionPerformed(evt);
+            }
+        });
+        GestionarDatos.add(GestionarDatosGaleras);
 
-        jMenu15.setText("Límites de Rangos de Peso");
-        jMenu15.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu5.add(jMenu15);
+        GestionarDatosLimitesRangosPeso.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        GestionarDatosLimitesRangosPeso.setText("Límites de rangos de peso");
+        GestionarDatosLimitesRangosPeso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GestionarDatosLimitesRangosPesoActionPerformed(evt);
+            }
+        });
+        GestionarDatos.add(GestionarDatosLimitesRangosPeso);
 
-        jMenuBar2.add(jMenu5);
+        jMenuBar2.add(GestionarDatos);
 
-        jMenu16.setText("Importar Datos");
-        jMenu16.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        ImportarDatos.setText("Importar Datos");
+        ImportarDatos.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
-        jMenu17.setText("Proyección de Demanda");
-        jMenu17.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu16.add(jMenu17);
+        ImportarDatosProyeccionDemanda.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        ImportarDatosProyeccionDemanda.setText("Proyección de Demanda");
+        ImportarDatosProyeccionDemanda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImportarDatosProyeccionDemandaActionPerformed(evt);
+            }
+        });
+        ImportarDatos.add(ImportarDatosProyeccionDemanda);
 
-        jMenu18.setText("Datos Históricos de Mortalidad");
-        jMenu18.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jMenu16.add(jMenu18);
+        ImportarDatosHistoricosMortalidad.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        ImportarDatosHistoricosMortalidad.setText("Datos Históricos de Mortalidad");
+        ImportarDatosHistoricosMortalidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImportarDatosHistoricosMortalidadActionPerformed(evt);
+            }
+        });
+        ImportarDatos.add(ImportarDatosHistoricosMortalidad);
 
-        jMenuBar2.add(jMenu16);
+        jMenuBar2.add(ImportarDatos);
 
         setJMenuBar(jMenuBar2);
 
@@ -115,9 +176,9 @@ public class PlanificacionEngorde extends javax.swing.JFrame {
                     .addComponent(PlanificacionIngresoMedianoPlazo, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                     .addComponent(PlanificacionIngresoCortoPlazo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(PlanificacionCosechaMedianoPlazo)
-                    .addComponent(PlanificacionCosechaCortoPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(PlanificacionCosechaCortoPlazo, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                    .addComponent(PlanificacionCosechaMedianoPlazo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -139,6 +200,145 @@ public class PlanificacionEngorde extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void PlanificacionIngresoMedianoPlazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlanificacionIngresoMedianoPlazoActionPerformed
+        // TODO add your handling code here
+        mostrarIngresoMedianoPlazo();
+        this.dispose();
+
+    }//GEN-LAST:event_PlanificacionIngresoMedianoPlazoActionPerformed
+
+    private void PlanificacionIngresoCortoPlazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlanificacionIngresoCortoPlazoActionPerformed
+        
+        mostrarIngresoCortoplazo(idusuario);
+        this.dispose();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PlanificacionIngresoCortoPlazoActionPerformed
+
+    private void PlanificacionCosechaMedianoPlazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlanificacionCosechaMedianoPlazoActionPerformed
+
+        mostrarCosechaMedianoPlazo();
+        this.dispose();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PlanificacionCosechaMedianoPlazoActionPerformed
+
+    private void PlanificacionCosechaCortoPlazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlanificacionCosechaCortoPlazoActionPerformed
+        
+        mostrarCosechaCortoPlazo(idusuario);
+        this.dispose();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PlanificacionCosechaCortoPlazoActionPerformed
+
+    private void GestionarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GestionarDatosActionPerformed
+
+        mostrarPlantaProcesamiento();
+        this.dispose();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GestionarDatosActionPerformed
+
+    private void GestionarDatosPlantaProcesamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GestionarDatosPlantaProcesamientoActionPerformed
+        
+        mostrarPlantaProcesamiento();
+        this.dispose();  // TODO add your handling code here:
+    }//GEN-LAST:event_GestionarDatosPlantaProcesamientoActionPerformed
+
+    private void GestionarDatosProcesosEngordeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GestionarDatosProcesosEngordeActionPerformed
+        mostrarProcesosEngorde();
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_GestionarDatosProcesosEngordeActionPerformed
+
+    private void GestionarDatosSecuenciaTransporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GestionarDatosSecuenciaTransporteActionPerformed
+        mostrarSecuenciaTransporte();
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GestionarDatosSecuenciaTransporteActionPerformed
+
+    private void GestionarDatosGalerasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GestionarDatosGalerasActionPerformed
+        mostrarGaleras();
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GestionarDatosGalerasActionPerformed
+
+    private void GestionarDatosLimitesRangosPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GestionarDatosLimitesRangosPesoActionPerformed
+        mostrarLimiteRangoPeso();
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GestionarDatosLimitesRangosPesoActionPerformed
+
+    private void ImportarDatosProyeccionDemandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImportarDatosProyeccionDemandaActionPerformed
+        mostrarImportacionDemanda();
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ImportarDatosProyeccionDemandaActionPerformed
+
+    private void ImportarDatosHistoricosMortalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImportarDatosHistoricosMortalidadActionPerformed
+        mostrarMortalidad();
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ImportarDatosHistoricosMortalidadActionPerformed
+    public void mostrarIngresoMedianoPlazo() {
+        PlanificacionIngresoMedianoPlazo lol=new PlanificacionIngresoMedianoPlazo();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    } 
+    
+    public void mostrarIngresoCortoplazo(int usuario) {
+        IngresoCortoplazo lol=new IngresoCortoplazo(usuario);
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);
+    }
+
+    public void mostrarCosechaMedianoPlazo() {
+        CosechaMedianoPlazo lol=new CosechaMedianoPlazo();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }      
+     
+    public void mostrarCosechaCortoPlazo(int usuario) {
+        CosechaCortoPlazo lol=new CosechaCortoPlazo(usuario);
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }        
+    
+    public void mostrarPlantaProcesamiento() {
+        PlantaProcesamiento lol=new PlantaProcesamiento();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
+    public void mostrarProcesosEngorde() {
+        ProcesosEngorde lol=new ProcesosEngorde();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
+    public void mostrarSecuenciaTransporte() {
+        SecuenciaTransporte lol=new SecuenciaTransporte();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
+    public void mostrarGaleras() {
+        Galeras lol=new Galeras();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
+    public void mostrarLimiteRangoPeso() {
+        LímitesRangosDePeso lol=new LímitesRangosDePeso();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
+    
+    public void mostrarImportacionDemanda() {
+        ImportacionDemanda lol=new ImportacionDemanda();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
+    public void mostrarMortalidad() {
+        Mortalidad lol=new Mortalidad();
+        lol.setVisible(true);
+        lol.setLocationRelativeTo(null);        // TODO add your handling code here:
+    }
     /**
      * @param args the command line arguments
      */
@@ -169,26 +369,27 @@ public class PlanificacionEngorde extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlanificacionEngorde().setVisible(true);
+                int a = 0;
+                new PlanificacionEngorde(a).setVisible(true);
                             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu GestionarDatos;
+    private javax.swing.JMenuItem GestionarDatosGaleras;
+    private javax.swing.JMenuItem GestionarDatosLimitesRangosPeso;
+    private javax.swing.JMenuItem GestionarDatosPlantaProcesamiento;
+    private javax.swing.JMenuItem GestionarDatosProcesosEngorde;
+    private javax.swing.JMenuItem GestionarDatosSecuenciaTransporte;
+    private javax.swing.JMenu ImportarDatos;
+    private javax.swing.JMenuItem ImportarDatosHistoricosMortalidad;
+    private javax.swing.JMenuItem ImportarDatosProyeccionDemanda;
     private javax.swing.JButton PlanificacionCosechaCortoPlazo;
     private javax.swing.JButton PlanificacionCosechaMedianoPlazo;
     private javax.swing.JButton PlanificacionIngresoCortoPlazo;
     private javax.swing.JButton PlanificacionIngresoMedianoPlazo;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu15;
-    private javax.swing.JMenu jMenu16;
-    private javax.swing.JMenu jMenu17;
-    private javax.swing.JMenu jMenu18;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar2;
     // End of variables declaration//GEN-END:variables
 }
