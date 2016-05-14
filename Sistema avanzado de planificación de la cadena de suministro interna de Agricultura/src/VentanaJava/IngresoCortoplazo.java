@@ -278,8 +278,15 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 float[] demandanum = new float[7];
                 float[] desglosesemanal = new float[7];
                 
-                //PreparedStatement diassemana=con.prepareStatement("Select ")
-                
+                PreparedStatement diassemana=con.prepareStatement("SELECT `raleo`.`id`,`raleo`.`Variable`, `raleo`.`Porcentaje` FROM `cargill`.`raleo` WHERE `raleo`.`id`>1 ORDER BY `raleo`.`id` ASC ;");
+                ResultSet distribuciondias=diassemana.executeQuery();
+                int zx=0;
+                while(distribuciondias.next()){
+                    desglosesemanal[zx]=distribuciondias.getFloat("Porcentaje");
+                }
+                distribuciondias.close();
+                diassemana.close();
+                int xzy=0;
                 desfasesemanal.setTime(hoy);
                 diasemana=desfasesemanal.get(Calendar.DAY_OF_WEEK);
                 PreparedStatement demanda = con.prepareStatement ("SELECT `demanda`.`Demanda` FROM `cargill`.`demanda` where `demanda`.`Semana`=?;");
@@ -289,10 +296,12 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 necesidad=resultadodemanda.getInt("Demanda");
                 resultadodemanda.close();
                 for(o=diasemana;o<=7;o++){
-                    demandanum[o-1]=(float)(necesidad*0.15);
+                    demandanum[xzy]=(float)(necesidad*desglosesemanal[o]);
+                    xzy++;
                 }
                 for(o=0;o<diasemana-1;o++){
-                    demandanum[o]=(float)(necesidad*0.15);
+                    demandanum[xzy]=(float)(necesidad*desglosesemanal[0]);
+                    xzy++;
                 }
                 demanda.close();
                 rangospredeterminado=new String[4][4];
