@@ -165,13 +165,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 demanda.close();
                 String[][] rangospredeterminado=new String[4][4];
                 int e=0;
-                PreparedStatement rangosespecificos =con.prepareStatement ("SELECT `rango de peso`.`Rango de Peso`, `rango de peso`.`Límite Superior`, `rango de peso`.`Límite Inferior`, `rango de peso`.`Porcentaje de Necesidad` FROM `cargill`.`rango de peso`;");
+                PreparedStatement rangosespecificos =con.prepareStatement ("SELECT `rango de peso`.`Rango de Peso`, `rango de peso`.`Límite Superior`, `rango de peso`.`Límite Inferior`, `rango de peso`.`Porcentaje de Necesidad`,`rango de peso`.`Velocidad de Procesamiento` FROM `cargill`.`rango de peso`;");
                 ResultSet resultadorangosespecificos=rangosespecificos.executeQuery();
                 while(resultadorangosespecificos.next()){
                     rangospredeterminado[e][0]=resultadorangosespecificos.getString("Rango de Peso");
                     rangospredeterminado[e][1]=resultadorangosespecificos.getString("Límite Superior");
                     rangospredeterminado[e][2]=resultadorangosespecificos.getString("Límite Inferior");
                     rangospredeterminado[e][3]=resultadorangosespecificos.getString("Porcentaje de Necesidad");
+                    rangospredeterminado[e][4]=resultadorangosespecificos.getString("Velocidad de Procesamiento");
                     e++;
                 }
                 resultadorangosespecificos.close();
@@ -209,7 +210,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 if(cantidadrangosreal>0){
                     
                     e=0;
-                    numerocortesreal = con.prepareStatement("SELECT `necesidades por rango real`.`Fecha de inicio`, `necesidades por rango real`.`Fecha de finalización`, `necesidades por rango real`.`Porcentaje de necesidad`, `necesidades por rango real`.`Rango de peso_Nombre` FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? )), order by `necesidades por rango real`.`Fecha de inicio`;");
+                    numerocortesreal = con.prepareStatement("SELECT `necesidades por rango real`.`Fecha de inicio`, `necesidades por rango real`.`Fecha de finalización`, `necesidades por rango real`.`Porcentaje de necesidad`,`necesidades por rango real`.`Velocidad de procesamiento`, `necesidades por rango real`.`Rango de peso_Nombre` FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? )), order by `necesidades por rango real`.`Fecha de inicio`;");
                     numerocortesreal.setDate(1,sqlFechaInicial);
                     numerocortesreal.setDate(2,sqlFechaFinal);
                     numerocortesreal.setDate(3,sqlFechaInicial);
@@ -222,6 +223,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         fechasrangos[e][1]=resultadonumerocortesreal.getDate("Fecha de finalización");
                         rangos[e][0]=resultadonumerocortesreal.getString("Porcentaje de necesidad");
                         rangos[e][1]=resultadonumerocortesreal.getString("Rango de peso_Nombre");
+                        rangos[e][1]=resultadonumerocortesreal.getString("Velocidad de procesamiento");
                         e++;
                     }
                     resultadonumerocortesreal.close();
@@ -406,7 +408,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 Date raleoA=calendar.getTime();
                 java.sql.Date sqlraleoA = new java.sql.Date(raleoA.getTime());
                 calendar.setTime(hoy);
-                calendar.add(Calendar.DAY_OF_YEAR, -10);
+                calendar.add(Calendar.DAY_OF_YEAR, -20);
                 Date limiteingreso=calendar.getTime();
                 java.sql.Date sqlingreso = new java.sql.Date(limiteingreso.getTime());
                 int cantidadgalerasingresadas;              
@@ -481,15 +483,18 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 resultadogalerasdisponibles.close();
                 galerasdisponibles.close();
                 float[][] pesoproyectado= new float [7][cantidadgalerasingresadas];
+                int[][] redpn=new int[7][cantidadgalerasingresadas];
+                int[][] redgn=new int[7][cantidadgalerasingresadas];
+                int[][] redmn=new int[7][cantidadgalerasingresadas];
                 int[][] redp=new int[7][cantidadgalerasingresadas];
                 int[][] redg=new int[7][cantidadgalerasingresadas];
                 int[][] redm=new int[7][cantidadgalerasingresadas];
-                int[][] tamañored=new int[7][3];
+                int[][] tamañored=new int[7][6];
                 for(int r=0;r<7;r++){
                    tamañored[r][0]=0;
                    tamañored[r][1]=0;
                    tamañored[r][2]=0;
-                   for(int q=0;r<cantidadgalerasingresadas;q++){
+                   for(int q=0;q<cantidadgalerasingresadas;q++){
                        int diasdiferencia=java.lang.Math.round((sqlFechaInicial.getTime()-fechasgaleras[q][0].getTime())/(1000*60*60*24));
                        int diasaproyectar=java.lang.Math.round((sqlFechaInicial.getTime()-fechasgaleras[q][1].getTime())/(1000*60*60*24));
                        int semanastotal= diasdiferencia/7;
@@ -528,31 +533,44 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                }
                                pesoA=pesoA+(dpesocercano*variablespp[q][6-(3*c)]*variablespp[q][7-(3*c)]*variablespp[q][8-(3*c)]);
                                break;
-                           case 3:
+                           default:
                                pesoA=dsobrantes*variablespp[q][6]*variablespp[q][7]*variablespp[q][8];
                                for(c=0;c<semanapesocercano;c++){
                                    pesoA=pesoA+(variablespp[q][3-(3*c)]*variablespp[q][4-(3*c)]*variablespp[q][5-(3*c)]*7);
                                }
                                pesoA=pesoA+(dpesocercano*variablespp[q][3-(3*c)]*variablespp[q][4-(3*c)]*variablespp[q][5-(3*c)]);
                                break;
-                           default:
-                               pesoA=dsobrantes*variablespp[q][3]*variablespp[q][4]*variablespp[q][5];
-                               pesoA=pesoA+(dpesocercano*variablespp[q][15-(3*c)]*variablespp[q][16-(3*c)]*variablespp[q][17-(3*c)]);
-                               break;
                        }
                        pesoproyectado[r][q]=pesoA;
-                       if(pesoA>Float.parseFloat(rangospredeterminado[0][2])&& pesoA<Float.parseFloat(rangospredeterminado[0][2])){
-                           redp[r][tamañored[r][0]]=Integer.parseInt(galeras[q][10]);
-                           tamañored[r][0]++;
-                       }
-                       if(pesoA>Float.parseFloat(rangospredeterminado[1][2])&& pesoA<Float.parseFloat(rangospredeterminado[1][2])){
-                           redm[r][tamañored[r][1]]=Integer.parseInt(galeras[q][10]);
-                           tamañored[r][1]++;
-                       }
-                       if(pesoA>Float.parseFloat(rangospredeterminado[2][2])&& pesoA<Float.parseFloat(rangospredeterminado[2][2])){
-                           redg[r][tamañored[r][2]]=Integer.parseInt(galeras[q][10]);
-                           tamañored[r][2]++;
-                       }
+                        if(!galeras[q][9].equals("Periferica")){
+                            if(pesoA>Float.parseFloat(rangospredeterminado[0][2])&& pesoA<Float.parseFloat(rangospredeterminado[0][2])){
+
+                                redp[r][tamañored[r][0]]=Integer.parseInt(galeras[q][10]);
+                                tamañored[r][0]++;
+                            }
+                            if(pesoA>Float.parseFloat(rangospredeterminado[1][2])&& pesoA<Float.parseFloat(rangospredeterminado[1][2])){
+                                redm[r][tamañored[r][1]]=Integer.parseInt(galeras[q][10]);
+                                tamañored[r][1]++;
+                            }
+                            if(pesoA>Float.parseFloat(rangospredeterminado[2][2])&& pesoA<Float.parseFloat(rangospredeterminado[2][2])){
+                                redg[r][tamañored[r][2]]=Integer.parseInt(galeras[q][10]);
+                                tamañored[r][2]++;
+                            }
+                        }else{
+                            if(pesoA>Float.parseFloat(rangospredeterminado[0][2])&& pesoA<Float.parseFloat(rangospredeterminado[0][2])){
+
+                                redpn[r][tamañored[r][3]]=Integer.parseInt(galeras[q][10]);
+                                tamañored[r][3]++;
+                            }
+                            if(pesoA>Float.parseFloat(rangospredeterminado[1][2])&& pesoA<Float.parseFloat(rangospredeterminado[1][2])){
+                                redmn[r][tamañored[r][4]]=Integer.parseInt(galeras[q][10]);
+                                tamañored[r][4]++;
+                            }
+                            if(pesoA>Float.parseFloat(rangospredeterminado[2][2])&& pesoA<Float.parseFloat(rangospredeterminado[2][2])){
+                                redgn[r][tamañored[r][5]]=Integer.parseInt(galeras[q][10]);
+                                tamañored[r][5]++;
+                            }
+                        }
                    
                    } 
                 }
