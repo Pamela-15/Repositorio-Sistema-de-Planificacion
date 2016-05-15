@@ -239,12 +239,12 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         fechasrangos[e][1]=resultadonumerorangosreal.getDate("Fecha de finalización");
                         rangos[e][0]=resultadonumerorangosreal.getString("Porcentaje de necesidad");
                         rangos[e][1]=resultadonumerorangosreal.getString("Rango de peso_Nombre");
-                        rangos[e][1]=resultadonumerorangosreal.getString("Velocidad de procesamiento");
+                        rangos[e][2]=resultadonumerorangosreal.getString("Velocidad de procesamiento");
                         e++;
                     }
                     resultadonumerorangosreal.close();
                     numerorangosreal.close();
-                }
+                }//los extraigo y guardo en una variable pero, ¿no debería asignarlos de alguna forma a los planes que afectan? ¿el count es por si hay más de un cambio que afecte en esas fechas?
                 
                 PreparedStatement numerocortesreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`cortes real` where (((`cortes real`.`Fecha de inicio`>=? and `cortes real`.`Fecha de inicio`<=?) or (`cortes real`.`Fecha de finalización`>=? and `cortes real`.`Fecha de finalización`<=?)) or (`cortes real`.`Fecha de inicio`<=? and `cortes real`.`Fecha de finalización`>= ? ));");
                 numerocortesreal.setDate(1,sqlFechaInicial);
@@ -286,23 +286,67 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 pesopromedioPequeño=1;
                 pesopromedioGrande=1;
                 pesopromedioMediano=1;
-                PreparedStatement rangospesopromedio =con.prepareStatement ("SELECT avg(`cosecha corto plazo`.`Peso promedio`) as promedio, `rango de peso`.`Rango de Peso` FROM `cargill`.`cosecha corto plazo` INNER JOIN `cargill`.`rango de peso` ON `cosecha corto plazo`.`Peso promedio` <= `rango de peso`.`Límite Superior` and `cosecha corto plazo`.`Peso promedio` >= `rango de peso`.`Límite Inferior` where `cosecha corto plazo`.`Fecha de cosecha`>? group by `rango de peso`.`Rango de Peso`;");
-                ResultSet resultadorangospesopromedio=rangospesopromedio.executeQuery();
-                while(resultadorangospesopromedio.next()){
-                    if(resultadorangospesopromedio.getString("Rango de Peso").equals("Grande")){
-                        pesopromedioGrande=resultadorangospesopromedio.getFloat("promedio");
+                PreparedStatement rangospesopromedioraleo =con.prepareStatement ("SELECT sum (`pesaje`.`Peso promedio`) as promedio, count (`pesaje`.`Peso promedio`) as cuenta, `rango de peso`.`Rango de Peso` FROM `cargill`.`Ingresos` INNER JOIN `cargill`.`Pesaje` on `Ingresos`.`Fecha de raleo` = `Pesaje`.`Fecha de registro` INNER JOIN `cargill`.`rango de peso` ON `Pesaje`.`Peso promedio` <= `rango de peso`.`Límite Superior` and `Pesaje`.`Peso promedio` >= `rango de peso`.`Límite Inferior` where `Ingresos`.`Fecha de raleo`>? group by `rango de peso`.`Rango de Peso`;");
+                calendar.setTime(inicio); 
+                calendar.add(calendar.DAY_OF_YEAR,-730);
+                Date limiteDatos = calendar.getTime();
+                java.sql.Date sqlLimiteDatos = new java.sql.Date(limiteDatos.getTime());
+                rangospesopromedioraleo.setDate(1, sqlLimiteDatos);
+                
+                ResultSet resultadorangospesopromedioraleo=rangospesopromedioraleo.executeQuery();
+                
+                float sumagranderaleo = 0, sumamedianoraleo =0, sumapequeñoraleo= 0;
+                int cuentagranderaleo=1, cuentamedianoraleo=1, cuentapequeñoraleo=1;
+                
+                while(resultadorangospesopromedioraleo.next()){
+                    if(resultadorangospesopromedioraleo.getString("Rango de Peso").equals("Grande")){
+                        sumagranderaleo=resultadorangospesopromedioraleo.getFloat("promedio");
+                        cuentagranderaleo=resultadorangospesopromedioraleo.getInt("cuenta");
                     }
-                    if(resultadorangospesopromedio.getString("Rango de Peso").equals("Mediano")){
-                        pesopromedioMediano=resultadorangospesopromedio.getFloat("promedio");
+                    if(resultadorangospesopromedioraleo.getString("Rango de Peso").equals("Mediano")){
+                        sumamedianoraleo=resultadorangospesopromedioraleo.getFloat("promedio");
+                        cuentamedianoraleo=resultadorangospesopromedioraleo.getInt("cuenta");
                
                     }
-                    if(resultadorangospesopromedio.getString("Rango de Peso").equals("Pequeño")){
-                        pesopromedioPequeño=resultadorangospesopromedio.getFloat("promedio");
-               
+                    if(resultadorangospesopromedioraleo.getString("Rango de Peso").equals("Pequeño")){
+                        sumapequeñoraleo=resultadorangospesopromedioraleo.getFloat("promedio");
+                        cuentapequeñoraleo=resultadorangospesopromedioraleo.getInt("cuenta");
                     }
                 }
-                resultadorangospesopromedio.close();
-                rangospesopromedio.close();
+                resultadorangospesopromedioraleo.close();
+                rangospesopromedioraleo.close();
+                
+                PreparedStatement rangospesopromediocosecha =con.prepareStatement ("SELECT sum (`pesaje`.`Peso promedio`) as promedio, count (`pesaje`.`Peso promedio`) as cuenta, `rango de peso`.`Rango de Peso` FROM `cargill`.`Ingresos` INNER JOIN `cargill`.`Pesaje` on `Ingresos`.`Fecha de cosecha` = `Pesaje`.`Fecha de registro` INNER JOIN `cargill`.`rango de peso` ON `Pesaje`.`Peso promedio` <= `rango de peso`.`Límite Superior` and `Pesaje`.`Peso promedio` >= `rango de peso`.`Límite Inferior` where `Ingresos`.`Fecha de cosecha`>? group by `rango de peso`.`Rango de Peso`;");
+                rangospesopromedioraleo.setDate(1, sqlLimiteDatos);
+                
+                ResultSet resultadorangospesopromediocosecha=rangospesopromediocosecha.executeQuery();
+                
+                float sumagrandecosecha = 0, sumamedianocosecha = 0, sumapequeñocosecha = 0;
+                int cuentagrandecosecha = 1, cuentamedianocosecha = 1, cuentapequeñocosecha =1 ;
+                
+                while(resultadorangospesopromediocosecha.next()){
+                    if(resultadorangospesopromediocosecha.getString("Rango de Peso").equals("Grande")){
+                        sumagrandecosecha=resultadorangospesopromediocosecha.getFloat("promedio");
+                        cuentagrandecosecha=resultadorangospesopromediocosecha.getInt("cuenta");
+                    }
+                    if(resultadorangospesopromediocosecha.getString("Rango de Peso").equals("Mediano")){
+                        sumamedianocosecha=resultadorangospesopromediocosecha.getFloat("promedio");
+                        cuentamedianocosecha=resultadorangospesopromediocosecha.getInt("cuenta");
+               
+                    }
+                    if(resultadorangospesopromediocosecha.getString("Rango de Peso").equals("Pequeño")){
+                        sumapequeñocosecha=resultadorangospesopromediocosecha.getFloat("promedio");
+                        cuentapequeñocosecha=resultadorangospesopromediocosecha.getInt("cuenta");
+                    }
+                }
+                resultadorangospesopromediocosecha.close();
+                rangospesopromediocosecha.close();
+                
+                pesopromedioPequeño= (sumapequeñoraleo + sumapequeñocosecha)/(cuentapequeñoraleo+cuentapequeñocosecha);
+                pesopromedioGrande= (sumagranderaleo + sumagrandecosecha)/(cuentagranderaleo+cuentagrandecosecha);
+                pesopromedioMediano= (sumamedianoraleo + sumamedianocosecha)/(cuentamedianoraleo+cuentamedianocosecha);
+                
+                
                 int cantidadsecuencia;
                 PreparedStatement secuenciapredcuenta = con.prepareStatement("SELECT count(*) as cuenta FROM `cargill`.`secuencia de transporte estándar`;");
                 ResultSet cuentasecuenciapre = secuenciapredcuenta.executeQuery();
@@ -341,6 +385,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 
                 String[][][] secuenciaespecifica=new String[16][2][diassecuenciados];
                 java.sql.Date[][] fechassec=new java.sql.Date[diassecuenciados][2];
+                
+                if (diassecuenciados > 0){
+                
                 PreparedStatement secuenciaesp = con.prepareStatement("SELECT `secuencia de transporte real`.`Secuencia`, `secuencia de transporte real`.`Horas de procesamiento`, `secuencia de transporte real`.`Fecha de inicio`,`secuencia de transporte real`.`Fecha de finalización`, `secuencia de transporte real`.`Rango de peso_Nombre` FROM `cargill`.`secuencia de transporte real` where (`secuencia de transporte real`.`Fecha de inicio`>? and `secuencia de transporte real`.`Fecha de inicio`< ?) or (`secuencia de transporte real`.`Fecha de finalización`>? and `secuencia de transporte real`.`Fecha de finalización`< ?) or (`secuencia de transporte real`.`Fecha de inicio`<? and `secuencia de transporte real`.`Fecha de finalización`> ?) order by `secuencia de transporte real`.`Fecha de inicio asc,`secuencia de transporte real`.`Secuencia` asc;");
                 secuenciaesp.setDate(1,sqlFechaInicial);
                 secuenciaesp.setDate(2,sqlFechaFinal);
@@ -355,15 +402,16 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     fechassec[i][0]=resultadosecuenciaesp.getDate("Fecha de inicio");
                     fechassec[i][1]=resultadosecuenciaesp.getDate("Fecha de finalización");
                     for(int k=0;k<cantidadsecuenciaesp[i];k++){
-                    secuenciaespecifica[k][0][i]=resultadosecuenciaesp.getString("Rango de peso_Nombre");
-                    secuenciaespecifica[k][1][i]=resultadosecuenciaesp.getString("Horas de procesamiento");
-                    resultadosecuenciapre.next();
+                        secuenciaespecifica[k][0][i]=resultadosecuenciaesp.getString("Rango de peso_Nombre");
+                        secuenciaespecifica[k][1][i]=resultadosecuenciaesp.getString("Horas de procesamiento");
+                        resultadosecuenciapre.next();
                     }
                     i++;
                     
                 }
                 resultadosecuenciaesp.close();
                 secuenciaesp.close();
+                }
                 String[][][] secuenciautilizar=new String[16][2][7];
                 for(int d=0;d<7;d++){
                     calendar.setTime(inicio);
@@ -376,7 +424,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 secuenciautilizar[j][0][d]=secuenciaespecifica[j][0][h];
                                 secuenciautilizar[j][1][d]=secuenciaespecifica[j][1][h];
                             }
-                        }else{
+                        }
+                        else{
                             for(int p=0;p<cantidadsecuencia;p++){
                                 secuenciautilizar[p][0][d]=secuenciapredeterminada[p][0];
                                 secuenciautilizar[p][1][d]=secuenciapredeterminada[p][1];
@@ -395,9 +444,10 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         fechaA = calendar.getTime();
                         fechaB = new java.sql.Date(fechaA.getTime());
                         if((fechaB.after(fechascortes[n][0])||fechaB.equals(fechascortes[n][0])) && (fechaB.equals(fechascortes[n][1])||fechaB.before(fechascortes[n][1]))){
-                            necesidadActualizadaAves[m][0]=(demandanum[n]*Float.parseFloat(cortes[n][0])*Float.parseFloat(cortes[n][1]))+(demandanum[n]*Float.parseFloat(cortes[n+1][0])*Float.parseFloat(cortes[n+1][1]))+(demandanum[n]*Float.parseFloat(cortes[n+2][0])*Float.parseFloat(cortes[n+2][1]));
-                        }else{
-                            necesidadActualizadaAves[m][o]=(demandanum[n]*Float.parseFloat(cortespredeterminado[0][1])*Float.parseFloat(cortespredeterminado[0][2]))+(demandanum[n]*Float.parseFloat(cortespredeterminado[1][1])*Float.parseFloat(cortespredeterminado[1][2]))+(demandanum[n]*Float.parseFloat(cortespredeterminado[2][1])*Float.parseFloat(cortespredeterminado[2][2]));
+                            necesidadActualizadaAves[m][0]=((demandanum[n]*Float.parseFloat(cortes[n][0]))/Float.parseFloat(cortes[n][1]))+((demandanum[n]*Float.parseFloat(cortes[n+1][0]))/Float.parseFloat(cortes[n+1][1]))+((demandanum[n]*Float.parseFloat(cortes[n+2][0]))/Float.parseFloat(cortes[n+2][1]));
+                        }
+                        else{
+                            necesidadActualizadaAves[m][0]=((demandanum[n]*Float.parseFloat(cortespredeterminado[0][1]))/Float.parseFloat(cortespredeterminado[0][2]))+((demandanum[n]*Float.parseFloat(cortespredeterminado[1][1]))/Float.parseFloat(cortespredeterminado[1][2]))+((demandanum[n]*Float.parseFloat(cortespredeterminado[2][1]))/Float.parseFloat(cortespredeterminado[2][2]));
                         }
                     }
                     for(o=0;o<cantidadrangosreal;o=o+3){
@@ -407,9 +457,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         fechaB = new java.sql.Date(fechaA.getTime());
                         if((fechaB.after(fechasrangos[o][0])||fechaB.equals(fechasrangos[o][0])) && (fechaB.equals(fechasrangos[o][1])||fechaB.before(fechasrangos[o][1]))){
                             necesidadActualizadaAves[m][1]=((necesidadActualizadaAves[m][0]*Float.parseFloat(rangos[o][0]))/pesopromedioPequeño)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangos[o+1][0]))/pesopromedioMediano)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangos[o+2][0]))/pesopromedioGrande);
-                            necesidadActualizadaAves[m][2]=Float.parseFloat(rangos[o][0]);
-                            necesidadActualizadaAves[m][3]=Float.parseFloat(rangos[o+1][0]);
-                            necesidadActualizadaAves[m][4]=Float.parseFloat(rangos[o+2][0]);
+                            necesidadActualizadaAves[m][2]=Float.parseFloat(rangos[o][0]); // necesidad de pequeño
+                            necesidadActualizadaAves[m][3]=Float.parseFloat(rangos[o+1][0]); //necesidad de mediano
+                            necesidadActualizadaAves[m][4]=Float.parseFloat(rangos[o+2][0]); //necesidad de grande
                         }else{
                             necesidadActualizadaAves[m][1]=((necesidadActualizadaAves[m][0]*Float.parseFloat(rangospredeterminado[0][3]))/pesopromedioPequeño)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangospredeterminado[1][3]))/pesopromedioMediano)+((necesidadActualizadaAves[m][0]*Float.parseFloat(rangospredeterminado[2][3]))/pesopromedioGrande);
                             necesidadActualizadaAves[m][2]=Float.parseFloat(rangospredeterminado[0][3]);
@@ -419,15 +469,15 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     }
                 }
                 calendar.setTime(hoy);
-                calendar.add(Calendar.DAY_OF_YEAR, -4);
+                calendar.add(Calendar.DAY_OF_YEAR, -2);
                 Date raleoA=calendar.getTime();
                 java.sql.Date sqlraleoA = new java.sql.Date(raleoA.getTime());
                 calendar.setTime(hoy);
-                calendar.add(Calendar.DAY_OF_YEAR, -20);
+                calendar.add(Calendar.DAY_OF_YEAR, -18);
                 Date limiteingreso=calendar.getTime();
                 java.sql.Date sqlingreso = new java.sql.Date(limiteingreso.getTime());
                 int cantidadgalerasingresadas;              
-                PreparedStatement cantidadgalerasdisponibles= con.prepareStatement ("SELECT count(*) as cuenta FROM `cargill`.`ingresos` WHERE (ingresos.`Fecha de raleo`<? or ingresos.`Fecha de raleo`is null or `Fecha de raleo`<? ) AND INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
+                PreparedStatement cantidadgalerasdisponibles= con.prepareStatement ("SELECT count(*) as cuenta FROM `cargill`.`ingresos` WHERE (ingresos.`Fecha de raleo`<? or ingresos.`Fecha de raleo`is null) AND INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
                 cantidadgalerasdisponibles.setDate(1,sqlraleoA);
                 cantidadgalerasdisponibles.setDate(2,sqlFechaInicial);
                 cantidadgalerasdisponibles.setDate(3,sqlingreso);
@@ -443,10 +493,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 java.sql.Date[][] fechasgaleras=new java.sql.Date[cantidadgalerasingresadas][2];
                 int h=0;
                 float cantidadsobrante=0;
-                PreparedStatement galerasdisponibles= con.prepareStatement ("SELECT `ingresos`.`idIngresos`, `ingresos`.`Fecha de ingreso`,`ingresos`.`Cantidad de aves`,`ingresos`.`PesoPollito`,`ingresos`.`Edad de reproductora`,`ingresos`.`Fecha de registro1`,`ingresos`.`Aves muertas1` + `ingresos`.`Aves seleccionadas1` as mortalidad1, `ingresos`.`Peso promedio1`, `ingresos`.`Desviacion estandar1`,`ingresos`.`Galera_idGalera`,`ingresos`.`Fecha de registro2`,`ingresos`.`Aves muertas2`+`ingresos`.`Aves seleccionadas2` as mortalidad2,`ingresos`.`Peso promedio2`, `ingresos`.`Desviacion estandar2`, `ingresos`.`Fecha de registro3`,`ingresos`.`Aves muertas3`+ `ingresos`.`Aves seleccionadas3` as mortalidad3,`ingresos`.`Peso promedio3`,`ingresos`.`Desviacion estandar3`,`ingresos`.`Fecha de registro4`,`ingresos`.`Aves muertas4` + `ingresos`.`Aves seleccionadas4` as mortalidad4,`ingresos`.`Peso promedio4`,`ingresos`.`Desviacion estandar4`,`ingresos`.`Fecha de registro5`,`ingresos`.`Aves muertas5`+`ingresos`.`Aves seleccionadas5` as mortalidad5,`ingresos`.`Peso promedio5`,`ingresos`.`Desviacion estandar5`,`ingresos`.`Fecha de registro6`,`ingresos`.`Aves muertas6`+`ingresos`.`Aves seleccionadas6` as mortalidad6,`ingresos`.`Peso promedio6`,`ingresos`.`Desviacion estandar6`,`ingresos`.`Fecha de registro7`,`ingresos`.`Aves muertas7`+`ingresos`.`Aves seleccionadas7` as mortalidad7,`ingresos`.`Peso promedio7`,`ingresos`.`Desviacion estandar7`,`ingresos`.`Fecha de registro8`,`ingresos`.`Aves muertas8` + `ingresos`.`Aves seleccionadas8` as mortalidad8,`ingresos`.`Peso promedio8`,`ingresos`.`Desviacion estandar8`,`ingresos`.`Fecha de registro9`,`ingresos`.`Aves muertas9` + `ingresos`.`Aves seleccionadas9` as mortalidad9,`ingresos`.`Peso promedio9`,`ingresos`.`Desviacion estandar9`,`ingresos`.`Fecha de registro10`,`ingresos`.`Aves muertas10` + `ingresos`.`Aves seleccionadas10` as mortalidad10,`ingresos`.`Peso promedio10`,`ingresos`.`Desviacion estandar10`,`ingresos`.`Aves cosechadas`,`galera`.`Nombre Granja`, `galera`.`Numero de Galera`, `galera`.`Carrusel`,`proyeccionpeso`.`GDP1`,,`proyeccionpeso`.`GDP2`,`proyeccionpeso`.`GDP3`,`proyeccionpeso`.`GDP4`,`proyeccionpeso`.`GDP5`,,`proyeccionpeso`.`GDP6`,`proyeccionpeso`.`GDP7`,`proyeccionpeso`.`FCM1`,`proyeccionpeso`.`FCM2`,`proyeccionpeso`.`FCM3`,`proyeccionpeso`.`FCM4`,`proyeccionpeso`.`FCM5`,`proyeccionpeso`.`FCM6`,`proyeccionpeso`.`FCM7`,`proyeccionpeso`.`FCE1`,`proyeccionpeso`.`FCE2`,`proyeccionpeso`.`FCE3`,`proyeccionpeso`.`FCE4`,`proyeccionpeso`.`FCE5`,`proyeccionpeso`.`FCE6`,`proyeccionpeso`.`FCE7`,`proyeccionpeso`.`FactorCorrección`, `ingresos`.`Galera_idGalera`  FROM `cargill`.`ingresos` inner join `cargill`.`galera` on `galera`.`idGalera`=`ingresos`.`Galera_idGalera` inner join `cargill`.`proyeccionpeso` on `ingresos`.`Galera_idGalera`=`proyeccionpeso`.`Galera_idGalera` WHERE (ingresos.`Fecha de raleo`<? or ingresos.`Fecha de raleo`is null or `Fecha de raleo`<? ) AND INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
+                PreparedStatement galerasdisponibles= con.prepareStatement ("SELECT `ingresos`.`idIngresos`, `ingresos`.`Fecha de ingreso`,`ingresos`.`Cantidad de aves`,`ingresos`.`PesoPollito`,`ingresos`.`Edad de reproductora`,`ingresos`.`Fecha de registro1`,`ingresos`.`Aves muertas1` + `ingresos`.`Aves seleccionadas1` as mortalidad1, `ingresos`.`Peso promedio1`, `ingresos`.`Desviacion estandar1`,`ingresos`.`Galera_idGalera`,`ingresos`.`Fecha de registro2`,`ingresos`.`Aves muertas2`+`ingresos`.`Aves seleccionadas2` as mortalidad2,`ingresos`.`Peso promedio2`, `ingresos`.`Desviacion estandar2`, `ingresos`.`Fecha de registro3`,`ingresos`.`Aves muertas3`+ `ingresos`.`Aves seleccionadas3` as mortalidad3,`ingresos`.`Peso promedio3`,`ingresos`.`Desviacion estandar3`,`ingresos`.`Fecha de registro4`,`ingresos`.`Aves muertas4` + `ingresos`.`Aves seleccionadas4` as mortalidad4,`ingresos`.`Peso promedio4`,`ingresos`.`Desviacion estandar4`,`ingresos`.`Fecha de registro5`,`ingresos`.`Aves muertas5`+`ingresos`.`Aves seleccionadas5` as mortalidad5,`ingresos`.`Peso promedio5`,`ingresos`.`Desviacion estandar5`,`ingresos`.`Fecha de registro6`,`ingresos`.`Aves muertas6`+`ingresos`.`Aves seleccionadas6` as mortalidad6,`ingresos`.`Peso promedio6`,`ingresos`.`Desviacion estandar6`,`ingresos`.`Fecha de registro7`,`ingresos`.`Aves muertas7`+`ingresos`.`Aves seleccionadas7` as mortalidad7,`ingresos`.`Peso promedio7`,`ingresos`.`Desviacion estandar7`,`ingresos`.`Fecha de registro8`,`ingresos`.`Aves muertas8` + `ingresos`.`Aves seleccionadas8` as mortalidad8,`ingresos`.`Peso promedio8`,`ingresos`.`Desviacion estandar8`,`ingresos`.`Fecha de registro9`,`ingresos`.`Aves muertas9` + `ingresos`.`Aves seleccionadas9` as mortalidad9,`ingresos`.`Peso promedio9`,`ingresos`.`Desviacion estandar9`,`ingresos`.`Fecha de registro10`,`ingresos`.`Aves muertas10` + `ingresos`.`Aves seleccionadas10` as mortalidad10,`ingresos`.`Peso promedio10`,`ingresos`.`Desviacion estandar10`,`ingresos`.`Aves cosechadas`,`galera`.`Nombre Granja`, `galera`.`Numero de Galera`, `galera`.`Carrusel`,`proyeccionpeso`.`GDP1`,,`proyeccionpeso`.`GDP2`,`proyeccionpeso`.`GDP3`,`proyeccionpeso`.`GDP4`,`proyeccionpeso`.`GDP5`,,`proyeccionpeso`.`GDP6`,`proyeccionpeso`.`GDP7`,`proyeccionpeso`.`FCM1`,`proyeccionpeso`.`FCM2`,`proyeccionpeso`.`FCM3`,`proyeccionpeso`.`FCM4`,`proyeccionpeso`.`FCM5`,`proyeccionpeso`.`FCM6`,`proyeccionpeso`.`FCM7`,`proyeccionpeso`.`FCE1`,`proyeccionpeso`.`FCE2`,`proyeccionpeso`.`FCE3`,`proyeccionpeso`.`FCE4`,`proyeccionpeso`.`FCE5`,`proyeccionpeso`.`FCE6`,`proyeccionpeso`.`FCE7`,`proyeccionpeso`.`FactorCorrección`, `ingresos`.`Galera_idGalera`  FROM `cargill`.`ingresos` inner join `cargill`.`galera` on `galera`.`idGalera`=`ingresos`.`Galera_idGalera` inner join `cargill`.`proyeccionpeso` on `ingresos`.`Galera_idGalera`=`proyeccionpeso`.`Galera_idGalera` inner join (Select max (`pesaje`.`Fecha Registro`) as fecharegistro, max (`pesaje`.`Peso Promedio`) as peso, max (`pesaje`.`Desviación estándar_Peso`) as desviacion `pesaje`.`Ingresos_idIngresos` as llaveingresos from `cargill`.`pesaje` group by `pesaje`.`Ingresos_idIngresos`)x on `Ingresos`.`idIngresos` = x.llaveingresos WHERE (ingresos.`Fecha de raleo`<? or ingresos.`Fecha de raleo`is null) AND INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
                 galerasdisponibles.setDate(1,sqlraleoA);
-                galerasdisponibles.setDate(2,sqlFechaInicial);
-                galerasdisponibles.setDate(3,sqlingreso);
+                galerasdisponibles.setDate(2,sqlingreso);
                 ResultSet resultadogalerasdisponibles = galerasdisponibles.executeQuery();
                 while(resultadogalerasdisponibles.next()){
                     galeras[h][0]=resultadogalerasdisponibles.getString("idIngresos");
