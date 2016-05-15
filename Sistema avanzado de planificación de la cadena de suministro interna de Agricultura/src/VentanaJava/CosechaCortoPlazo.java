@@ -141,11 +141,20 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 
                 int o;
                 
-                float[] demandanum = new float[7];
+                float[] demandanum = new float[13];
                 float[] desglosesemanal = new float[7];
                 java.util.Date fechaA;
                 java.sql.Date fechaB;
                 //PreparedStatement diassemana=con.prepareStatement("Select ")
+                
+                PreparedStatement diassemana=con.prepareStatement("SELECT `Raleo y distribución demanda`.`id`,`Raleo y distribución demanda`.`Variable`, `Raleo y distribución demanda`.`Porcentaje` FROM `cargill`.`Raleo y distribución demanda` WHERE `Raleo y distribución demanda`.`id`>1 ORDER BY `Raleo y distribución demanda`.`id` ASC ;");
+                ResultSet distribuciondias=diassemana.executeQuery();
+                int zx=0;
+                while(distribuciondias.next()){
+                    desglosesemanal[zx]=distribuciondias.getFloat("Porcentaje");
+                }
+                distribuciondias.close();
+                diassemana.close();
                 
                 desfasesemanal.setTime(inicio);
                 int semana= desfasesemanal.get(Calendar.WEEK_OF_YEAR);
@@ -156,43 +165,88 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 resultadodemanda.next();
                 float necesidad=resultadodemanda.getInt("Demanda");
                 resultadodemanda.close();
+                PreparedStatement demanda1 = con.prepareStatement ("SELECT `demanda`.`Demanda` FROM `cargill`.`demanda` where `demanda`.`Semana`=?;");
+                demanda.setInt(1,semana+1);
+                ResultSet resultadodemanda1 = demanda1.executeQuery();
+                resultadodemanda1.next();
+                float necesidad1=resultadodemanda1.getInt("Demanda");
+                resultadodemanda1.close();
+                
                 for(o=diasemana;o<=7;o++){
-                    demandanum[o-1]=(float)(necesidad*0.15);
+                    demandanum[o-1]=(float)(necesidad*desglosesemanal[o+2]);
                 }
-                for(o=0;o<diasemana-1;o++){
-                    demandanum[o]=(float)(necesidad*0.15);
+                for(o=7;o<diasemana-1;o++){
+                    demandanum[o]=(float)(necesidad1*desglosesemanal[o+2]);
                 }
                 demanda.close();
-                String[][] rangospredeterminado=new String[4][4];
+                String[][] rangospredeterminado=new String[4][5];
                 int e=0;
-                PreparedStatement rangosespecificos =con.prepareStatement ("SELECT `rango de peso`.`Rango de Peso`, `rango de peso`.`Límite Superior`, `rango de peso`.`Límite Inferior`, `rango de peso`.`Porcentaje de Necesidad`,`rango de peso`.`Velocidad de Procesamiento` FROM `cargill`.`rango de peso`;");
-                ResultSet resultadorangosespecificos=rangosespecificos.executeQuery();
-                while(resultadorangosespecificos.next()){
-                    rangospredeterminado[e][0]=resultadorangosespecificos.getString("Rango de Peso");
-                    rangospredeterminado[e][1]=resultadorangosespecificos.getString("Límite Superior");
-                    rangospredeterminado[e][2]=resultadorangosespecificos.getString("Límite Inferior");
-                    rangospredeterminado[e][3]=resultadorangosespecificos.getString("Porcentaje de Necesidad");
-                    rangospredeterminado[e][4]=resultadorangosespecificos.getString("Velocidad de Procesamiento");
+                PreparedStatement rangospredeterminados =con.prepareStatement ("SELECT `rango de peso`.`Rango de Peso`, `rango de peso`.`Límite Superior`, `rango de peso`.`Límite Inferior`, `rango de peso`.`Porcentaje de Necesidad`,`rango de peso`.`Velocidad de Procesamiento` FROM `cargill`.`rango de peso`;");
+                ResultSet resultadorangospredeterminados=rangospredeterminados.executeQuery();
+                while(resultadorangospredeterminados.next()){
+                    rangospredeterminado[e][0]=resultadorangospredeterminados.getString("Rango de Peso");
+                    rangospredeterminado[e][1]=resultadorangospredeterminados.getString("Límite Superior");
+                    rangospredeterminado[e][2]=resultadorangospredeterminados.getString("Límite Inferior");
+                    rangospredeterminado[e][3]=resultadorangospredeterminados.getString("Porcentaje de Necesidad");
+                    rangospredeterminado[e][4]=resultadorangospredeterminados.getString("Velocidad de Procesamiento");
                     e++;
                 }
-                resultadorangosespecificos.close();
-                rangosespecificos.close();
+                resultadorangospredeterminados.close();
+                rangospredeterminados.close();
                 String[][] cortespredeterminado=new String[3][3];
                 e=0;
-                PreparedStatement cortesespecificos =con.prepareStatement ("SELECT `costes estándar`.`Nombre de corte`, `costes estándar`.`Porcentaje de Necesidad`, `costes estándar`.`Porcentaje de rendimiento` FROM `cargill`.`costes estándar`;");
-                ResultSet resultadocortesespecificos=cortesespecificos.executeQuery();
-                while(resultadocortesespecificos.next()){
-                    cortespredeterminado[e][0]=resultadocortesespecificos.getString("Nombre de corte");
-                    cortespredeterminado[e][1]=resultadocortesespecificos.getString("Porcentaje de Necesidad");
-                    cortespredeterminado[e][2]=resultadocortesespecificos.getString("Porcentaje de rendimiento");
+                PreparedStatement cortepredeterminado =con.prepareStatement ("SELECT `costes estándar`.`Nombre de corte`, `costes estándar`.`Porcentaje de Necesidad`, `costes estándar`.`Porcentaje de rendimiento` FROM `cargill`.`costes estándar`;");
+                ResultSet resultadocortepredeterminado=cortepredeterminado.executeQuery();
+                while(resultadocortepredeterminado.next()){
+                    cortespredeterminado[e][0]=resultadocortepredeterminado.getString("Nombre de corte");
+                    cortespredeterminado[e][1]=resultadocortepredeterminado.getString("Porcentaje de Necesidad");
+                    cortespredeterminado[e][2]=resultadocortepredeterminado.getString("Porcentaje de rendimiento");
                     e++;
                 }
-                resultadocortesespecificos.close();
-                cortesespecificos.close();
+                resultadocortepredeterminado.close();
+                cortepredeterminado.close();
                 
                 int cantidadcortesreal, cantidadrangosreal;
                 
-                PreparedStatement numerocortesreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? ));");
+                PreparedStatement numerorangosreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? ));");
+                numerorangosreal.setDate(1,sqlFechaInicial);
+                numerorangosreal.setDate(2,sqlFechaFinal);
+                numerorangosreal.setDate(3,sqlFechaInicial);
+                numerorangosreal.setDate(4,sqlFechaFinal);
+                numerorangosreal.setDate(5,sqlFechaInicial);
+                numerorangosreal.setDate(6,sqlFechaFinal);
+                ResultSet resultadonumerorangosreal=numerorangosreal.executeQuery();
+                resultadonumerorangosreal.next();
+                cantidadrangosreal=resultadonumerorangosreal.getInt("count(*)");
+                resultadonumerorangosreal.close();
+                numerorangosreal.close();
+                String[][] rangos=new String[cantidadrangosreal][2];
+                java.sql.Date[][] fechasrangos=new java.sql.Date[cantidadrangosreal][2];
+                
+                if(cantidadrangosreal>0){
+                    
+                    e=0;
+                    numerorangosreal = con.prepareStatement("SELECT `necesidades por rango real`.`Fecha de inicio`, `necesidades por rango real`.`Fecha de finalización`, `necesidades por rango real`.`Porcentaje de necesidad`,`necesidades por rango real`.`Velocidad de procesamiento`, `necesidades por rango real`.`Rango de peso_Nombre` FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? )), order by `necesidades por rango real`.`Fecha de inicio`;");
+                    numerorangosreal.setDate(1,sqlFechaInicial);
+                    numerorangosreal.setDate(2,sqlFechaFinal);
+                    numerorangosreal.setDate(3,sqlFechaInicial);
+                    numerorangosreal.setDate(4,sqlFechaFinal);
+                    numerorangosreal.setDate(5,sqlFechaInicial);
+                    numerorangosreal.setDate(6,sqlFechaFinal);
+                    resultadonumerorangosreal=numerorangosreal.executeQuery();
+                    while(resultadonumerorangosreal.next()){
+                        fechasrangos[e][0]=resultadonumerorangosreal.getDate("Fecha de inicio");
+                        fechasrangos[e][1]=resultadonumerorangosreal.getDate("Fecha de finalización");
+                        rangos[e][0]=resultadonumerorangosreal.getString("Porcentaje de necesidad");
+                        rangos[e][1]=resultadonumerorangosreal.getString("Rango de peso_Nombre");
+                        rangos[e][1]=resultadonumerorangosreal.getString("Velocidad de procesamiento");
+                        e++;
+                    }
+                    resultadonumerorangosreal.close();
+                    numerorangosreal.close();
+                }
+                
+                PreparedStatement numerocortesreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`cortes real` where (((`cortes real`.`Fecha de inicio`>=? and `cortes real`.`Fecha de inicio`<=?) or (`cortes real`.`Fecha de finalización`>=? and `cortes real`.`Fecha de finalización`<=?)) or (`cortes real`.`Fecha de inicio`<=? and `cortes real`.`Fecha de finalización`>= ? ));");
                 numerocortesreal.setDate(1,sqlFechaInicial);
                 numerocortesreal.setDate(2,sqlFechaFinal);
                 numerocortesreal.setDate(3,sqlFechaInicial);
@@ -200,45 +254,6 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 numerocortesreal.setDate(5,sqlFechaInicial);
                 numerocortesreal.setDate(6,sqlFechaFinal);
                 ResultSet resultadonumerocortesreal=numerocortesreal.executeQuery();
-                resultadonumerocortesreal.next();
-                cantidadrangosreal=resultadonumerocortesreal.getInt("count(*)");
-                resultadonumerocortesreal.close();
-                numerocortesreal.close();
-                String[][] rangos=new String[cantidadrangosreal][2];
-                java.sql.Date[][] fechasrangos=new java.sql.Date[cantidadrangosreal][2];
-                
-                if(cantidadrangosreal>0){
-                    
-                    e=0;
-                    numerocortesreal = con.prepareStatement("SELECT `necesidades por rango real`.`Fecha de inicio`, `necesidades por rango real`.`Fecha de finalización`, `necesidades por rango real`.`Porcentaje de necesidad`,`necesidades por rango real`.`Velocidad de procesamiento`, `necesidades por rango real`.`Rango de peso_Nombre` FROM `cargill`.`necesidades por rango real`where (((`necesidades por rango real`.`Fecha de inicio`>=? and `necesidades por rango real`.`Fecha de inicio`<=?) or (`necesidades por rango real`.`Fecha de finalización`>=? and `necesidades por rango real`.`Fecha de finalización`<=?)) or (`necesidades por rango real`.`Fecha de inicio`<=? and `necesidades por rango real`.`Fecha de finalización`>= ? )), order by `necesidades por rango real`.`Fecha de inicio`;");
-                    numerocortesreal.setDate(1,sqlFechaInicial);
-                    numerocortesreal.setDate(2,sqlFechaFinal);
-                    numerocortesreal.setDate(3,sqlFechaInicial);
-                    numerocortesreal.setDate(4,sqlFechaFinal);
-                    numerocortesreal.setDate(5,sqlFechaInicial);
-                    numerocortesreal.setDate(6,sqlFechaFinal);
-                    resultadonumerocortesreal=numerocortesreal.executeQuery();
-                    while(resultadonumerocortesreal.next()){
-                        fechasrangos[e][0]=resultadonumerocortesreal.getDate("Fecha de inicio");
-                        fechasrangos[e][1]=resultadonumerocortesreal.getDate("Fecha de finalización");
-                        rangos[e][0]=resultadonumerocortesreal.getString("Porcentaje de necesidad");
-                        rangos[e][1]=resultadonumerocortesreal.getString("Rango de peso_Nombre");
-                        rangos[e][1]=resultadonumerocortesreal.getString("Velocidad de procesamiento");
-                        e++;
-                    }
-                    resultadonumerocortesreal.close();
-                    numerocortesreal.close();
-                }
-                
-                
-                numerocortesreal = con.prepareStatement("SELECT count(*) FROM `cargill`.`cortes real` where (((`cortes real`.`Fecha de inicio`>=? and `cortes real`.`Fecha de inicio`<=?) or (`cortes real`.`Fecha de finalización`>=? and `cortes real`.`Fecha de finalización`<=?)) or (`cortes real`.`Fecha de inicio`<=? and `cortes real`.`Fecha de finalización`>= ? ));");
-                numerocortesreal.setDate(1,sqlFechaInicial);
-                numerocortesreal.setDate(2,sqlFechaFinal);
-                numerocortesreal.setDate(3,sqlFechaInicial);
-                numerocortesreal.setDate(4,sqlFechaFinal);
-                numerocortesreal.setDate(5,sqlFechaInicial);
-                numerocortesreal.setDate(6,sqlFechaFinal);
-                resultadonumerocortesreal=numerocortesreal.executeQuery();
                 resultadonumerocortesreal.next();
                 cantidadcortesreal=resultadonumerocortesreal.getInt("count(*)");
                 resultadonumerocortesreal.close();

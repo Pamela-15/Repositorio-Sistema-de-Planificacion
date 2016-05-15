@@ -17,6 +17,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
     public IngresoCortoplazo(int usuario) {
         initComponents();
         idUsuarioAutenticado=usuario;
+        
     }
 
     
@@ -280,7 +281,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 float[] demandanum = new float[7];
                 float[] desglosesemanal = new float[7];
                 
-                PreparedStatement diassemana=con.prepareStatement("SELECT `raleo`.`id`,`raleo`.`Variable`, `raleo`.`Porcentaje` FROM `cargill`.`raleo` WHERE `raleo`.`id`>1 ORDER BY `raleo`.`id` ASC ;");
+                PreparedStatement diassemana=con.prepareStatement("SELECT `Raleo y distribución demanda`.`id`,`Raleo y distribución demanda`.`Variable`, `Raleo y distribución demanda`.`Porcentaje` FROM `cargill`.`Raleo y distribución demanda` WHERE `Raleo y distribución demanda`.`id`>1 ORDER BY `Raleo y distribución demanda`.`id` ASC ;");
                 ResultSet distribuciondias=diassemana.executeQuery();
                 int zx=0;
                 while(distribuciondias.next()){
@@ -300,6 +301,7 @@ public class IngresoCortoplazo extends javax.swing.JFrame {
                 for(o=diasemana;o<=7;o++){
                     demandanum[xzy]=(float)(necesidad*desglosesemanal[o]);
                     xzy++;
+                
                 }
                 for(o=0;o<diasemana-1;o++){
                     demandanum[xzy]=(float)(necesidad*desglosesemanal[0]);
