@@ -698,7 +698,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 }
                                             }
                                         }else{
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredp+") order by `distanciagaleras`.`distancia` asc");
+                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredp+") order by `distanciagaleras`.`distancia` asc");
+                                            redpeq.setInt(1, galerascosechadas[0]);
                                             ResultSet distanciaredpeq=redpeq.executeQuery();
                                             while(distanciaredpeq.next()){
                                                 int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
@@ -722,8 +723,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                         break;
                                     case "Mediano":
                                         if(galerascosechadas[0]==0){
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredm+") order by `distanciagaleras`.`distancia`desc");
-                                            ResultSet distanciaredpeq=redpeq.executeQuery();
+                                            PreparedStatement redmed= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredm+") order by `distanciagaleras`.`distancia`desc");
+                                            ResultSet distanciaredpeq=redmed.executeQuery();
                                             while(distanciaredpeq.next()){
                                                 int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
@@ -742,8 +743,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 }
                                             }
                                         }else{
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredm+") order by `distanciagaleras`.`distancia` asc");
-                                            ResultSet distanciaredpeq=redpeq.executeQuery();
+                                            PreparedStatement redmed= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredm+") order by `distanciagaleras`.`distancia` asc");
+                                            redmed.setInt(1, galerascosechadas[0]);
+                                            ResultSet distanciaredpeq=redmed.executeQuery();
                                             while(distanciaredpeq.next()){
                                                 int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
@@ -766,8 +768,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                         break;
                                     case "Grande":                                                                                            
                                         if(galerascosechadas[0]==0){
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredg+") order by `distanciagaleras`.`distancia`desc");
-                                            ResultSet distanciaredpeq=redpeq.executeQuery();
+                                            PreparedStatement redgran= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredg+") order by `distanciagaleras`.`distancia`desc");
+                                            ResultSet distanciaredpeq=redgran.executeQuery();
                                             while(distanciaredpeq.next()){
                                                 int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
@@ -786,8 +788,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 }
                                             }
                                         }else{
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredg+") order by `distanciagaleras`.`distancia` asc");
-                                            ResultSet distanciaredpeq=redpeq.executeQuery();
+                                            PreparedStatement redgran= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredg+") order by `distanciagaleras`.`distancia` asc");
+                                            redgran.setInt(1, galerascosechadas[0]);
+                                            ResultSet distanciaredpeq=redgran.executeQuery();
                                             while(distanciaredpeq.next()){
                                                 int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
