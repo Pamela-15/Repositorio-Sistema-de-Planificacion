@@ -766,8 +766,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 float total=Integer.parseInt(galeras[p][1]);
                                                 while(errorp < 1.0001 && tamanop<(tamañored[dia][3]-uniongalerasp)){
                                                     uniongalerasp++;
-                                                    p=idgalera[java.lang.Math.round(distanciap[tamanop+uniongalerasp][0])];//revisar
-                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    p=idgalera[java.lang.Math.round(distanciap[tamanop+uniongalerasp][0])];
+                                                    total=total+Integer.parseInt(galeras[p][1]);
                                                     float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                     errorp=errorcompilado;
                                                     if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
@@ -875,8 +875,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 float total=Integer.parseInt(galeras[p][1]);
                                                 while(errorp < 1.0001 && tamanop<(tamañored[dia][4]-uniongalerasp)){
                                                     uniongalerasp++;
-                                                    p=idgalera[java.lang.Math.round(distanciam[tamanop+uniongalerasp][0])];//revisar
-                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    p=idgalera[java.lang.Math.round(distanciam[tamanop+uniongalerasp][0])];
+                                                    total=total+Integer.parseInt(galeras[p][1]);
                                                     float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                     errorp=errorcompilado;
                                                     if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
@@ -984,8 +984,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 float total=Integer.parseInt(galeras[p][1]);
                                                 while(errorp < 1.0001 && tamanop<(tamañored[dia][4]-uniongalerasp)){
                                                     uniongalerasp++;
-                                                    p=idgalera[java.lang.Math.round(distanciag[tamanop+uniongalerasp][0])];//revisar
-                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    p=idgalera[java.lang.Math.round(distanciag[tamanop+uniongalerasp][0])];
+                                                    total=total+Integer.parseInt(galeras[p][1]);
                                                     float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                     errorp=errorcompilado;
                                                     if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
