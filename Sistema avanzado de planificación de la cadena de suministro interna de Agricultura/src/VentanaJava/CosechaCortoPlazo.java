@@ -550,12 +550,12 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 }
                 resultadogalerasdisponibles.close();
                 galerasdisponibles.close();
-                String galerasredp="0", galerasredm="0", galerasredg="0";
+                String galerasredp="0", galerasredm="0", galerasredg="0", galerasredptotal="0", galerasredpnorte="0", galerasredmtotal="0", galerasredmnorte="0", galerasredgnorte="0", galerasredgtotal="0";
                 float[][] pesoproyectado= new float [7][cantidadgalerasingresadas];
                 int[][] redp=new int[7][cantidadgalerasingresadas];
                 int[][] redg=new int[7][cantidadgalerasingresadas];
                 int[][] redm=new int[7][cantidadgalerasingresadas];
-                int[][] tamañored=new int[7][3];
+                int[][] tamañored=new int[7][6];
                 for(int r=0;r<7;r++){
                    tamañored[r][0]=0;
                    tamañored[r][1]=0;
@@ -607,26 +607,59 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                pesoA=pesoA+(dpesocercano*variablespp[q][6-(3*c)]*variablespp[q][7-(3*c)]*variablespp[q][8-(3*c)]);
                                break;
                        }
-                       pesoproyectado[r][q]=pesoA * variablespp[q][21] + Float.parseFloat (galeras[h][3]);
-                       
-                        if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[0][2])&& pesoproyectado[r][q]<Float.parseFloat(rangospredeterminado[0][1])){
-                                galerasredp=galerasredp+","+galeras[q][8];
-                                redp[r][tamañored[r][0]]=q;
-                                tamañored[r][0]++;
-                        }
-                        if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[1][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[1][1])){
-                                galerasredm=galerasredm+","+galeras[q][8];
-                                redm[r][tamañored[r][1]]=q;
-                                tamañored[r][1]++;
-                        }
-                        if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[2][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[2][1])){
-                                galerasredg=galerasredg+","+galeras[q][8];
-                                redg[r][tamañored[r][2]]=q;
-                                tamañored[r][2]++;
+                       pesoproyectado[r][q]=pesoA * variablespp[q][21] + Float.parseFloat (galeras[q][3]);
+                        if(!galeras[h][7].equals("Periferica")){
+                            if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[0][2])&& pesoproyectado[r][q]<Float.parseFloat(rangospredeterminado[0][1])){
+                                     galerasredp=galerasredp+","+galeras[q][8];
+                                     galerasredptotal=galerasredptotal+","+galeras[q][8];
+                                     //redp[r][tamañored[r][0]]=q;
+                                     tamañored[r][0]++;
+                            }
+                            if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[1][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[1][1])){
+                                     galerasredm=galerasredm+","+galeras[q][8];
+                                     galerasredmtotal=galerasredmtotal+","+galeras[q][8];
+                                     //redm[r][tamañored[r][1]]=q;
+                                     tamañored[r][1]++;
+                            }
+                             if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[2][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[2][1])){
+                                     galerasredg=galerasredg+","+galeras[q][8];
+                                     galerasredgtotal=galerasredgtotal+","+galeras[q][8];
+                                     //redg[r][tamañored[r][2]]=q;
+                                     tamañored[r][2]++;
+                            }
+                        }else{
+                            if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[0][2])&& pesoproyectado[r][q]<Float.parseFloat(rangospredeterminado[0][1])){
+                                     galerasredpnorte=galerasredpnorte+","+galeras[q][8];
+                                     galerasredptotal=galerasredptotal+","+galeras[q][8];
+                                     tamañored[r][3]++;
+                            }
+                            if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[1][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[1][1])){
+                                     galerasredmnorte=galerasredmnorte+","+galeras[q][8];
+                                     galerasredmtotal=galerasredmtotal+","+galeras[q][8];
+                                     tamañored[r][4]++;
+                            }
+                             if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[2][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[2][1])){
+                                     galerasredgnorte=galerasredgnorte+","+galeras[q][8];
+                                     galerasredgtotal=galerasredgtotal+","+galeras[q][8];
+                                     tamañored[r][5]++;
+                            }
                         }
                    
-                   } 
+                   }
+                    if(tamañored[r][3]==0){
+                        galerasredpnorte=galerasredp;
+                        tamañored[r][3]=tamañored[r][0];
+                    }
+                    if(tamañored[r][4]==0){
+                        galerasredmnorte=galerasredm;
+                        tamañored[r][4]=tamañored[r][1];
+                    }
+                    if(tamañored[r][5]==0){
+                        galerasredgnorte=galerasredg;
+                        tamañored[r][5]=tamañored[r][2];
+                    }
                 }
+                    
                 //LA ELECCION DE GALERAS
                 String [][][] planta =new String[7][16][6];
                 for(int diax=0;diax<7;diax++){
@@ -669,10 +702,18 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 String horainiciomatanza="12:00:00";
                 Date[] cuadrilla=new Date[3];
                 int[] galerascosechadas=new int[3];
-                
+                int tamanop=0;
+                int tamanom=0;
+                int tamanog=0;
                 
                 for (int dia=0;dia<7;dia++){
+                    SimpleDateFormat formatohora=new SimpleDateFormat("HH:mm:ss");
+                    String horainicioplanta="19:00:00";
+                    Calendar horacubierta = calendar.getInstance();
+                    horacubierta.setTime(formatohora.parse(horainicioplanta));
+                    Date horasllegadaplanta=horacubierta.getTime();
                     int camionesusados=0;
+                    int n=0;
                     cuadrilla[0]= hcero.parse(horainiciomatanza);
                     cuadrilla[1]= hcero.parse(horainiciomatanza);
                     cuadrilla[2]= hcero.parse(horainiciomatanza);
@@ -682,29 +723,79 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     for(int cambios=0;cambios<tamañosecuenciautilizar[dia];cambios++){
                         int galeramejor=0;
                         float mep=100;
-                        if((camionesusados+Integer.parseInt(planta[dia][cambios][4]))<23){
+                        int indicadorcompiladas=0;
+                        tamanop=0;
+                        float cantidadcosechar=0;
+                        float tiempo=0;
+                        if((camionesusados+Integer.parseInt(planta[dia][cambios][4]))<=23){
                             if((cuadrilla[0].before(cuadrilla[1])||cuadrilla[0].equals(cuadrilla[1]))&&(cuadrilla[0].before(cuadrilla[2])||cuadrilla[0].equals(cuadrilla[2]))){
                                 switch(planta[dia][cambios][1]){
                                     case "Pequeño":
+                                        float[][] distanciap = new float[(tamañored[dia][0]+tamañored[dia][3])][3];
                                         if(galerascosechadas[0]==0){
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredp+") order by `distanciagaleras`.`distancia`desc");
+                                            distanciap= new float[tamañored[dia][3]][3];
+                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredpnorte+") order by `distanciagaleras`.`distancia`desc");
                                             ResultSet distanciaredpeq=redpeq.executeQuery();
                                             while(distanciaredpeq.next()){
-                                                int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
+                                                distanciap[tamanop][0]=distanciaredpeq.getFloat("galeraentrante");
+                                                distanciap[tamanop][1]=distanciaredpeq.getFloat("distancia");
+                                                distanciap[tamanop][2]=distanciaredpeq.getFloat("tiempo");
+                                                tamanop++;
+                                            }
+                                            distanciaredpeq.close();
+                                            redpeq.close();
+                                            for(tamanop=0;tamanop<tamañored[dia][3];tamanop++){
+                                                int p=idgalera[java.lang.Math.round(distanciap[tamanop][0])];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                 float errorpraleado = ((Integer.parseInt(galeras[p][1])*raleo)-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
-                                                if(!galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
-                                                }
-                                                if(galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
-                                                }
                                                 if(galeras[p][10].equals(null)&& Math.abs(errorpraleado)<mep){
-                                                    galeramejor=p;
+                                                    galeramejor=java.lang.Math.round(distanciap[tamanop][0]);
+                                                    indicadorcompiladas=0;
+                                                    cantidadcosechar=Integer.parseInt(galeras[p][1]);
+                                                    tiempo=distanciap[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
+                                                if(Math.abs(errorp)<mep){
+                                                    galeramejor=java.lang.Math.round(distanciap[tamanop][0]);
+                                                    indicadorcompiladas=0;
+                                                    cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
+                                                    tiempo=distanciap[tamanop][2];
+                                                    mep=Math.abs(errorp);
+                                                }
+                                                int uniongalerasp=0;
+                                                float total=Integer.parseInt(galeras[p][1]);
+                                                while(errorp < 1.0001 && tamanop<(tamañored[dia][3]-uniongalerasp)){
+                                                    uniongalerasp++;
+                                                    p=idgalera[java.lang.Math.round(distanciap[tamanop+uniongalerasp][0])];//revisar
+                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
+                                                    errorp=errorcompilado;
+                                                    if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
+                                                        errorp=2;
+                                                    } else if(errorcompilado>=1 && Math.abs(errorpraleado)<mep){    
+                                                        galeramejor=java.lang.Math.round(distanciap[tamanop][0]);//revisar
+                                                        indicadorcompiladas=uniongalerasp;
+                                                        cantidadcosechar=total;
+                                                        tiempo=distanciap[tamanop][2];
+                                                        mep=Math.abs(errorcompilado);
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+                                            if(indicadorcompiladas==0){
+                                                planborradorcosecha[dia][n][0]=Integer.toString(cambios);
+                                                planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
+                                                planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][5]);
+                                                planborradorcosecha[dia][n][3]=Float.toString(cantidadcosechar);
+                                                planborradorcosecha[dia][n][4]=Float.toString(cantidadcosechar/2880);
+                                                planborradorcosecha[dia][n][5]=horasllegadaplanta.toString();
+                                                planborradorcosecha[dia][n][6]=Integer.toString(galeramejor);
+                                                planborradorcosecha[dia][n][7]="1";
+                                                horacubierta.setTime(horasllegadaplanta);
+                                                horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][2])*60)));
+                                                cuadrilla[0]=horacubierta.getTime();
+                                                planborradorcosecha[dia][n][8]=cuadrilla[0].toString();
                                             }
                                         }else{
                                             PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredp+") order by `distanciagaleras`.`distancia` asc");
@@ -731,25 +822,71 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                         }
                                         break;
                                     case "Mediano":
+                                        float[][] distanciam = new float[tamañored[dia][1]+tamañored[dia][4]][3];
                                         if(galerascosechadas[0]==0){
-                                            PreparedStatement redmed= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredm+") order by `distanciagaleras`.`distancia`desc");
-                                            ResultSet distanciaredpeq=redmed.executeQuery();
-                                            while(distanciaredpeq.next()){
-                                                int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
+                                            distanciam=new float[tamañored[dia][4]][3];
+                                            PreparedStatement redmed= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredmnorte+") order by `distanciagaleras`.`distancia`desc");
+                                            ResultSet distanciaredmed=redmed.executeQuery();
+                                            while(distanciaredmed.next()){
+                                                distanciam[tamanop][0]=distanciaredmed.getFloat("galeraentrante");
+                                                distanciam[tamanop][1]=distanciaredmed.getFloat("distancia");
+                                                distanciam[tamanop][2]=distanciaredmed.getFloat("tiempo");
+                                                tamanop++;
+                                            }
+                                            distanciaredmed.close();
+                                            redmed.close();
+                                            for(tamanop=0;tamanop<tamañored[dia][4];tamanop++){
+                                                int p=idgalera[java.lang.Math.round(distanciam[tamanop][0])];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                 float errorpraleado = ((Integer.parseInt(galeras[p][1])*raleo)-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
-                                                if(!galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
-                                                }
-                                                if(galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
-                                                }
                                                 if(galeras[p][10].equals(null)&& Math.abs(errorpraleado)<mep){
-                                                    galeramejor=p;
+                                                    galeramejor=java.lang.Math.round(distanciam[tamanop][0]);
+                                                    indicadorcompiladas=0;
+                                                    cantidadcosechar=Integer.parseInt(galeras[p][1]);
+                                                    tiempo=distanciam[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
+                                                if(Math.abs(errorp)<mep){
+                                                    galeramejor=java.lang.Math.round(distanciam[tamanop][0]);
+                                                    indicadorcompiladas=0;
+                                                    cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
+                                                    tiempo=distanciam[tamanop][2];
+                                                    mep=Math.abs(errorp);
+                                                }
+                                                int uniongalerasp=0;
+                                                float total=Integer.parseInt(galeras[p][1]);
+                                                while(errorp < 1.0001 && tamanop<(tamañored[dia][4]-uniongalerasp)){
+                                                    uniongalerasp++;
+                                                    p=idgalera[java.lang.Math.round(distanciam[tamanop+uniongalerasp][0])];//revisar
+                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
+                                                    errorp=errorcompilado;
+                                                    if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
+                                                        errorp=2;
+                                                    } else if(errorcompilado>=1 && Math.abs(errorpraleado)<mep){    
+                                                        galeramejor=java.lang.Math.round(distanciam[tamanop][0]);//revisar
+                                                        indicadorcompiladas=uniongalerasp;
+                                                        cantidadcosechar=total;
+                                                        tiempo=distanciam[tamanop][2];
+                                                        mep=Math.abs(errorcompilado);
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+                                            if(indicadorcompiladas==0){
+                                                planborradorcosecha[dia][n][0]=Integer.toString(cambios);
+                                                planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
+                                                planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][6]);
+                                                planborradorcosecha[dia][n][3]=Float.toString(cantidadcosechar);
+                                                planborradorcosecha[dia][n][4]=Float.toString(cantidadcosechar/2592);
+                                                planborradorcosecha[dia][n][5]=horasllegadaplanta.toString();
+                                                planborradorcosecha[dia][n][6]=Integer.toString(galeramejor);
+                                                planborradorcosecha[dia][n][7]="1";
+                                                horacubierta.setTime(horasllegadaplanta);
+                                                horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][2])*60)));
+                                                cuadrilla[0]=horacubierta.getTime();
+                                                planborradorcosecha[dia][n][8]=cuadrilla[0].toString();
                                             }
                                         }else{
                                             PreparedStatement redmed= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredm+") order by `distanciagaleras`.`distancia` asc");
@@ -775,26 +912,72 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                         
                                         }
                                         break;
-                                    case "Grande":                                                                                            
+                                    case "Grande":
+                                        float[][] distanciag = new float[tamañored[dia][2]+tamañored[dia][5]][3];
                                         if(galerascosechadas[0]==0){
-                                            PreparedStatement redgran= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredg+") order by `distanciagaleras`.`distancia`desc");
-                                            ResultSet distanciaredpeq=redgran.executeQuery();
-                                            while(distanciaredpeq.next()){
-                                                int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
+                                            distanciag=new float[tamañored[dia][5]][3];
+                                            PreparedStatement redgra= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredgnorte+") order by `distanciagaleras`.`distancia`desc");
+                                            ResultSet distanciaredgra=redgra.executeQuery();
+                                            while(distanciaredgra.next()){
+                                                distanciag[tamanop][0]=distanciaredgra.getFloat("galeraentrante");
+                                                distanciag[tamanop][1]=distanciaredgra.getFloat("distancia");
+                                                distanciag[tamanop][2]=distanciaredgra.getFloat("tiempo");
+                                                tamanop++;
+                                            }
+                                            distanciaredgra.close();
+                                            redgra.close();
+                                            for(tamanop=0;tamanop<tamañored[dia][4];tamanop++){
+                                                int p=idgalera[java.lang.Math.round(distanciag[tamanop][0])];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                 float errorpraleado = ((Integer.parseInt(galeras[p][1])*raleo)-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
-                                                if(!galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
-                                                }
-                                                if(galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
-                                                }
                                                 if(galeras[p][10].equals(null)&& Math.abs(errorpraleado)<mep){
-                                                    galeramejor=p;
+                                                    galeramejor=java.lang.Math.round(distanciag[tamanop][0]);
+                                                    indicadorcompiladas=0;
+                                                    cantidadcosechar=Integer.parseInt(galeras[p][1]);
+                                                    tiempo=distanciag[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
+                                                if(Math.abs(errorp)<mep){
+                                                    galeramejor=java.lang.Math.round(distanciag[tamanop][0]);
+                                                    indicadorcompiladas=0;
+                                                    cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
+                                                    tiempo=distanciag[tamanop][2];
+                                                    mep=Math.abs(errorp);
+                                                }
+                                                int uniongalerasp=0;
+                                                float total=Integer.parseInt(galeras[p][1]);
+                                                while(errorp < 1.0001 && tamanop<(tamañored[dia][4]-uniongalerasp)){
+                                                    uniongalerasp++;
+                                                    p=idgalera[java.lang.Math.round(distanciag[tamanop+uniongalerasp][0])];//revisar
+                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
+                                                    errorp=errorcompilado;
+                                                    if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
+                                                        errorp=2;
+                                                    } else if(errorcompilado>=1 && Math.abs(errorpraleado)<mep){    
+                                                        galeramejor=java.lang.Math.round(distanciag[tamanop][0]);//revisar
+                                                        indicadorcompiladas=uniongalerasp;
+                                                        cantidadcosechar=total;
+                                                        tiempo=distanciag[tamanop][2];
+                                                        mep=Math.abs(errorcompilado);
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+                                            if(indicadorcompiladas==0){
+                                                planborradorcosecha[dia][n][0]=Integer.toString(cambios);
+                                                planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
+                                                planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][6]);
+                                                planborradorcosecha[dia][n][3]=Float.toString(cantidadcosechar);
+                                                planborradorcosecha[dia][n][4]=Float.toString(cantidadcosechar/2592);
+                                                planborradorcosecha[dia][n][5]=horasllegadaplanta.toString();
+                                                planborradorcosecha[dia][n][6]=Integer.toString(galeramejor);
+                                                planborradorcosecha[dia][n][7]="1";
+                                                horacubierta.setTime(horasllegadaplanta);
+                                                horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][2])*60)));
+                                                cuadrilla[0]=horacubierta.getTime();
+                                                planborradorcosecha[dia][n][8]=cuadrilla[0].toString();
                                             }
                                         }else{
                                             PreparedStatement redgran= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredg+") order by `distanciagaleras`.`distancia` asc");
