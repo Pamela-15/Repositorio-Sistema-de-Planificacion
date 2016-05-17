@@ -630,31 +630,39 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 //LA ELECCION DE GALERAS
                 String [][][] planta =new String[7][16][6];
                 for(int diax=0;diax<7;diax++){
-                    int horasinicio=6;
+                    SimpleDateFormat horacero=new SimpleDateFormat("HH:mm:ss");
+                    String horainicioprocesamiento="19:00:00";
+                    Calendar horarequeridaplanta = calendar.getInstance();
+                    horarequeridaplanta.setTime(horacero.parse(horainicioprocesamiento));
+                    Date horasinicio=horarequeridaplanta.getTime();
                     for(int secx=0;secx<tamañosecuenciautilizar[diax];secx++){
-                        planta[diax][secx][0]=Integer.toString(secx+1);
-                        planta[diax][secx][1]=secuenciautilizar[secx][0][diax];
-                        planta[diax][secx][2]=secuenciautilizar[secx][1][diax];
-                        planta[diax][secx][5]=Integer.toString(horasinicio+Integer.parseInt(secuenciautilizar[secx][0][diax]));
+                        planta[diax][secx][0]=Integer.toString(secx+1); //numero secuencia
+                        planta[diax][secx][1]=secuenciautilizar[secx][0][diax]; //rango
+                        planta[diax][secx][2]=secuenciautilizar[secx][1][diax]; //horas de procesamiento
+                        planta[diax][secx][5]=horasinicio.toString(); //hora. revisarlo
                         switch (planta[diax][secx][0]){
                             case "Grande": 
-                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][0])*necesidadActualizadaAves[diax][7]);//cantidad de aves
-                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][2])/2304);//cantidad de camiones
+                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][2])*necesidadActualizadaAves[diax][7]);//cantidad de aves
+                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][3])/2304);//cantidad de camiones
                                 break;
                             case "Mediano":
-                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][0])*necesidadActualizadaAves[diax][6]);
-                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][2])/2592);
+                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][2])*necesidadActualizadaAves[diax][6]);
+                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][3])/2592);
                                 break;
                             case "Pequeño":
-                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][0])*necesidadActualizadaAves[diax][5]);
-                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][2])/2880);
+                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][2])*necesidadActualizadaAves[diax][5]);
+                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][3])/2880);
                                 break;
                             default:
-                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][0])*8400);
-                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][2])/2016);
+                                planta[diax][secx][3]=Float.toString(Float.parseFloat(planta[diax][secx][2])*8400);
+                                planta[diax][secx][4]=Float.toString(Float.parseFloat(planta[diax][secx][3])/2016);
                                 break;
                         }
+                        horarequeridaplanta.setTime(horasinicio);
+                        horarequeridaplanta.add(Calendar.HOUR,(Integer.parseInt(planta[diax][secx][2])) );
+                        horasinicio=horarequeridaplanta.getTime();
                     }
+                    
                 }
                 String [][][] planborradorcosecha = new String[7][20][9];
                 SimpleDateFormat hcero=new SimpleDateFormat("HH:mm:ss");
@@ -662,11 +670,12 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 Date[] cuadrilla=new Date[3];
                 int[] galerascosechadas=new int[3];
                 
-                cuadrilla[0]= hcero.parse(horainiciomatanza);
-                cuadrilla[1]= hcero.parse(horainiciomatanza);
-                cuadrilla[2]= hcero.parse(horainiciomatanza);
+                
                 for (int dia=0;dia<7;dia++){
                     int camionesusados=0;
+                    cuadrilla[0]= hcero.parse(horainiciomatanza);
+                    cuadrilla[1]= hcero.parse(horainiciomatanza);
+                    cuadrilla[2]= hcero.parse(horainiciomatanza);
                     galerascosechadas[0]=0;
                     galerascosechadas[1]=0;
                     galerascosechadas[2]=0;
