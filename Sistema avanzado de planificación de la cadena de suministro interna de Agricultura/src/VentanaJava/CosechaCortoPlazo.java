@@ -812,15 +812,24 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     galeramejor=p;
                                                     mep=Math.abs(errorp);
                                                 }
-                                                if(galeras[p][10].equals(null)&& Math.abs(errorpraleado)<mep){
-                                                    galeramejor=p;
-                                                    mep=Math.abs(errorp);
+                                                float total=Integer.parseInt(galeras[p][1]);
+                                                for(int ws=1;ws<4;ws++){
+                                                    p=idgalera[distanciaredpeq.getInt("galeraentrante")+ws];//revisar
+                                                    total=total+Integer.parseInt(galeras[p][1]);//revisar
+                                                    float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
+                                                    if(errorcompilado>1 && Math.abs(errorpraleado)>mep){
+                                                        ws=4;
+                                                    } else if(errorcompilado>1 && Math.abs(errorpraleado)<mep){    
+                                                        galeramejor=p;
+                                                        mep=Math.abs(errorp);
+                                                    }
                                                 }
                                             }
                                         
                                         }
                                         break;
                                 }
+                                //
                             } else if((cuadrilla[1].before(cuadrilla[0])||cuadrilla[1].equals(cuadrilla[0]))&&(cuadrilla[1].before(cuadrilla[2])||cuadrilla[1].equals(cuadrilla[2]))){
                             
                             } else {
