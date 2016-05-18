@@ -1097,19 +1097,31 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         jDialog1.setVisible(false);
         mostrarGenerarReporte(idUsuarioAutenticado);
     }//GEN-LAST:event_GenerarReporteActionPerformed
-    public void SeleccionarGalera(int camionesusados, String[][][] planta, int rango, int cuadrilla, int horaliberacioncuadrilla, int dia, int[] galerascosechadas,int[][] tamañored, String[] redgaleras, int n, String[][] galeras, int cambios, String[] idgaleras, String[][][] planborradorcosecha){
-            int galeramejor=0;
-            float mep=100;
-                        int indicadorcompiladas=0;
-                        int indicadorraleo=0;
-                        int tamanop=0;
-                        float cantidadcosechar=0;
+    
+    public void SeleccionarGalera(int raleo,java.sql.Date sqlraleoA, int camionesusados, String[][][] planta, float[][] necesidadActualizadaAves,int rango, int cuadrilla, Date horaliberacioncuadrilla, int dia, int[] galerascosechadas,int[][] tamañored, String[][][] redgaleras, int n, String[][] galeras, int cambios, int[] idgalera, String[][][] planborradorcosecha, Date horasllegadaplanta){
+        String driver = "com.mysql.jdbc.Driver";
+        String connection = "jdbc:mysql://localhost:3306/cargill";
+        String user = "root";
+        String password = "admi";
+        try {
+            Class.forName(driver);
+            Connection con = DriverManager.getConnection(connection, user, password);
+                           
+            if (!con.isClosed()) {    
+                Calendar horacubierta = Calendar.getInstance();;
+                SimpleDateFormat formatodeltexto=new SimpleDateFormat("yyyy-MM-dd");
+                int galeramejor=0;
+                float mep=100;
+                int indicadorcompiladas=0;
+                int indicadorraleo=0;
+                int tamanop=0;
+                float cantidadcosechar=0;
                         float tiempoentregaleras=0;
                         if((camionesusados+Integer.parseInt(planta[dia][cambios][4]))<=23){
                         float[][] distanciap = new float[(tamañored[dia][0]+tamañored[dia][3])][3];
                                         if(galerascosechadas[0]==0){
                                             distanciap= new float[tamañored[dia][3]][3];
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+galerasredpnorte+") order by `distanciagaleras`.`distancia`desc");
+                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+redgaleras[rango][cuadrilla][dia]+") order by `distanciagaleras`.`distancia`desc");
                                             ResultSet distanciaredpeq=redpeq.executeQuery();
                                             while(distanciaredpeq.next()){
                                                 distanciap[tamanop][0]=distanciaredpeq.getFloat("galeraentrante");
@@ -1171,8 +1183,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 planborradorcosecha[dia][n][7]="1";
                                                 horacubierta.setTime(horasllegadaplanta);
                                                 horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][2])*60)));
-                                                cuadrilla[0]=horacubierta.getTime();
-                                                planborradorcosecha[dia][n][8]=cuadrilla[0].toString();
+                                                horaliberacioncuadrilla=horacubierta.getTime();
+                                                planborradorcosecha[dia][n][8]=horaliberacioncuadrilla.toString();
                                                 n++;
                                                 camionesusados=camionesusados+Integer.parseInt(planborradorcosecha[dia][n][4]);
                                                 galerascosechadas[0]=(java.lang.Math.round(distanciap[galeramejor][0]));
@@ -1186,22 +1198,30 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     planborradorcosecha[dia][yu+n][5]=horasllegadaplanta.toString();
                                                     planborradorcosecha[dia][yu+n][6]=Integer.toString(java.lang.Math.round(distanciap[galeramejor+yu][0]));
                                                     planborradorcosecha[dia][yu+n][7]="1";
+                                                    
                                                     horacubierta.setTime(horasllegadaplanta);
                                                     horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round((cantidadcosechar/necesidadActualizadaAves[dia][5])*60)));
-                                                    cuadrilla[0]=horacubierta.getTime();
-                                                    planborradorcosecha[dia][yu+n][8]=cuadrilla[0].toString();
+                                                    horaliberacioncuadrilla=horacubierta.getTime();
+                                                    planborradorcosecha[dia][yu+n][8]=horaliberacioncuadrilla.toString();
                                                 }
                                                 n=n+indicadorcompiladas;
                                                 camionesusados=camionesusados+Integer.parseInt(planborradorcosecha[dia][n][4]);
                                                 galerascosechadas[0]=(java.lang.Math.round(distanciap[galeramejor][0]));
                                             }
                                         }else{
-                                            PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredp+") order by `distanciagaleras`.`distancia` asc");
-                                            redpeq.setInt(1, galerascosechadas[0]);
-                                            ResultSet distanciaredpeq=redpeq.executeQuery();
-                                            while(distanciaredpeq.next()){
-                                                int p=idgalera[distanciaredpeq.getInt("galeraentrante")];
-                                                float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
+                                            PreparedStatement red= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+redgaleras[rango][4][dia]+") order by `distanciagaleras`.`distancia` asc");
+                                            red.setInt(1, galerascosechadas[cuadrilla]);
+                                            ResultSet distanciared=red.executeQuery();
+                                            while(distanciared.next()){
+                                                distanciap[tamanop][0]=distanciared.getFloat("galeraentrante");
+                                                distanciap[tamanop][1]=distanciared.getFloat("distancia");
+                                                distanciap[tamanop][2]=distanciared.getFloat("tiempo");
+                                                tamanop++;    
+                                            }
+                                            red.close();
+                                            distanciared.close();
+                                                
+                                            /*    float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                 float errorpraleado = ((Integer.parseInt(galeras[p][1])*raleo)-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                 if(!galeras[p][10].equals(null)&& Math.abs(errorp)<mep){
                                                     galeramejor=p;
@@ -1215,10 +1235,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     galeramejor=p;
                                                     mep=Math.abs(errorp);
                                                 }
-                                            }
+                                            */
                                         }
                         }
-                                        
+                }        
+            } catch (Exception e) {
+            jDialog1.setVisible(false);
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+        }                            
                                    
                                     
     
