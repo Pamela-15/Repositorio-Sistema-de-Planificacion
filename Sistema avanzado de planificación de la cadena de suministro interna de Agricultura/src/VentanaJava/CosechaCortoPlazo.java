@@ -141,7 +141,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 
                 int o;
                 float raleo;
-                float[] demandanum = new float[13];
+                float[] demandanum = new float[7];
                 float[] desglosesemanal = new float[7];
                 java.util.Date fechaA;
                 java.sql.Date fechaB;
@@ -169,20 +169,22 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 demanda.setInt(1,semana);
                 ResultSet resultadodemanda = demanda.executeQuery();
                 resultadodemanda.next();
-                float necesidad=resultadodemanda.getInt("Demanda");
+                float necesidad=resultadodemanda.getFloat("Demanda");
                 resultadodemanda.close();
                 PreparedStatement demanda1 = con.prepareStatement ("SELECT `demanda`.`Demanda` FROM `cargill`.`demanda` where `demanda`.`Semana`=?;");
                 demanda.setInt(1,semana+1);
                 ResultSet resultadodemanda1 = demanda1.executeQuery();
                 resultadodemanda1.next();
-                float necesidad1=resultadodemanda1.getInt("Demanda");
+                float necesidad1=resultadodemanda1.getFloat("Demanda");
                 resultadodemanda1.close();
-                
-                for(o=diasemana;o<=7;o++){
-                    demandanum[o-1]=(float)(necesidad*desglosesemanal[o+2]);
+                int desglosediariosemanal=0;
+                for(o=diasemana;o<7;o++){
+                    demandanum[desglosediariosemanal]=necesidad*desglosesemanal[o];
+                    desglosediariosemanal++;
                 }
-                for(o=7;o<diasemana-1;o++){
-                    demandanum[o]=(float)(necesidad1*desglosesemanal[o+2]);
+                for(o=0;o<diasemana;o++){
+                    demandanum[desglosediariosemanal]=necesidad1*desglosesemanal[o];
+                    desglosediariosemanal++;
                 }
                 demanda.close();
                 String[][] rangospredeterminado=new String[4][5];
@@ -720,13 +722,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     galerascosechadas[0]=0;
                     galerascosechadas[1]=0;
                     galerascosechadas[2]=0;
+                    int secuenciasUsadas23=0;
                     for(int cambios=0;cambios<tamañosecuenciautilizar[dia];cambios++){
                         int galeramejor=0;
                         float mep=100;
                         int indicadorcompiladas=0;
                         tamanop=0;
                         float cantidadcosechar=0;
-                        float tiempo=0;
+                        float tiempoentregaleras=0;
                         if((camionesusados+Integer.parseInt(planta[dia][cambios][4]))<=23){
                             if((cuadrilla[0].before(cuadrilla[1])||cuadrilla[0].equals(cuadrilla[1]))&&(cuadrilla[0].before(cuadrilla[2])||cuadrilla[0].equals(cuadrilla[2]))){
                                 switch(planta[dia][cambios][1]){
@@ -752,19 +755,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     galeramejor=tamanop;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1]);
-                                                    tiempo=distanciap[tamanop][2];
-                                                    mep=Math.abs(errorp);
+                                                    tiempoentregaleras=distanciap[tamanop][2];
+                                                    mep=Math.abs(errorpraleado);
                                                 }
                                                 if(Math.abs(errorp)<mep){
                                                     galeramejor=tamanop;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
-                                                    tiempo=distanciap[tamanop][2];
+                                                    tiempoentregaleras=distanciap[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
                                                 int uniongalerasp=0;
                                                 float total=Integer.parseInt(galeras[p][1]);
-                                                while(errorp < 1.0001 && tamanop<(tamañored[dia][3]-uniongalerasp)){
+                                                while(errorp < 1.0001 && tamanop<(tamañored[dia][3]-uniongalerasp) && distanciap[tamanop][1]==distanciap[tamanop+uniongalerasp+1][1]){
                                                     uniongalerasp++;
                                                     p=idgalera[java.lang.Math.round(distanciap[tamanop+uniongalerasp][0])];
                                                     total=total+Integer.parseInt(galeras[p][1]);
@@ -772,11 +775,11 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     errorp=errorcompilado;
                                                     if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
                                                         errorp=2;
-                                                    } else if(errorcompilado>=1 && Math.abs(errorpraleado)<mep){    
+                                                    } else if(errorcompilado>=1 && Math.abs(errorcompilado)<mep){    
                                                         galeramejor=tamanop;//revisar
                                                         indicadorcompiladas=uniongalerasp+1;
                                                         cantidadcosechar=total;
-                                                        tiempo=distanciap[tamanop][2];
+                                                        tiempoentregaleras=distanciap[tamanop][2];
                                                         mep=Math.abs(errorcompilado);
                                                     }
                                                     
@@ -797,23 +800,26 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 cuadrilla[0]=horacubierta.getTime();
                                                 planborradorcosecha[dia][n][8]=cuadrilla[0].toString();
                                                 n++;
+                                                camionesusados=camionesusados+Integer.parseInt(planborradorcosecha[dia][n][4]);
+                                                galerascosechadas[0]=(java.lang.Math.round(distanciap[galeramejor][0]));
                                             }else{
                                                 for(int yu=0;yu<indicadorcompiladas;yu++){
                                                     planborradorcosecha[dia][yu+n][0]=Integer.toString(cambios);
                                                     planborradorcosecha[dia][yu+n][1]=planta[dia][cambios][1];
                                                     planborradorcosecha[dia][yu+n][2]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distanciap[galeramejor+yu][0])]][1])/necesidadActualizadaAves[dia][5]);
-                                                    planborradorcosecha[dia][yu+n][3]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distanciap[galeramejor][0])]][1]));
-                                                    planborradorcosecha[dia][yu+n][4]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distanciap[galeramejor][0])]][1])/2880);
+                                                    planborradorcosecha[dia][yu+n][3]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distanciap[galeramejor+yu][0])]][1]));
+                                                    planborradorcosecha[dia][yu+n][4]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distanciap[galeramejor+yu][0])]][1])/2880);
                                                     planborradorcosecha[dia][yu+n][5]=horasllegadaplanta.toString();
-                                                    planborradorcosecha[dia][yu+n][6]=Integer.toString(java.lang.Math.round(distanciap[galeramejor][0]));
+                                                    planborradorcosecha[dia][yu+n][6]=Integer.toString(java.lang.Math.round(distanciap[galeramejor+yu][0]));
                                                     planborradorcosecha[dia][yu+n][7]="1";
                                                     horacubierta.setTime(horasllegadaplanta);
                                                     horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round((cantidadcosechar/necesidadActualizadaAves[dia][5])*60)));
                                                     cuadrilla[0]=horacubierta.getTime();
                                                     planborradorcosecha[dia][yu+n][8]=cuadrilla[0].toString();
-                                                    
                                                 }
                                                 n=n+indicadorcompiladas;
+                                                camionesusados=camionesusados+Integer.parseInt(planborradorcosecha[dia][n][4]);
+                                                galerascosechadas[0]=(java.lang.Math.round(distanciap[galeramejor][0]));
                                             }
                                         }else{
                                             PreparedStatement redpeq= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=? and `distanciagaleras`.`galeraentrante` in ("+galerasredp+") order by `distanciagaleras`.`distancia` asc");
@@ -861,14 +867,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     galeramejor=tamanop;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1]);
-                                                    tiempo=distanciam[tamanop][2];
+                                                    tiempoentregaleras=distanciam[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
                                                 if(Math.abs(errorp)<mep){
                                                     galeramejor=tamanop;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
-                                                    tiempo=distanciam[tamanop][2];
+                                                    tiempoentregaleras=distanciam[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
                                                 int uniongalerasp=0;
@@ -885,7 +891,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                         galeramejor=tamanop;//revisar
                                                         indicadorcompiladas=uniongalerasp;
                                                         cantidadcosechar=total;
-                                                        tiempo=distanciam[tamanop][2];
+                                                        tiempoentregaleras=distanciam[tamanop][2];
                                                         mep=Math.abs(errorcompilado);
                                                     }
                                                     
@@ -970,14 +976,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     galeramejor=tamanop;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1]);
-                                                    tiempo=distanciag[tamanop][2];
+                                                    tiempoentregaleras=distanciag[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
                                                 if(Math.abs(errorp)<mep){
                                                     galeramejor=tamanop;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
-                                                    tiempo=distanciag[tamanop][2];
+                                                    tiempoentregaleras=distanciag[tamanop][2];
                                                     mep=Math.abs(errorp);
                                                 }
                                                 int uniongalerasp=0;
@@ -994,7 +1000,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                         galeramejor=tamanop;//revisar
                                                         indicadorcompiladas=uniongalerasp+1;
                                                         cantidadcosechar=total;
-                                                        tiempo=distanciag[tamanop][2];
+                                                        tiempoentregaleras=distanciag[tamanop][2];
                                                         mep=Math.abs(errorcompilado);
                                                     }
                                                     
