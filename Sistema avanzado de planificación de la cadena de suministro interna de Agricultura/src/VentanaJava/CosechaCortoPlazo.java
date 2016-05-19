@@ -1,13 +1,20 @@
 package VentanaJava;
 
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
 import javax.swing.JOptionPane;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Arrays;
 
 public class CosechaCortoPlazo extends javax.swing.JFrame {
     int idUsuarioAutenticado;
@@ -18,6 +25,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     int n;
     int camionesusados;
     String[][] galeras;
+
+
     /**
      * Creates new form CosechaCortoPlazo
      */
@@ -730,7 +739,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     }
                     
                 }
-                
+
                 SimpleDateFormat hcero=new SimpleDateFormat("HH:mm:ss");
                 String horainiciomatanza="12:00:00";
                 
@@ -1075,6 +1084,70 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     
     
     }
+    //1- por cada día debe entrar la cantidad de camiones (de los primeros 23) que no se usaron
+    //2- secuencia a planificar (ultima de los 23 + 1)
+    //3- rango de peso de secuencia a planificar
+    //4- Cantidad de pollo requerida en la secuencia a planificar
+    //5- Camiones requeridos para secuencia a planificar según rango
+    //6- Hora requerida en planta
+    //7- Horas de procesamiento
+    
+    int galeraCosechada = 0;
+    
+    public void GestionDatosMayor23(int dia, int camionesLibres, int secuencia, String rango, int CantidadPollo, int camionesRequeridos, java.util.Date HoraRequeridaPlanta, java.util.Date HorasProcesamiento){
+        //Guardo los datos correspondientes 
+        int cantidadGalerasSecuencia = 0;
+        int secuenciaFinalizada = 0;
+        int [] idGalerasSecuencia = new int [cantidadGalerasSecuencia+1];
+        int [] cantidadCamiones = new int [cantidadGalerasSecuencia+1];
+        java.util.Date [] horaLiberacionCamiones = new java.util.Date[cantidadGalerasSecuencia+1];
+        int [] cuadrilla = new int [cantidadGalerasSecuencia+1];
+        java.util.Date [] horaLiberacionCuadrilla = new java.util.Date [cantidadGalerasSecuencia+1];
+        
+        int camionesDisponibles = 0;
+        
+        //while(camionesRequeridos - camionesLibres > camionesDisponibles){
+        
+        do{
+            try{
+            idGalerasSecuencia [cantidadGalerasSecuencia] = Integer.parseInt(planborradorcosecha[dia][galeraCosechada][6]);
+            cantidadCamiones [cantidadGalerasSecuencia] = Integer.parseInt(planborradorcosecha[dia][galeraCosechada][4]);
+            DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
+            horaLiberacionCamiones [cantidadGalerasSecuencia] = formatter.parse(planborradorcosecha[dia][galeraCosechada][5]);
+            cuadrilla [cantidadGalerasSecuencia] = Integer.parseInt(planborradorcosecha[dia][galeraCosechada][7]);
+            horaLiberacionCuadrilla [cantidadGalerasSecuencia] = formatter.parse(planborradorcosecha[dia][galeraCosechada][8]);
+            galeraCosechada++;
+            cantidadGalerasSecuencia++;
+            camionesDisponibles = camionesDisponibles + cantidadCamiones [cantidadGalerasSecuencia];
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }while(horaLiberacionCamiones[cantidadGalerasSecuencia].before(HoraRequeridaPlanta));
+
+        //Ordenar fechas de menor a mayor
+        //List b = Arrays.asList(ArrayUtils.toObject(horaLiberacionCamiones));
+        //Collections.min(b);
+
+
+        
+        
+        java.util.Date peorHoraLiberacion = new java.util.Date();
+        long milisegundosLiberacion = (peorHoraLiberacion.getTime());
+        long milisegundosRequerida = (HoraRequeridaPlanta.getTime());
+        java.sql.Time sqlLiberacion = new java.sql.Time(milisegundosLiberacion);
+        java.sql.Time sqlRequerida = new java.sql.Time(milisegundosRequerida);
+
+
+        }
+
+        
+    
+    public void SeleccionarGaleraMayor23(){
+        
+    }
+
+    
+    
     private void ConsultarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarReporteActionPerformed
         mostrarConsultarReporte(idUsuarioAutenticado);
     }//GEN-LAST:event_ConsultarReporteActionPerformed
