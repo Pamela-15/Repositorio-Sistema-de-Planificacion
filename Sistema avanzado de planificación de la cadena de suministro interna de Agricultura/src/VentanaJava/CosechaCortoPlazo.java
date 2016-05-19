@@ -502,7 +502,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 java.sql.Date[][] fechasgaleras=new java.sql.Date[cantidadgalerasingresadas][2];
                 int h=0;
                 PreparedStatement galerasdisponibles= con.prepareStatement ("SELECT `ingresos`.`idIngresos`,`ingresos`.`Fecha de raleo`, `ingresos`.`Fecha de ingreso`,`ingresos`.`Aves remanentes`,`ingresos`.`Edad de reproductora`,`ingresos`.`Aves cosechadas`,`galera`.`Nombre Granja`, `galera`.`Numero de Galera`,`galera`.`idGalera` ,`galera`.`Carrusel`,`proyeccionpeso`.`GDP1`,,`proyeccionpeso`.`GDP2`,`proyeccionpeso`.`GDP3`,`proyeccionpeso`.`GDP4`,`proyeccionpeso`.`GDP5`,,`proyeccionpeso`.`GDP6`,`proyeccionpeso`.`GDP7`,`proyeccionpeso`.`FCM1`,`proyeccionpeso`.`FCM2`,`proyeccionpeso`.`FCM3`,`proyeccionpeso`.`FCM4`,`proyeccionpeso`.`FCM5`,`proyeccionpeso`.`FCM6`,`proyeccionpeso`.`FCM7`,`proyeccionpeso`.`FCE1`,`proyeccionpeso`.`FCE2`,`proyeccionpeso`.`FCE3`,`proyeccionpeso`.`FCE4`,`proyeccionpeso`.`FCE5`,`proyeccionpeso`.`FCE6`,`proyeccionpeso`.`FCE7`,`proyeccionpeso`.`FactorCorrección`, x.fecharegistro, x.peso, x.desviacion FROM `cargill`.`ingresos` inner join `cargill`.`galera` on `galera`.`idGalera`=`ingresos`.`Galera_idGalera` inner join `cargill`.`proyeccionpeso` on `ingresos`.`Galera_idGalera`=`proyeccionpeso`.`Galera_idGalera` inner join (Select max (`pesaje`.`Fecha Registro`) as fecharegistro, max (`pesaje`.`Peso Promedio`) as peso, max (`pesaje`.`Desviación estándar_Peso`) as desviacion, `pesaje`.`Ingresos_idIngresos` as llaveingresos from `cargill`.`pesaje` group by `pesaje`.`Ingresos_idIngresos`)x on `Ingresos`.`idIngresos` = x.llaveingresos WHERE INGRESOS.`Fecha de cosecha` is null AND INGRESOS.`Fecha de ingreso`<?;");
-                galerasdisponibles.setDate(2,sqlingreso);
+                galerasdisponibles.setDate(1,sqlingreso);
                 ResultSet resultadogalerasdisponibles = galerasdisponibles.executeQuery();
                 while(resultadogalerasdisponibles.next()){
                     fechasgaleras[h][0]=resultadogalerasdisponibles.getDate("Fecha de ingreso");
@@ -728,10 +728,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 String horainiciomatanza="12:00:00";
                 Date[] cuadrilla=new Date[3];
                 int[] galerascosechadas=new int[3];
-                int tamanop=0;
-                int tamanom=0;
-                int tamanog=0;
-                
+                int tamaño=0;
                 for (int dia=0;dia<7;dia++){
                     calendar.setTime(hoy);
                     calendar.add(Calendar.DAY_OF_YEAR, -2 + dia);
@@ -757,7 +754,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         float mep=100;
                         int indicadorcompiladas=0;
                         int indicadorraleo=0;
-                        tamanop=0;
+                        tamaño=0;
                         float cantidadcosechar=0;
                         float tiempoentregaleras=0;
                         if((camionesusados+Integer.parseInt(planta[dia][cambios][4]))<=23){
@@ -810,7 +807,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         float[][] distancia = new float[tamañored[dia][9+rango]][3];
                                         if(galerascosechadas[cuadrilla]==0){
                                             distancia= new float[tamañored[dia][(3*cuadrilla)+rango]][3];
-                                            PreparedStatement red= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+redgaleras[rango][cuadrilla][dia]+") order by `distanciagaleras`.`distancia`desc");
+                                            PreparedStatement red= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+redgaleras[dia][cuadrilla][rango]+") order by `distanciagaleras`.`distancia`desc");
                                             ResultSet distanciared=red.executeQuery();
                                             while(distanciared.next()){
                                                 distancia[tamaño][0]=distanciared.getFloat("galeraentrante");
@@ -820,7 +817,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                             }
                                             distanciared.close();
                                             red.close();
-                                            for(tamaño=0;tamaño<tamañored[dia][3];tamaño++){
+                                            for(tamaño=0;tamaño<tamañored[dia][(3*cuadrilla)+rango];tamaño++){
                                                 int p=idgalera[java.lang.Math.round(distancia[tamaño][0])];
                                                 float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                 float errorpraleado = ((Integer.parseInt(galeras[p][1])*raleo)-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
@@ -832,7 +829,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     mep=Math.abs(errorpraleado);
                                                     indicadorraleo=1;
                                                 }
-                                                if(Math.abs(errorp)<mep && ((galeras[p][10].equals(null)||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
+                                                if(Math.abs(errorp)<mep && (galeras[p][11].equals(null) && (galeras[p][10].equals(null)||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
                                                     galeramejor=tamaño;
                                                     indicadorcompiladas=0;
                                                     cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
@@ -842,12 +839,17 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                 }
                                                 int uniongalerasp=0;
                                                 float total=Integer.parseInt(galeras[p][1]);
-                                                while(errorp < 1.0001 && tamaño<(tamañored[dia][3]-uniongalerasp) && distancia[tamaño][1]==distancia[tamaño+uniongalerasp+1][1]&&((galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10].equals(null)||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA))))){
+                                                int gama=0;
+                                                float errorcompilado=0;
+                                                while(errorp < 1.0001 && tamaño<(tamañored[dia][3]-uniongalerasp) && distancia[tamaño][1]==distancia[tamaño+gama+1][1]){
+                                                    gama++;
+                                                    if(((galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][10].equals(null)||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA))))){
                                                     uniongalerasp++;
                                                     p=idgalera[java.lang.Math.round(distancia[tamaño+uniongalerasp][0])];
                                                     total=total+Integer.parseInt(galeras[p][1]);
-                                                    float errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
+                                                    errorcompilado=(total-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                                                     errorp=errorcompilado;
+                                                    }
                                                     if(errorcompilado>1 && Math.abs(errorcompilado)>mep){
                                                         errorp=2;
                                                     } else if(errorcompilado>=1 && Math.abs(errorcompilado)<mep){    
