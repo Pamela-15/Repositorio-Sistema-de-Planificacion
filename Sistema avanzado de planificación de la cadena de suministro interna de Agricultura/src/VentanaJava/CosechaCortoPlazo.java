@@ -25,7 +25,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     int n;
     int camionesusados;
     String[][] galeras;
-
+    String[][][] secuenciautilizar=new String[16][3][7];
+    String [][][] planta =new String[7][16][6];
 
     /**
      * Creates new form CosechaCortoPlazo
@@ -436,7 +437,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 resultadosecuenciaesp.close();
                 secuenciaesp.close();
                 }
-                String[][][] secuenciautilizar=new String[16][3][7];
+
                 int [] tamañosecuenciautilizar=new int[7];
                 for(int d=0;d<7;d++){
                     calendar.setTime(inicio);
@@ -703,7 +704,6 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 }
                     
                 //LA ELECCION DE GALERAS
-                String [][][] planta =new String[7][16][6];
                 for(int diax=0;diax<7;diax++){
                     SimpleDateFormat horacero=new SimpleDateFormat("HH:mm:ss");
                     String horainicioprocesamiento="19:00:00";
