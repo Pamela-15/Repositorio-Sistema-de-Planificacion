@@ -707,8 +707,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     Date horafechainiciomatanza=horacero.parse(horainicioprocesamiento);
                     horarequeridaplanta.setTime(horafechainiciomatanza);
                     Date horasinicio=horarequeridaplanta.getTime();
-                    for(int secx=0;secx<tamañosecuenciautilizar[diax];secx++){
-                        planta[diax][secx][0]=String.valueOf(secx+1); //numero secuencia
+                    for(int secx=0;secx<tamañosecuenciautilizar[diax];secx++){//aqui empieza el error
+                        /*planta[diax][secx][0]=String.valueOf(secx+1); //numero secuencia
                         planta[diax][secx][1]=secuenciautilizar[secx][0][diax]; //rango
                         planta[diax][secx][2]=secuenciautilizar[secx][1][diax]; //horas de procesamiento
                         planta[diax][secx][5]=horasinicio.toString(); //hora. revisarlo
@@ -731,7 +731,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 break;
                         }*/
                         horarequeridaplanta.setTime(horasinicio);
-                        horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(Float.parseFloat(planta[diax][secx][2])*60) );
+                        //horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(Float.parseFloat(planta[diax][secx][2])*60) );
                         horasinicio=horarequeridaplanta.getTime();
                     }
                     
