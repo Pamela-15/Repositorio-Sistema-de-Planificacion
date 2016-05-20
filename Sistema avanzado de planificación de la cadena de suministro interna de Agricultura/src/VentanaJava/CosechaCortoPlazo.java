@@ -1085,59 +1085,71 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     
     }
     //1- por cada día debe entrar la cantidad de camiones (de los primeros 23) que no se usaron
-    //2- secuencia a planificar (ultima de los 23 + 1)
-    //3- rango de peso de secuencia a planificar
-    //4- Cantidad de pollo requerida en la secuencia a planificar
-    //5- Camiones requeridos para secuencia a planificar según rango
-    //6- Hora requerida en planta
-    //7- Horas de procesamiento
-    
+   
     int galeraCosechada = 0;
     
-    public void GestionDatosMayor23(int dia, int camionesLibres, int secuencia, String rango, int CantidadPollo, int camionesRequeridos, java.util.Date HoraRequeridaPlanta, java.util.Date HorasProcesamiento){
+    
+    public ArrayList <DatosCosechas> LlenarDatosCosechas(int dia){ 
+        ArrayList <DatosCosechas> listDatosCosechas = new ArrayList<>();
+        
+        for(int j=0; j<planborradorcosecha[dia].length;j++){
+            try{
+            DatosCosechas cosechas = new DatosCosechas(dia);
+            cosechas.setSecuencia(Integer.parseInt(planborradorcosecha[dia][j][0]));
+            cosechas.setRango(planborradorcosecha[dia][j][1]);
+            cosechas.setHoras_procesamiento(Integer.parseInt(planborradorcosecha[dia][j][2]));
+            cosechas.setCantidad_aves(Integer.parseInt(planborradorcosecha[dia][j][3]));
+            cosechas.setCantidad_camiones(Integer.parseInt(planborradorcosecha[dia][j][4]));
+            DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
+            cosechas.setHora_planta(formatter.parse(planborradorcosecha[dia][j][5]));
+            cosechas.setGalera(Integer.parseInt(planborradorcosecha[dia][j][6]));
+            cosechas.setCuadrilla(Integer.parseInt(planborradorcosecha[dia][j][7]));
+            cosechas.setHora_liberacion_cuadrilla(formatter.parse(planborradorcosecha[dia][j][8]));
+            listDatosCosechas.add(cosechas);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+                }
+        return listDatosCosechas;
+    }
+        
+        public ArrayList <RequeridoPlanta> LlenarRequeridoPlanta(int dia){ 
+        ArrayList <RequeridoPlanta> listRequeridoPlanta = new ArrayList<>();
+        
+        for(int j=0; j<planta[dia].length;j++){
+            try{
+            RequeridoPlanta requerido = new RequeridoPlanta(dia);
+            requerido.setSecuencia(Integer.parseInt(planta[dia][j][0]));
+            requerido.setRango(planta[dia][j][1]);
+            requerido.setHoras_procesamiento(Integer.parseInt(planta[dia][j][2]));
+            requerido.setCantidad_aves(Integer.parseInt(planta[dia][j][3]));
+            requerido.setCantidad_camiones(Integer.parseInt(planta[dia][j][4]));
+            DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
+            requerido.setHora_planta(formatter.parse(planta[dia][j][5]));
+            listRequeridoPlanta.add(requerido);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+                }
+        return listRequeridoPlanta;
+        }
+    
+    public void GestionDatosMayor23(int dia, int camionesLibres){
+
         //Guardo los datos correspondientes 
         int cantidadGalerasSecuencia = 0;
         int secuenciaFinalizada = 0;
-        int [] idGalerasSecuencia = new int [cantidadGalerasSecuencia+1];
-        int [] cantidadCamiones = new int [cantidadGalerasSecuencia+1];
-        java.util.Date [] horaLiberacionCamiones = new java.util.Date[cantidadGalerasSecuencia+1];
-        int [] cuadrilla = new int [cantidadGalerasSecuencia+1];
-        java.util.Date [] horaLiberacionCuadrilla = new java.util.Date [cantidadGalerasSecuencia+1];
         
         int camionesDisponibles = 0;
         
         //while(camionesRequeridos - camionesLibres > camionesDisponibles){
         
-        do{
-            try{
-            idGalerasSecuencia [cantidadGalerasSecuencia] = Integer.parseInt(planborradorcosecha[dia][galeraCosechada][6]);
-            cantidadCamiones [cantidadGalerasSecuencia] = Integer.parseInt(planborradorcosecha[dia][galeraCosechada][4]);
-            DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
-            horaLiberacionCamiones [cantidadGalerasSecuencia] = formatter.parse(planborradorcosecha[dia][galeraCosechada][5]);
-            cuadrilla [cantidadGalerasSecuencia] = Integer.parseInt(planborradorcosecha[dia][galeraCosechada][7]);
-            horaLiberacionCuadrilla [cantidadGalerasSecuencia] = formatter.parse(planborradorcosecha[dia][galeraCosechada][8]);
-            galeraCosechada++;
-            cantidadGalerasSecuencia++;
-            camionesDisponibles = camionesDisponibles + cantidadCamiones [cantidadGalerasSecuencia];
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-        }while(horaLiberacionCamiones[cantidadGalerasSecuencia].before(HoraRequeridaPlanta));
+
+        //(horaLiberacionCamiones[cantidadGalerasSecuencia].before(HoraRequeridaPlanta));
 
         //Ordenar fechas de menor a mayor
         //List b = Arrays.asList(ArrayUtils.toObject(horaLiberacionCamiones));
         //Collections.min(b);
-
-
-        
-        
-        java.util.Date peorHoraLiberacion = new java.util.Date();
-        long milisegundosLiberacion = (peorHoraLiberacion.getTime());
-        long milisegundosRequerida = (HoraRequeridaPlanta.getTime());
-        java.sql.Time sqlLiberacion = new java.sql.Time(milisegundosLiberacion);
-        java.sql.Time sqlRequerida = new java.sql.Time(milisegundosRequerida);
-
-
         }
 
         
