@@ -794,7 +794,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             } else {
                                 cuadrilla=2;
                             }
-                            SeleccionarGalera(raleo, sqlraleoA,fechaB, planta, necesidadActualizadaAves,tiporangos,cuadrilla,dia,tamañored,redgaleras,cambios, idgalera);
+                            SeleccionarGalera( raleo, sqlraleoA, planta, fechaB, necesidadActualizadaAves, rango, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera);
                         }else{
                         
                         }
@@ -812,7 +812,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         mostrarGenerarReporte(idUsuarioAutenticado);
     }//GEN-LAST:event_GenerarReporteActionPerformed
     
-    public void SeleccionarGalera(float raleo,java.sql.Date sqlraleoA,String[][][] planta, java.sql.Date fechaB, float[][] necesidadActualizadaAves,int rango, int cuadrilla, int dia, int[][] tamañored, String[][][] redgaleras,  int cambios, int[] idgalera, Date horasllegadaplanta){
+    public void SeleccionarGalera(float raleo,java.sql.Date sqlraleoA,String[][][] planta, java.sql.Date fechaB, float[][] necesidadActualizadaAves,int rango, int cuadrilla, int dia, int[][] tamañored, String[][][] redgaleras,  int cambios, int[] idgalera){
         String driver = "com.mysql.jdbc.Driver";
         String connection = "jdbc:mysql://localhost:3306/cargill";
         String user = "root";
