@@ -794,7 +794,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             } else {
                                 cuadrilla=2;
                             }
-                            SeleccionarGalera( raleo, sqlraleoA, planta, fechaB, necesidadActualizadaAves, rango, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera);
+                            SeleccionarGalera( raleo, sqlraleoA, planta, fechaB, necesidadActualizadaAves, tiporangos, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera);
                         }else{
                         
                         }
