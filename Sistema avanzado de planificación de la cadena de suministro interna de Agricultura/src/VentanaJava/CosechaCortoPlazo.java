@@ -168,6 +168,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 raleo=valorraleo.getFloat("POrcentaje");
                 valorraleo.close();
                 porcentajeraleo.close();
+                System.out.println(""+raleo);
                         
                 
                 PreparedStatement diassemana=con.prepareStatement("SELECT `Raleo y distribución demanda`.`id`,`Raleo y distribución demanda`.`Variable`, `Raleo y distribución demanda`.`Porcentaje` FROM `cargill`.`Raleo y distribución demanda` WHERE `Raleo y distribución demanda`.`id`>0 ORDER BY `Raleo y distribución demanda`.`id` ASC ;");
@@ -175,6 +176,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 int zx=0;
                 while(distribuciondias.next()){
                     desglosesemanal[zx]=distribuciondias.getFloat("Porcentaje");
+                    System.out.println(""+desglosesemanal[zx]);
+                    zx++;
                 }
                 distribuciondias.close();
                 diassemana.close();
@@ -197,16 +200,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 int desglosediariosemanal=0;
                 for(o=diasemana;o<7;o++){
                     demandanum[desglosediariosemanal]=necesidad*desglosesemanal[o];
+                    System.out.println(""+demandanum[desglosediariosemanal]);
                     desglosediariosemanal++;
                 }
                 for(o=0;o<diasemana;o++){
                     demandanum[desglosediariosemanal]=necesidad1*desglosesemanal[o];
+                    System.out.println(""+demandanum[desglosediariosemanal]);
                     desglosediariosemanal++;
+                    
                 }
                 demanda.close();
                 String[][] rangospredeterminado=new String[4][5];
                 int e=0;
-                PreparedStatement rangospredeterminados =con.prepareStatement ("SELECT `rango de peso`.`Rango de Peso`, `rango de peso`.`Límite Superior`, `rango de peso`.`Límite Inferior`, `rango de peso`.`Porcentaje de Necesidad`,`rango de peso`.`Velocidad de Procesamiento` FROM `cargill`.`rango de peso`;");
+                PreparedStatement rangospredeterminados =con.prepareStatement ("SELECT `rango de peso`.`Rango de Peso`, `rango de peso`.`Límite Superior`, `rango de peso`.`Límite Inferior`, `rango de peso`.`Porcentaje de Necesidad`,`rango de peso`.`Velocidad de Procesamiento` FROM `cargill`.`rango de peso` order by `rango de peso`.`Rango de Peso` desc ;");
                 ResultSet resultadorangospredeterminados=rangospredeterminados.executeQuery();
                 while(resultadorangospredeterminados.next()){
                     rangospredeterminado[e][0]=resultadorangospredeterminados.getString("Rango de Peso");
@@ -369,7 +375,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 pesopromedioPequeño= (sumapequeñoraleo + sumapequeñocosecha)/(cuentapequeñoraleo+cuentapequeñocosecha);
                 pesopromedioGrande= (sumagranderaleo + sumagrandecosecha)/(cuentagranderaleo+cuentagrandecosecha);
                 pesopromedioMediano= (sumamedianoraleo + sumamedianocosecha)/(cuentamedianoraleo+cuentamedianocosecha);
-                
+                System.out.println("pesopromedioPequeño "+pesopromedioPequeño);
+                System.out.println("pesopromedioMediano "+pesopromedioMediano);
+                System.out.println("pesopromedioGrande "+pesopromedioGrande);
                 
                 int cantidadsecuencia;
                 PreparedStatement secuenciapredcuenta = con.prepareStatement("SELECT count(*) as cuenta FROM `cargill`.`secuencia de transporte estándar`;");
@@ -447,6 +455,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     for(int p=0;p<cantidadsecuencia;p++){
                         secuenciautilizar[p][0][d]=secuenciapredeterminada[p][0];
                         secuenciautilizar[p][1][d]=secuenciapredeterminada[p][1];
+                        System.out.println("dia "+d+" "+p+" " +secuenciautilizar[p][0][d]+" "+secuenciautilizar[p][1][d] );
                     }
                     tamañosecuenciautilizar[d]=cantidadsecuencia;
                     for (int h=0;h<diassecuenciados;h++){
@@ -454,6 +463,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             for(int j=0;j<cantidadsecuenciaesp[h];j++){
                                 secuenciautilizar[j][0][d]=secuenciaespecifica[j][0][h];
                                 secuenciautilizar[j][1][d]=secuenciaespecifica[j][1][h];
+                                System.out.println("dia "+d+" "+j+" " +secuenciautilizar[j][0][d]+" "+secuenciautilizar[j][1][d] );
                             }
                             tamañosecuenciautilizar[d]=cantidadsecuenciaesp[h];
                         }
@@ -497,6 +507,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             
                         }
                     }
+                    System.out.println("dia "+m+" "+necesidadActualizadaAves[m][0]+" "+necesidadActualizadaAves[m][1]+" "+necesidadActualizadaAves[m][2]+" "+necesidadActualizadaAves[m][3]+" "+necesidadActualizadaAves[m][4]+" "+necesidadActualizadaAves[m][5]+" "+necesidadActualizadaAves[m][6]+" "+necesidadActualizadaAves[m][7]);
+                    
                 }
                 
                 calendar.setTime(hoy);
@@ -568,26 +580,31 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 float[][] pesoproyectado= new float [7][cantidadgalerasingresadas];
                 int[][] tamañored=new int[7][12];
                 for(int r=0;r<7;r++){
-                   for(int alpha=0;alpha<4;alpha++){
+                    calendar.setTime(inicio);
+                    calendar.add(Calendar.DAY_OF_YEAR,r);
+                    fechaA = calendar.getTime();
+                    fechaB = new java.sql.Date(fechaA.getTime());
+                    
+                    for(int alpha=0;alpha<4;alpha++){
                        for(int beta=0;beta<3;beta++){
                            redgaleras[r][alpha][beta]="0";
                        }
-                   } 
-                   tamañored[r][0]=0;
-                   tamañored[r][1]=0;
-                   tamañored[r][2]=0;
-                   tamañored[r][3]=0;
-                   tamañored[r][4]=0;
-                   tamañored[r][5]=0;
-                   tamañored[r][6]=0;
-                   tamañored[r][7]=0;
-                   tamañored[r][8]=0;
-                   tamañored[r][9]=0;
-                   tamañored[r][10]=0;
-                   tamañored[r][11]=0;
-                   for(int q=0;q<cantidadgalerasingresadas;q++){
-                       int diasdiferencia=java.lang.Math.round((sqlFechaInicial.getTime()-fechasgaleras[q][0].getTime())/(1000*60*60*24)); //dias que tiene que haber ingresado esa galera de ms a dias
-                       int diasaproyectar=java.lang.Math.round((sqlFechaInicial.getTime()-fechasgaleras[q][1].getTime())/(1000*60*60*24)); 
+                    } 
+                    tamañored[r][0]=0;
+                    tamañored[r][1]=0;
+                    tamañored[r][2]=0;
+                    tamañored[r][3]=0;
+                    tamañored[r][4]=0;
+                    tamañored[r][5]=0;
+                    tamañored[r][6]=0;
+                    tamañored[r][7]=0;
+                    tamañored[r][8]=0;
+                    tamañored[r][9]=0;
+                    tamañored[r][10]=0;
+                    tamañored[r][11]=0;
+                    for(int q=0;q<cantidadgalerasingresadas;q++){
+                       int diasdiferencia=java.lang.Math.round((fechaB.getTime()-fechasgaleras[q][0].getTime())/(1000*60*60*24)); //dias que tiene que haber ingresado esa galera de ms a dias
+                       int diasaproyectar=java.lang.Math.round((fechaB.getTime()-fechasgaleras[q][1].getTime())/(1000*60*60*24)); 
                        int semanastotal= diasdiferencia/7;
                        int dsobrantes= diasdiferencia%7;
                        int d1=diasaproyectar-dsobrantes; //
@@ -633,6 +650,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                break;
                        }
                        pesoproyectado[r][q]=pesoA * variablespp[q][21] + Float.parseFloat (galeras[q][3]);
+                       System.out.println("peso proyectado "+pesoproyectado[r][q]);
                        if(!galeras[q][7].equals("Periferica")){
                             if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[0][2])&& pesoproyectado[r][q]<Float.parseFloat(rangospredeterminado[0][1])){
                                      redgaleras[r][2][0]=redgaleras[r][2][0]+","+galeras[q][8];
@@ -645,12 +663,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                      redgaleras[r][3][1]=redgaleras[r][3][1]+","+galeras[q][8];
                                      tamañored[r][7]++;
                                      tamañored[r][10]++;
+                                     
                             }
                              if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[2][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[2][1])){
                                      redgaleras[r][2][2]=redgaleras[r][2][2]+","+galeras[q][8];
                                      redgaleras[r][3][2]=redgaleras[r][3][2]+","+galeras[q][8];
                                      tamañored[r][8]++;
                                      tamañored[r][11]++;
+                                     
                             }
                         }else{
                             if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[0][2])&& pesoproyectado[r][q]<Float.parseFloat(rangospredeterminado[0][1])){
@@ -660,16 +680,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                      tamañored[r][0]++;
                                      tamañored[r][3]++;
                                      tamañored[r][9]++;
-                            }
-                            if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[1][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[1][1])){
+                            } else if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[1][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[1][1])){
                                      redgaleras[r][0][1]=redgaleras[r][0][1]+","+galeras[q][8];
                                      redgaleras[r][1][1]=redgaleras[r][1][1]+","+galeras[q][8];
                                      redgaleras[r][3][1]=redgaleras[r][3][1]+","+galeras[q][8];
                                      tamañored[r][1]++;
                                      tamañored[r][4]++;
                                      tamañored[r][10]++;
-                            }
-                             if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[2][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[2][1])){
+                            } else if(pesoproyectado[r][q]>=Float.parseFloat(rangospredeterminado[2][2])){
                                      redgaleras[r][0][2]=redgaleras[r][0][2]+","+galeras[q][8];
                                      redgaleras[r][1][2]=redgaleras[r][1][2]+","+galeras[q][8];
                                      redgaleras[r][3][2]=redgaleras[r][3][2]+","+galeras[q][8];
@@ -698,8 +716,15 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         tamañored[r][2]=tamañored[r][8];
                         tamañored[r][5]=tamañored[r][8];
                     }
+                System.out.println("tamaño grande cp "+tamañored[r][2]);
+                System.out.println("tamaño mediano cp "+tamañored[r][1]);
+                System.out.println("tamaño pequeño cp "+tamañored[r][0]);
+                System.out.println("tamaño grande cp "+tamañored[r][8]);
+                System.out.println("tamaño mediano cp "+tamañored[r][7]);
+                System.out.println("tamaño pequeño cp "+tamañored[r][6]);
                 }
-                    
+                
+                
                 //LA ELECCION DE GALERAS
                 for(int diax=0;diax<7;diax++){
                     SimpleDateFormat horacero=new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss");
@@ -734,6 +759,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         horarequeridaplanta.setTime(horasinicio);
                         horarequeridaplanta.add(Calendar.MINUTE,Integer.parseInt(secuenciautilizar[secx][1][diax]));
                         horasinicio=horarequeridaplanta.getTime();
+                        System.out.println(planta[diax][secx][0]+"/"+planta[diax][secx][1]+"/"+planta[diax][secx][2]+"/"+planta[diax][secx][3]+"/"+planta[diax][secx][4]+"/"+planta[diax][secx][5]);
                     }
                     
                 }
@@ -776,19 +802,21 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         }else{
                             tiporangos=2;
                         }
-                        tamaño=0;
-                        if((camionesusados+java.lang.Math.round(Float.parseFloat(planta[dia][cambios][4])))<=23){
-                            if((cuadrillas[0].before(cuadrillas[1])||cuadrillas[0].equals(cuadrillas[1]))&&(cuadrillas[0].before(cuadrillas[2])||cuadrillas[0].equals(cuadrillas[2]))){
-                                cuadrilla=0;                               //
-                            } else if(cuadrillas[1].before(cuadrillas[2])||cuadrillas[1].equals(cuadrillas[2])){
-                                cuadrilla=1;
-                            } else {
-                                cuadrilla=2;
-                            }
-                            SeleccionarGalera( raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tiporangos, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera);
-                        }else{
+                        if(tamañored[dia][9+tiporangos]>0){
+                            tamaño=0;
+                            if((camionesusados+java.lang.Math.round(Float.parseFloat(planta[dia][cambios][4])))<=23){
+                                if((cuadrillas[0].before(cuadrillas[1])||cuadrillas[0].equals(cuadrillas[1]))&&(cuadrillas[0].before(cuadrillas[2])||cuadrillas[0].equals(cuadrillas[2]))){
+                                    cuadrilla=0;                               //
+                                } else if(cuadrillas[1].before(cuadrillas[2])||cuadrillas[1].equals(cuadrillas[2])){
+                                    cuadrilla=1;
+                                } else {
+                                    cuadrilla=2;
+                                }
+                                SeleccionarGalera( raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tiporangos, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera);
+                            }else{
                         
-                        }
+                            }
+                        }    
                     }
                 
                 }
