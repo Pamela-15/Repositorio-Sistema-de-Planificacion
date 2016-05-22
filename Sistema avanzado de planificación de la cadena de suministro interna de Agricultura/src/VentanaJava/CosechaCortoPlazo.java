@@ -27,6 +27,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     String[][] galeras;
     String[][][] secuenciautilizar=new String[16][3][7];
     String [][][] planta =new String[7][16][6];
+    int secuenciasUsadas23=0;
 
     /**
      * Creates new form CosechaCortoPlazo
@@ -590,18 +591,18 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                            redgaleras[r][alpha][beta]="0";
                        }
                     } 
-                    tamañored[r][0]=0;
-                    tamañored[r][1]=0;
-                    tamañored[r][2]=0;
-                    tamañored[r][3]=0;
-                    tamañored[r][4]=0;
-                    tamañored[r][5]=0;
-                    tamañored[r][6]=0;
-                    tamañored[r][7]=0;
-                    tamañored[r][8]=0;
-                    tamañored[r][9]=0;
-                    tamañored[r][10]=0;
-                    tamañored[r][11]=0;
+                    tamañored[r][0]=0;//pequeño cuadrilla 1/norte
+                    tamañored[r][1]=0;//mediano cuadrilla 1/norte
+                    tamañored[r][2]=0;//grande cuadrilla 1/norte
+                    tamañored[r][3]=0;//pequeño cuadrilla 2/norte
+                    tamañored[r][4]=0;//mediano cuadrilla 2/norte
+                    tamañored[r][5]=0;//grande cuadrilla 2/norte
+                    tamañored[r][6]=0;//pequeño cuadrilla 3/central y propias
+                    tamañored[r][7]=0;//mediano cuadrilla 3/central y propias
+                    tamañored[r][8]=0;//grande cuadrilla 3/central y propias
+                    tamañored[r][9]=0;//pequeño norte, central y propias
+                    tamañored[r][10]=0;//mediano norte, central y propias
+                    tamañored[r][11]=0;//grande norte, central y propias
                     for(int q=0;q<cantidadgalerasingresadas;q++){
                        int diasdiferencia=java.lang.Math.round((fechaB.getTime()-fechasgaleras[q][0].getTime())/(1000*60*60*24)); //dias que tiene que haber ingresado esa galera de ms a dias
                        int diasaproyectar=java.lang.Math.round((fechaB.getTime()-fechasgaleras[q][1].getTime())/(1000*60*60*24)); 
@@ -793,7 +794,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     galerascosechadas[0]=0;
                     galerascosechadas[1]=0;
                     galerascosechadas[2]=0;
-                    int secuenciasUsadas23=0;
+                    //aqui estaba int secuenciasUsadas23=0; pero la pasé afuera porque se ocupa para el mayor a 23. 
                     for(int cambios=0;cambios<tamañosecuenciautilizar[dia];cambios++){
                         if(planta[dia][cambios][1].equals("Pequeño")){
                             tiporangos=0;
@@ -872,19 +873,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             int p=idgalera[java.lang.Math.round(distancia[tamaño][0])];
                             float errorp= (Float.parseFloat(galeras[p][1])-Float.parseFloat(planta[dia][cambios][3]))/Float.parseFloat(planta[dia][cambios][3]);
                             float errorpraleado = ((Float.parseFloat(galeras[p][1])*raleo)-Float.parseFloat(planta[dia][cambios][3]))/Float.parseFloat(planta[dia][cambios][3]);
-                                if(galeras[p][10].equals(null)&& Math.abs(errorpraleado)<mep){
-                                    galeramejor=tamaño;
+                                if(galeras[p][10]!=null&& Math.abs(errorpraleado)<mep){
+                                    galeramejor=tamaño; //ve Manu estos son los que dicen que el valor asignado nunca se usa. 
                                     indicadorcompiladas=0;
-                                    cantidadcosechar=Integer.parseInt(galeras[p][1]);
+                                    cantidadcosechar=Integer.parseInt(galeras[p][1]); // mismo caso
                                     tiempoentregaleras=distancia[tamaño][2];
                                     mep=Math.abs(errorpraleado);
                                     indicadorraleo=1;
                                 }
-                                if(Math.abs(errorp)<mep && (galeras[p][11].equals(null) && (galeras[p][10].equals(null)||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
-                                    galeramejor=tamaño;
+                                if(Math.abs(errorp)<mep && (galeras[p][11]!=null && (galeras[p][10]!=null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
+                                    galeramejor=tamaño; //mismo caso
                                     indicadorcompiladas=0;
-                                    cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
-                                    tiempoentregaleras=distancia[tamaño][2];
+                                    cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo; //mismo caso
+                                    tiempoentregaleras=distancia[tamaño][2]; //mismo caso
                                     mep=Math.abs(errorp);
                                     indicadorraleo=0;
                                 }
@@ -895,7 +896,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 galerascompiladas[0]=tamaño;
                                 while(errorp < 1.0001 && tamaño<(tamañored[dia][3]-uniongalerasp) && distancia[tamaño][1]==distancia[tamaño+gama+1][1]){
                                     gama++;
-                                    if(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][11].equals(null)&&(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][10].equals(null)||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA)))){
+                                    if(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][11]!=null&&(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][10]!=(null)||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA)))){
                                         uniongalerasp++;
                                         galerascompiladas[uniongalerasp]=tamaño+gama;
                                         p=idgalera[java.lang.Math.round(distancia[tamaño+gama][0])];
@@ -999,7 +1000,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }
                             float errorp= (Integer.parseInt(galeras[p][1])-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
                             float errorpraleado = ((Integer.parseInt(galeras[p][1])*raleo)-Integer.parseInt(planta[dia][cambios][3]))/Integer.parseInt(planta[dia][cambios][3]);
-                                if(galeras[p][10].equals(null)&& Math.abs(errorpraleado)<mep && (analisisdisponibilidadcuadrilla[0].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[1].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[2].before(horasllegadaplanta))){
+                                if(galeras[p][10]!=null&& Math.abs(errorpraleado)<mep && (analisisdisponibilidadcuadrilla[0].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[1].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[2].before(horasllegadaplanta))){
                                     galeramejor=tamaño;
                                     indicadorcompiladas=0;
                                     cantidadcosechar=Integer.parseInt(galeras[p][1]);
@@ -1007,7 +1008,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     mep=Math.abs(errorpraleado);
                                     indicadorraleo=1;
                                 }
-                                if(Math.abs(errorp)<mep && (galeras[p][11].equals(null) && (galeras[p][10].equals(null)||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))&&(analisisdisponibilidadcuadrilla[0].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[1].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[2].before(horasllegadaplanta))){
+                                if(Math.abs(errorp)<mep && (galeras[p][11]!=null && (galeras[p][10]!= null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))&&(analisisdisponibilidadcuadrilla[0].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[1].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[2].before(horasllegadaplanta))){
                                     galeramejor=tamaño;
                                     indicadorcompiladas=0;
                                     cantidadcosechar=Integer.parseInt(galeras[p][1])*raleo;
@@ -1022,7 +1023,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 galerascompiladas[0]=tamaño;
                                 while(errorp < 1.0001 && tamaño<(tamañored[dia][3]-uniongalerasp) && distancia[tamaño][1]==distancia[tamaño+gama+1][1] &&(analisisdisponibilidadcuadrilla[0].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[1].before(horasllegadaplanta)||analisisdisponibilidadcuadrilla[2].before(horasllegadaplanta))){
                                     gama++;
-                                    if(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][11].equals(null)&&(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][10].equals(null)||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA)))){
+                                    if(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][11]!=null&&(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][10]!=null||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA)))){
                                         uniongalerasp++;
                                         galerascompiladas[uniongalerasp]=tamaño+gama;
                                         p=idgalera[java.lang.Math.round(distancia[tamaño+gama][0])];
