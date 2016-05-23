@@ -994,6 +994,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             planborradorcosecha[dia][n][14]=Float.toString(pesoproyectado[dia][idgalera[java.lang.Math.round(distancia[galeramejor][0])]]);
                             distribuciondegalerasporrangodepeso (pesoproyectado, necesidadActualizadaAves, rangospredeterminado, idgalera[java.lang.Math.round(distancia[galeramejor][0])], dia, cantidadcosechar);
                             n++;
+                            galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][1]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][1])-cantidadcosechar);
                             if(indicadorraleo==1){
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][10]=fechaB.toString();
                             }else{
@@ -1021,6 +1022,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 planborradorcosecha[dia][yu+n][13]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][0];
                                 planborradorcosecha[dia][yu+n][14]=Float.toString(pesoproyectado[dia][idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]]);
                                 distribuciondegalerasporrangodepeso (pesoproyectado, necesidadActualizadaAves, rangospredeterminado, idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])], dia, Integer.parseInt(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1]));
+                                galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1]="0";
                             }
                             horacubierta.setTime(horasllegadaplanta);
                             horacubierta.add(Calendar.MINUTE,(java.lang.Math.round(60*cantidadcosechar/necesidadActualizadaAves[dia][5+rango])));
@@ -1127,18 +1129,15 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             horacubierta.setTime(horasllegadaplanta);
                             horacubierta.add(Calendar.MINUTE,(java.lang.Math.round(60*cantidadcosechar/necesidadActualizadaAves[dia][5+rango])));
                             horasllegadaplanta=horacubierta.getTime();
-                            System.out.println("viejas3 bien");
                             planborradorcosecha[dia][n][9]=fechaB.toString();
                             planborradorcosecha[dia][n][10]=galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][5];
                             planborradorcosecha[dia][n][11]=galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][6];
                             planborradorcosecha[dia][n][12]=galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][9];
                             planborradorcosecha[dia][n][13]=galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][0];
                             planborradorcosecha[dia][n][14]=Float.toString(pesoproyectado[dia][idgalera[java.lang.Math.round(distancia[galeramejor][0])]]);
-                            System.out.println("nueva3 bien");
                             distribuciondegalerasporrangodepeso (pesoproyectado, necesidadActualizadaAves, rangospredeterminado, idgalera[java.lang.Math.round(distancia[galeramejor][0])], dia, cantidadcosechar);
-                            System.out.println("Distr3 bien");
                             n++;
-                            
+                            galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][1]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][1])-cantidadcosechar);
                             if(indicadorraleo==1){
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][10]=fechaB.toString();
                             }else{
@@ -1158,7 +1157,6 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round((cantidadcosechar/necesidadActualizadaAves[dia][5])*60)));
                                 cuadrillas[cuadrilla]=horacubierta.getTime();
                                 planborradorcosecha[dia][yu+n][8]=cuadrillas[cuadrilla].toString();
-                                System.out.println("viejas4 bien");
                                 galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][11]=fechaB.toString();
                                 planborradorcosecha[dia][yu+n][9]=fechaB.toString()    ;
                                 planborradorcosecha[dia][yu+n][10]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][5];
@@ -1166,9 +1164,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 planborradorcosecha[dia][yu+n][12]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][9];
                                 planborradorcosecha[dia][yu+n][13]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][0];
                                 planborradorcosecha[dia][yu+n][14]=Float.toString(pesoproyectado[dia][idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]]);
-                                System.out.println("nuevas4 bien");
                                 distribuciondegalerasporrangodepeso (pesoproyectado, necesidadActualizadaAves, rangospredeterminado, idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])], dia, Integer.parseInt(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1]));
-                                System.out.println("distr4 bien");
+                                galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][1]="0";    
                             }
                             horacubierta.setTime(horasllegadaplanta);
                             horacubierta.add(Calendar.MINUTE,(java.lang.Math.round(60*cantidadcosechar/necesidadActualizadaAves[dia][5+rango])));
