@@ -5,19 +5,18 @@
  */
 package VentanaJava;
 
-import java.util.Date;
+import java.util.Calendar;
 
-public class DatosCosechas {
+public class DatosCosechas implements Comparable<DatosCosechas>{
   //Cosechas anteriores  
-  private int secuencia;
-  private String rango;
-  private int horas_procesamiento;
+  private int secuencia;  private String rango;
+  private double horas_procesamiento;
   private int cantidad_aves;
   private int cantidad_camiones;
-  private java.util.Date hora_planta;
+  private Calendar hora_planta;
   private int galera;
   private int cuadrilla;
-  private Date hora_liberacion_cuadrilla;
+  private Calendar hora_liberacion_cuadrilla;
  
   public DatosCosechas(int dia){ }
  
@@ -33,10 +32,10 @@ public class DatosCosechas {
   public void setRango(String rango_i){
     this.rango = rango_i;
   }
-    public Integer getHoras_procesamiento(){
+    public double getHoras_procesamiento(){
     return this.horas_procesamiento;
   }
-  public void setHoras_procesamiento(int horas_procesamiento_i){
+  public void setHoras_procesamiento(double horas_procesamiento_i){
     this.horas_procesamiento = horas_procesamiento_i;
   }
   public int getCantidad_aves(){
@@ -51,11 +50,14 @@ public class DatosCosechas {
   public void setCantidad_camiones(int cantidad_camiones_i){
     this.cantidad_camiones = cantidad_camiones_i;
   }
-  public Date getHora_planta(){
+  public Calendar getHora_planta(){
     return this.hora_planta;
   }
-  public void setHora_planta(java.util.Date hora_planta_i){
-    this.hora_planta = hora_planta_i;
+  public void setHora_planta(Calendar hora_planta_i){
+      //Calendar c = Calendar.getInstance();
+      //c.clear();
+      //c.setTime(hora_planta_i);
+      this.hora_planta = hora_planta_i;
   }
   public int getGalera(){
     return this.galera;
@@ -69,12 +71,16 @@ public class DatosCosechas {
   public void setCuadrilla(int cuadrilla_i){
     this.cuadrilla = cuadrilla_i;
   }
-  public Date getHora_liberacion_cuadrilla(){
+  public Calendar getHora_liberacion_cuadrilla(){
     return this.hora_liberacion_cuadrilla;
   }
-  public void setHora_liberacion_cuadrilla(Date hora_liberacion_cuadrilla_i){
-    this.hora_planta = hora_liberacion_cuadrilla;
+  public void setHora_liberacion_cuadrilla(Calendar hora_liberacion_cuadrilla_i){
+      this.hora_liberacion_cuadrilla = hora_liberacion_cuadrilla_i;
   }
 
-    
+   @Override
+   public int compareTo(DatosCosechas o){
+       return getHora_planta().compareTo(o.getHora_planta());
+   }
+
 }
