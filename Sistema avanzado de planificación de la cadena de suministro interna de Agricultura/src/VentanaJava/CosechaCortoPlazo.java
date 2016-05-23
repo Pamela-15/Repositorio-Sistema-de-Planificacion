@@ -1213,7 +1213,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     public ArrayList<RequeridoPlanta> LlenarRequeridoPlanta(int dia) {
         ArrayList<RequeridoPlanta> listRequeridoPlanta = new ArrayList<>();
 
-        for (int j = 0; j < planta[dia].length; j++) {//tamañosecuenciautilizar[diax]
+        for (int j = 0; j < planta[dia].length; j++) {
             try {
                 RequeridoPlanta requerido = new RequeridoPlanta(dia);
                 requerido.setSecuencia(Integer.parseInt(planta[dia][j][0]));
@@ -1235,20 +1235,20 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         return listRequeridoPlanta;
     }
 
-    private interface DoSomething {
-
-        public void d(
-                Calendar ultimaHora,
-                Calendar horaRequerida,
-                int camionesRequeridos2,
-                Calendar horaRequerida2,
-                int camionesSobrantes,
-                List<DatosCosechas> cosechasSobrantes);//
-    }
+//    private interface SeleccionarZona {
+//
+//        public void Zona(
+//                Calendar ultimaHora,
+//                Calendar horaRequerida,
+//                int camionesRequeridos2,
+//                Calendar horaRequerida2,
+//                int camionesSobrantes,
+//                List<DatosCosechas> cosechasSobrantes);
+//    }
 
     private Calendar calcularUltimaHora(int dia, int camionesUsados,
             int ultimaSecuencia, ArrayList<DatosCosechas> datosCosechas,
-            ArrayList<RequeridoPlanta> requeridosPlanta, DoSomething something) {
+            ArrayList<RequeridoPlanta> requeridosPlanta) {
         int camionesLibres = 23 - camionesUsados;
         int secuenciaAPlanificar = ultimaSecuencia + 1;
         int secuenciaSiguiente = secuenciaAPlanificar + 1;
@@ -1258,6 +1258,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         Calendar horaRequerida2 = Calendar.getInstance();
 
         Calendar ultimaHora = Calendar.getInstance();
+        Calendar ultimaHora1 = Calendar.getInstance();
+        Calendar ultimaHora2 = Calendar.getInstance();
 
         for (RequeridoPlanta requerido : requeridosPlanta) {
             if (requerido.getSecuencia() == secuenciaAPlanificar) {
@@ -1280,36 +1282,109 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 System.out.println(requerido.getSecuencia());
             }
         }
-
-        for (int i = requeridosPlanta.size(); i == 0; i--) {
-            int req = requeridosPlanta.get(i).getSecuencia();
-            System.out.println(req);
-            if (secuenciaSiguiente == req) {
-                camionesRequeridos2 = requeridosPlanta.get(i).getCantidad_camiones();
-                horaRequerida2 = requeridosPlanta.get(i).getHora_planta();
-                System.out.println(requeridosPlanta.get(i).getSecuencia());
-                break;
-            }
-        }
+//Borrar intento for
 
         int contCamiones = 0;
+        int camionesSobrantes = 0;
+        List<DatosCosechas> cosechasSobrantes = new ArrayList<DatosCosechas>();
         for (int i = 0; i < datosCosechas.size(); i++) {
             DatosCosechas row = datosCosechas.get(i);
             if (horaRequerida.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
                 contCamiones += row.getCantidad_camiones();
                 if (camionesLibres + contCamiones >= camionesRequeridos) {
-                    ultimaHora = row.getHora_planta();
-
-                    something.d(ultimaHora, horaRequerida, camionesRequeridos2, horaRequerida2,
-                            camionesLibres + contCamiones - camionesRequeridos,
-                            datosCosechas.subList(i, datosCosechas.size()));
+                    ultimaHora = row.getHora_planta();                    
+                    camionesSobrantes = camionesLibres + contCamiones - camionesRequeridos;
                     break;
                 }
             }
         }
+        if(tiempoEnMillisegundos(horaRequerida) - tiempoEnMillisegundos(ultimaHora)  > 4 * 60 * 60 * 1000){
+            int camionesAAsignar = camionesRequeridos;
+            for (int i = 0; i < datosCosechas.size(); i++) {
+                System.out.println(camionesAAsignar);
+                DatosCosechas row = datosCosechas.get(i);
+                if(camionesAAsignar >= row.getCantidad_camiones()){
+                    camionesAAsignar = camionesAAsignar - row.getCantidad_camiones();
+                    row.setCantidad_camiones(0);
+                    System.out.println(camionesAAsignar);
+                }else{
+                    row.setCantidad_camiones(row.getCantidad_camiones()-camionesAAsignar);
+                    break;
+                }
+            }
+            SeleccionarGaleraMayor23();//NORTE
+            if(secuenciaAPlanificar < requeridosPlanta.size()){
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta);
+            }
+        } else {
+            
+            for (int i = 0; i < datosCosechas.size(); i++) {
+            DatosCosechas row = datosCosechas.get(i);
+            if (horaRequerida2.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
+                contCamiones += row.getCantidad_camiones();
+                if (camionesLibres + contCamiones >= camionesRequeridos2) {
+                    ultimaHora2 = row.getHora_planta();                    
+                    cosechasSobrantes = datosCosechas.subList(i, datosCosechas.size());
+                    camionesSobrantes = camionesLibres + contCamiones - camionesRequeridos2;
+                    break;
+                }
+            }
+        }
+            //Collections.reverse(datosCosechas);
+            if(ultimaHora2 != null){
+            for (int i = 0; i < cosechasSobrantes.size(); i++) {
+            DatosCosechas row = cosechasSobrantes.get(i);
+            if (horaRequerida.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
+                contCamiones += row.getCantidad_camiones();
+                if (camionesLibres + contCamiones >= camionesRequeridos) {
+                    ultimaHora1 = row.getHora_planta();                    
+                    camionesSobrantes = camionesLibres + contCamiones - camionesRequeridos2;
+                    break;
+                }
+            }
+        }
+            if(ultimaHora1 != null){
+                SeleccionarGaleraMayor23();//CENTRAL secuenciaAPlanificar - ultimaHora = utimaHora1
+                SeleccionarGaleraMayor23();//NORTE secuenciaSiguiente ultimaHora = utimaHora2
+                if(secuenciaAPlanificar < requeridosPlanta.size()){
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta);
+                }
+            }
+            
+            }else{
+            SeleccionarGaleraMayor23();//CENTRAL
+            if(secuenciaAPlanificar < requeridosPlanta.size()){
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta);
+                }
+            }
+            
+            DatosCosechas primeraFila = cosechasSobrantes.remove(0);
+
+            if (camionesSobrantes > 0) {
+                ultimaHora2 = primeraFila.getHora_planta();
+            } else {
+                ultimaHora2 = cosechasSobrantes.get(0).getHora_planta();
+            }
+            for (DatosCosechas cosechaSobrante : cosechasSobrantes) {
+                camionesSobrantes += cosechaSobrante.getCantidad_camiones();
+            }
+            
+            
+//            z.Zona(ultimaHora, horaRequerida, camionesRequeridos2, horaRequerida2,
+//                            camionesSobrantes, cosechasSobrantes);
+        }    
 
         return ultimaHora;
     }
+    
+    public long tiempoEnMillisegundos(Calendar horaConFecha) {
+                    Calendar hoy = Calendar.getInstance();
+                    hoy.set(Calendar.HOUR, 0);
+                    hoy.set(Calendar.MINUTE, 0);
+                    hoy.set(Calendar.SECOND, 0);
+                    hoy.set(Calendar.MILLISECOND, 0);
+                    return horaConFecha.getTimeInMillis() - hoy.getTimeInMillis();
+                }
 
     public void GestionDatosMayor23(
         final int dia, 
@@ -1325,53 +1400,40 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     camionesUsados,
                     ultimaSecuencia,
                     listDatosCosechas,
-                    listRequeridoPlanta,
-                    new DoSomething() {
-                @Override
-                public void d(
-                        Calendar ultimaHora,
-                        Calendar horaRequerida,
-                        int camionesRequeridos2,
-                        Calendar horaRequerida2,
-                        int camionesSobrantes,
-                        List<DatosCosechas> cosechasSobrantes) {
-                    if (tiempoEnMillisegundos(ultimaHora) - tiempoEnMillisegundos(horaRequerida) < 4 * 60 * 60 * 1000) {
-                    }
-                    int camiones = camionesSobrantes;
-                    Calendar horaPlanta2 = Calendar.getInstance();
-                    //if cosechassobranres.size() > 0
-                    DatosCosechas primeraFila = cosechasSobrantes.remove(0);
-                    if (primeraFila.getCantidad_camiones() > 0) {
-                        horaPlanta2 = primeraFila.getHora_planta();
-                    } else {
-                        horaPlanta2 = cosechasSobrantes.get(0).getHora_planta();
-                    }
-                    for (DatosCosechas cosechaSobrante : cosechasSobrantes) {
-                        camiones += cosechaSobrante.getCantidad_camiones();
-                    }
-                    Collections.reverse(listDatosCosechas);
-                    calcularUltimaHora(dia, camionesUsados, ultimaSecuencia, listDatosCosechas, listRequeridoPlanta, new DoSomething() {
-                        @Override
-                        public void d(
-                                Calendar ultimaHora,
-                                Calendar horaRequerida,
-                                int camionesRequeridos2,
-                                Calendar horaRequerida2,
-                                int camionesSobrantes,
-                                List<DatosCosechas> cosechasSobrantes) {
-                        }
-                    });
-                }
-
-                public long tiempoEnMillisegundos(Calendar horaConFecha) {
-                    Calendar hoy = Calendar.getInstance();
-                    hoy.set(Calendar.HOUR, 0);
-                    hoy.set(Calendar.MINUTE, 0);
-                    hoy.set(Calendar.SECOND, 0);
-                    hoy.set(Calendar.MILLISECOND, 0);
-                    return horaConFecha.getTimeInMillis() - hoy.getTimeInMillis();
-                }
-            });
+                    listRequeridoPlanta);
+//                     {
+//                @Override
+//                public void Zona(
+//                        Calendar ultimaHora,
+//                        Calendar horaRequerida,
+//                        int camionesRequeridos2,
+//                        Calendar horaRequerida2,
+//                        int camionesSobrantes,
+//                        List<DatosCosechas> cosechasSobrantes) {
+//
+//                    
+//                    calcularUltimaHora(dia, camionesUsados, ultimaSecuencia, listDatosCosechas, listRequeridoPlanta, new SeleccionarZona() {
+//                        @Override
+//                        public void Zona(
+//                                Calendar ultimaHora,
+//                                Calendar horaRequerida,
+//                                int camionesRequeridos2,
+//                                Calendar horaRequerida2,
+//                                int camionesSobrantes,
+//                                List<DatosCosechas> cosechasSobrantes) {
+//                        }
+//                    });
+//                }
+//
+//                public long tiempoEnMillisegundos(Calendar horaConFecha) {
+//                    Calendar hoy = Calendar.getInstance();
+//                    hoy.set(Calendar.HOUR, 0);
+//                    hoy.set(Calendar.MINUTE, 0);
+//                    hoy.set(Calendar.SECOND, 0);
+//                    hoy.set(Calendar.MILLISECOND, 0);
+//                    return horaConFecha.getTimeInMillis() - hoy.getTimeInMillis();
+//                }
+//            });
         }
 
         
@@ -1381,7 +1443,6 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     public void SeleccionarGaleraMayor23() {
         int o = 0;
     }
-
 
     private void ConsultarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarReporteActionPerformed
         mostrarConsultarReporte(idUsuarioAutenticado);
