@@ -724,15 +724,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         tamañored[r][2]=tamañored[r][8];
                         tamañored[r][5]=tamañored[r][8];
                     }
-                    for(int a=0;a<4;a++){
-                        System.out.println("tamaño grande "+a+" "+tamañored[r][2+a]);
-                        System.out.println("tamaño mediano "+a+" "+tamañored[r][1+a]);
-                        System.out.println("tamaño pequeño "+a+" "+tamañored[r][0+a]);
-                        System.out.println("redgaleras "+redgaleras[r][a][0]);
-                        System.out.println("redgaleras "+redgaleras[r][a][1]);
-                        System.out.println("redgaleras "+redgaleras[r][a][2]);
-                        
-                    }
+                    
                 }
 
                 //LA ELECCION DE GALERAS
@@ -1221,7 +1213,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     public ArrayList<RequeridoPlanta> LlenarRequeridoPlanta(int dia) {
         ArrayList<RequeridoPlanta> listRequeridoPlanta = new ArrayList<>();
 
-        for (int j = 0; j < planta[dia].length; j++) {
+        for (int j = 0; j < planta[dia].length; j++) {//tamañosecuenciautilizar[diax]
             try {
                 RequeridoPlanta requerido = new RequeridoPlanta(dia);
                 requerido.setSecuencia(Integer.parseInt(planta[dia][j][0]));
@@ -1251,7 +1243,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 int camionesRequeridos2,
                 Calendar horaRequerida2,
                 int camionesSobrantes,
-                List<DatosCosechas> cosechasSobrantes);
+                List<DatosCosechas> cosechasSobrantes);//
     }
 
     private Calendar calcularUltimaHora(int dia, int camionesUsados,
