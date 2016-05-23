@@ -1126,7 +1126,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 resultadodn.next();
                                 float probabilidad1=resultadogn.getFloat("Probabilidad");
                                 cantidadcosechada[dia][rango]=cantidadcosechada[dia][rango]+java.lang.Math.round(cantidadcosechar);
-                            */
+                            }*/
                             if(indicadorraleo==1){
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][10]=fechaB.toString();
                             }else{
