@@ -80,40 +80,43 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         hora7.set(Calendar.MINUTE,28);
         hora7.set(Calendar.SECOND,0);
         
-        cosechas.setSecuencia(1);
-        cosechas.setRango("Pequeño");
-        cosechas.setHoras_procesamiento(2);
-        cosechas.setCantidad_aves(18600);
-        cosechas.setCantidad_camiones(6);
-        cosechas.setHora_planta(hora1);
-        cosechas.setGalera(3);
-        cosechas.setCuadrilla(1);
-        cosechas.setHora_liberacion_cuadrilla(hora1);
-        listDatosCosechas.add(0, cosechas);
+        DatosCosechas cosechas1 = new DatosCosechas(1);
+        cosechas1.setSecuencia(1);
+        cosechas1.setRango("Pequeño");
+        cosechas1.setHoras_procesamiento(2);
+        cosechas1.setCantidad_aves(18600);
+        cosechas1.setCantidad_camiones(6);
+        cosechas1.setHora_planta(hora1);
+        cosechas1.setGalera(3);
+        cosechas1.setCuadrilla(1);
+        cosechas1.setHora_liberacion_cuadrilla(hora1);
+        listDatosCosechas.add(cosechas1);
 
-        cosechas.setSecuencia(2);
-        cosechas.setRango("Mediano");
-        cosechas.setHoras_procesamiento(2);
-        cosechas.setCantidad_aves(18600);
-        cosechas.setCantidad_camiones(7);
-        cosechas.setHora_planta(hora2);
-        cosechas.setGalera(5);
-        cosechas.setCuadrilla(2);
-        cosechas.setHora_liberacion_cuadrilla(hora2);
-        listDatosCosechas.add(1, cosechas);
+        DatosCosechas cosechas2 = new DatosCosechas(1);
+        cosechas2.setSecuencia(2);
+        cosechas2.setRango("Mediano");
+        cosechas2.setHoras_procesamiento(2);
+        cosechas2.setCantidad_aves(18600);
+        cosechas2.setCantidad_camiones(7);
+        cosechas2.setHora_planta(hora2);
+        cosechas2.setGalera(5);
+        cosechas2.setCuadrilla(2);
+        cosechas2.setHora_liberacion_cuadrilla(hora2);
+        listDatosCosechas.add(cosechas2);
         
-        cosechas.setSecuencia(3);
-        cosechas.setRango("Grande");
-        cosechas.setHoras_procesamiento(2);
-        cosechas.setCantidad_aves(16800);
-        cosechas.setCantidad_camiones(7);
-        cosechas.setHora_planta(hora3);
-        cosechas.setGalera(8);
-        cosechas.setCuadrilla(3);
-        cosechas.setHora_liberacion_cuadrilla(hora3);
-        listDatosCosechas.add(2, cosechas);
+        DatosCosechas cosechas3 = new DatosCosechas(1);
+        cosechas3.setSecuencia(3);
+        cosechas3.setRango("Grande");
+        cosechas3.setHoras_procesamiento(2);
+        cosechas3.setCantidad_aves(16800);
+        cosechas3.setCantidad_camiones(7);
+        cosechas3.setHora_planta(hora3);
+        cosechas3.setGalera(8);
+        cosechas3.setCuadrilla(3);
+        cosechas3.setHora_liberacion_cuadrilla(hora3);
+        listDatosCosechas.add(cosechas3);
         
-        RequeridoPlanta requerido1 = new RequeridoPlanta(100);
+        RequeridoPlanta requerido1 = new RequeridoPlanta(1);
         requerido1.setSecuencia(1);
         requerido1.setRango("Pequeño");
         requerido1.setHoras_procesamiento(2);
@@ -123,7 +126,7 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         listRequeridoPlanta.add(requerido1);
         
         
-        RequeridoPlanta requerido2 = new RequeridoPlanta(100);
+        RequeridoPlanta requerido2 = new RequeridoPlanta(1);
         requerido2.setSecuencia(2);
         requerido2.setRango("Mediano");
         requerido2.setHoras_procesamiento(2);
@@ -132,53 +135,58 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         requerido2.setHora_planta(hora2);
         listRequeridoPlanta.add(requerido2);
         
-        requerido.setSecuencia(3);
-        requerido.setRango("Grande");
-        requerido.setHoras_procesamiento(2);
-        requerido.setCantidad_aves(16800);
-        requerido.setCantidad_camiones(7);
-        requerido.setHora_planta(hora3);
-        listRequeridoPlanta.add(requerido);
+        RequeridoPlanta requerido3 = new RequeridoPlanta(1);
+        requerido3.setSecuencia(3);
+        requerido3.setRango("Grande");
+        requerido3.setHoras_procesamiento(2);
+        requerido3.setCantidad_aves(16800);
+        requerido3.setCantidad_camiones(7);
+        requerido3.setHora_planta(hora3);
+        listRequeridoPlanta.add(requerido3);
         
-        requerido.setSecuencia(4);
-        requerido.setRango("Pequeño");
-        requerido.setHoras_procesamiento(2);
-        requerido.setCantidad_aves(18600);
-        requerido.setCantidad_camiones(6);
-        requerido.setHora_planta(hora4);
-        listRequeridoPlanta.add(requerido);
+        RequeridoPlanta requerido4 = new RequeridoPlanta(1);
+        requerido4.setSecuencia(4);
+        requerido4.setRango("Pequeño");
+        requerido4.setHoras_procesamiento(2);
+        requerido4.setCantidad_aves(18600);
+        requerido4.setCantidad_camiones(6);
+        requerido4.setHora_planta(hora4);
+        listRequeridoPlanta.add(requerido4);
 
-        requerido.setSecuencia(5);
-        requerido.setRango("Grande");
-        requerido.setHoras_procesamiento(2);
-        requerido.setCantidad_aves(16800);
-        requerido.setCantidad_camiones(7);
-        requerido.setHora_planta(hora5);
-        listRequeridoPlanta.add(requerido);
+        RequeridoPlanta requerido5 = new RequeridoPlanta(1);
+        requerido5.setSecuencia(5);
+        requerido5.setRango("Grande");
+        requerido5.setHoras_procesamiento(2);
+        requerido5.setCantidad_aves(16800);
+        requerido5.setCantidad_camiones(7);
+        requerido5.setHora_planta(hora5);
+        listRequeridoPlanta.add(requerido5);
         
-        requerido.setSecuencia(6);
-        requerido.setRango("Mediano");
-        requerido.setHoras_procesamiento(2);
-        requerido.setCantidad_aves(18600);
-        requerido.setCantidad_camiones(7);
-        requerido.setHora_planta(hora6);
-        listRequeridoPlanta.add(requerido);
+        RequeridoPlanta requerido6 = new RequeridoPlanta(1);
+        requerido6.setSecuencia(6);
+        requerido6.setRango("Mediano");
+        requerido6.setHoras_procesamiento(2);
+        requerido6.setCantidad_aves(18600);
+        requerido6.setCantidad_camiones(7);
+        requerido6.setHora_planta(hora6);
+        listRequeridoPlanta.add(requerido6);
 
-        requerido.setSecuencia(7);
-        requerido.setRango("Pequeño");
-        requerido.setHoras_procesamiento(1.45);
-        requerido.setCantidad_aves(13530);
-        requerido.setCantidad_camiones(5);
-        requerido.setHora_planta(hora7);
-        listRequeridoPlanta.add(requerido);
+        RequeridoPlanta requerido7 = new RequeridoPlanta(1);
+        requerido7.setSecuencia(7);
+        requerido7.setRango("Pequeño");
+        requerido7.setHoras_procesamiento(1.45);
+        requerido7.setCantidad_aves(13530);
+        requerido7.setCantidad_camiones(5);
+        requerido7.setHora_planta(hora7);
+        listRequeridoPlanta.add(requerido7);
+        System.out.println(listRequeridoPlanta.get(0).getSecuencia());
         System.out.println(listRequeridoPlanta.get(1).getSecuencia());
         System.out.println(listRequeridoPlanta.get(2).getSecuencia());
-        System.out.println(listRequeridoPlanta.get(3).getSecuencia());
-        System.out.println(listRequeridoPlanta.get(2).getRango());
+        System.out.println(listRequeridoPlanta.get(6).getRango());
        
-      //  CosechaCortoPlazo cosechaCorto = new CosechaCortoPlazo(1); 
-      //  cosechaCorto.GestionDatosMayor23(1, 20, 3, listDatosCosechas,listRequeridoPlanta);
-     //   
+        CosechaCortoPlazo cosechaCorto = new CosechaCortoPlazo(1); 
+        cosechaCorto.GestionDatosMayor23(1, 20, 3, listDatosCosechas,listRequeridoPlanta);
+        
     }
 
 
