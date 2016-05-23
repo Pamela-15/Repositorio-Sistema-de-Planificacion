@@ -19,13 +19,17 @@ import javax.swing.table.DefaultTableModel;
  * @author Acer
  */
 public class PlanCosechaCortoPlazo extends javax.swing.JFrame {
-    String[][] tabla;
+    String[][][] tabla;
+    int idusuarioautenticado;
+    int[] numerogalerascosechadaspordia;
     /** variable que puedo usar en todos los metodos que cree
      * Creates new form PlanCosechaCortoPlazo
      */
-    public PlanCosechaCortoPlazo(String[][] plan) {
+    public PlanCosechaCortoPlazo(int idusuario,String[][][] plan, int[] numero) {
         initComponents();
+        idusuarioautenticado=idusuario;
         tabla = plan;
+        numerogalerascosechadaspordia= numero;
     // plan es lo que se recibe del método del algoritmo
     }
 
@@ -144,10 +148,10 @@ public class PlanCosechaCortoPlazo extends javax.swing.JFrame {
 
     private void TablaPlanCompletoCosechaCortoPlazoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_TablaPlanCompletoCosechaCortoPlazoAncestorAdded
         DefaultTableModel model=(DefaultTableModel) TablaPlanCompletoCosechaCortoPlazo.getModel();
-        
-        for (int i=0; i<tabla.length;i++){ 
-        model.addRow(new Object[]{tabla[i][0],tabla[i][1],tabla[i][2], tabla[i][3], tabla[i][4], tabla[i][5], tabla[i][6], tabla[i][7], tabla[i][8]});
-        
+        for(int dia=0;dia<7;dia++){
+            for (int i=0; i<numerogalerascosechadaspordia[dia];i++){ 
+                model.addRow(new Object[]{tabla[dia][i][0],tabla[i][1],tabla[i][2], tabla[i][3], tabla[i][4], tabla[i][5], tabla[i][6], tabla[i][7], tabla[i][8]});
+            }
         }
     }//GEN-LAST:event_TablaPlanCompletoCosechaCortoPlazoAncestorAdded
     public void MostrarModificarSeleccionCosechaCortoPlazo() {
@@ -185,8 +189,10 @@ public class PlanCosechaCortoPlazo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                String [][] a = new String[1][1];
-                new PlanCosechaCortoPlazo(a).setVisible(true);
+                int b=0;
+                String [][][] a = new String[1][1][1];
+                int[] c= new int[7];
+                new PlanCosechaCortoPlazo(b,a,c).setVisible(true);
             }
         });
     }
