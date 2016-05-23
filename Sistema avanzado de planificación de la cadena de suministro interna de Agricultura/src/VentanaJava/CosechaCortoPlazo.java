@@ -28,6 +28,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     String[][][] secuenciautilizar=new String[16][3][7];
     String [][][] planta =new String[7][16][6];
     int secuenciasUsadas23=0;
+    int[] rangoscamiones=new int[3];
 
     /**
      * Creates new form CosechaCortoPlazo
@@ -813,7 +814,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     cuadrilla=1;
                                 } else {
                                     cuadrilla=2;
-                                }
+                                }//verificar que las redes tengan algo, las completas 
                                 SeleccionarGalera( raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tiporangos, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera);
                             }else{
                         
@@ -842,8 +843,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
                            
-            if (!con.isClosed()) {    
-                int[] rangoscamiones=new int[3];
+            if (!con.isClosed()) {
                 rangoscamiones[0]=2880;
                 rangoscamiones[1]=2592;
                 rangoscamiones[2]=2316;//revisar dato real        
@@ -881,7 +881,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     tiempoentregaleras=distancia[tamaño][2];
                                     mep=Math.abs(errorpraleado);
                                     indicadorraleo=1;
-                                }
+                                }//terminé por aqui
                                 if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
                                     galeramejor=tamaño; //mismo caso
                                     indicadorcompiladas=0;
