@@ -5,16 +5,16 @@
  */
 package VentanaJava;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class RequeridoPlanta {
   //Requeridos por secuencia  
-  private int secuencia;
-  private String rango;
-  private int horas_procesamiento;
+  private int secuencia;  private String rango;
+  private double horas_procesamiento;
   private int cantidad_aves;
   private int cantidad_camiones;
-  private Date hora_planta;
+  private Calendar hora_planta;
   
   public RequeridoPlanta(int dia){ }
  
@@ -30,10 +30,10 @@ public class RequeridoPlanta {
   public void setRango(String rango_i){
     this.rango = rango_i;
   }
-    public Integer getHoras_procesamiento(){
+    public double getHoras_procesamiento(){
     return this.horas_procesamiento;
   }
-  public void setHoras_procesamiento(int horas_procesamiento_i){
+  public void setHoras_procesamiento(double horas_procesamiento_i){
     this.horas_procesamiento = horas_procesamiento_i;
   }
   public int getCantidad_aves(){
@@ -48,10 +48,10 @@ public class RequeridoPlanta {
   public void setCantidad_camiones(int cantidad_camiones_i){
     this.cantidad_camiones = cantidad_camiones_i;
   }
-  public Date getHora_planta(){
+  public Calendar getHora_planta(){
     return this.hora_planta;
   }
-  public void setHora_planta(Date hora_planta_i){
+  public void setHora_planta(Calendar hora_planta_i){
     this.hora_planta = hora_planta_i;
   }
     
