@@ -183,7 +183,7 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         System.out.println(listRequeridoPlanta.get(1).getSecuencia());
         System.out.println(listRequeridoPlanta.get(2).getSecuencia());
         System.out.println(listRequeridoPlanta.get(6).getRango());
-       
+       //Prueba
         CosechaCortoPlazo cosechaCorto = new CosechaCortoPlazo(1); 
         cosechaCorto.GestionDatosMayor23(1, 20, 3, listDatosCosechas,listRequeridoPlanta);
         
