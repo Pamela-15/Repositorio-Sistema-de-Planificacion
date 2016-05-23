@@ -28,11 +28,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     String[][][] secuenciautilizar=new String[16][3][7];
     String [][][] planta =new String[7][16][6];
     int secuenciasUsadas23=0;
-<<<<<<< HEAD
     int[] rangoscamiones=new int[3];
-=======
     int[][] cantidadcosechada= new int[7][3]; 
->>>>>>> origin/master
+
 
     /**
      * Creates new form CosechaCortoPlazo
@@ -897,16 +895,16 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     tiempoentregaleras=distancia[tamaño][2];
                                     mep=Math.abs(errorpraleado);
                                     indicadorraleo=1;
-<<<<<<< HEAD
+
                                 }//terminé por aqui
                                 if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
                                     galeramejor=tamaño; //mismo caso
-=======
+
                             }
                             if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
                                     System.out.println("Entro al if completo");
                                     galeramejor=tamaño; 
->>>>>>> origin/master
+
                                     indicadorcompiladas=0;
                                     cantidadcosechar=Integer.parseInt(galeras[p][1]);
                                     tiempoentregaleras=distancia[tamaño][2]; 
