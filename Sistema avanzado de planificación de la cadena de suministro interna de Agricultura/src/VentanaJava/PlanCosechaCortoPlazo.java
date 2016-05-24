@@ -75,11 +75,11 @@ public class PlanCosechaCortoPlazo extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Secuencia", "Fecha de Cosecha", "Granja", "Galera", "Peso", "Rango", "Cantidad a Cosechar", "Cantidad disponible", "Zona"
+                "Secuencia", "Fecha de Cosecha", "Granja", "Galera", "Peso", "Rango", "Cantidad a Cosechar", "Cantidad disponible"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -150,7 +150,7 @@ public class PlanCosechaCortoPlazo extends javax.swing.JFrame {
         DefaultTableModel model=(DefaultTableModel) TablaPlanCompletoCosechaCortoPlazo.getModel();
         for(int dia=0;dia<7;dia++){
             for (int i=0; i<numerogalerascosechadaspordia[dia];i++){ 
-                model.addRow(new Object[]{tabla[dia][i][0],tabla[i][1],tabla[i][2], tabla[i][3], tabla[i][4], tabla[i][5], tabla[i][6], tabla[i][7], tabla[i][8]});
+                model.addRow(new Object[]{i+1,tabla[dia][i][9],tabla[dia][i][10], tabla[dia][i][11], tabla[dia][i][14], tabla[dia][i][1], tabla[dia][i][3], tabla[dia][i][12]});
             }
         }
     }//GEN-LAST:event_TablaPlanCompletoCosechaCortoPlazoAncestorAdded
