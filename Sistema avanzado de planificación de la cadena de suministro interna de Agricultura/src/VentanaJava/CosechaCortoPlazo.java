@@ -136,7 +136,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
 
     private void GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {                                               
 //GEN-FIRST:event_GenerarReporteActionPerformed
-        jDialog1.setVisible(true);
+        jDialog1.setVisible(true);//lo que no funciona
         jDialog1.setLocationRelativeTo(null);
         jDialog1.setTitle("Generando.....");
         jDialog1.setSize(200,50);
