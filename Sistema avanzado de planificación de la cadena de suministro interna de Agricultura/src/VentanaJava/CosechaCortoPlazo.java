@@ -922,13 +922,10 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 indicadorraleo=1;
 
 
-                                }//p1
-                                if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
-                                    galeramejor=tamaño; //mismo caso
+                            
+                            
 
-                            }
-
-                            }//terminé por aqui
+                            }//p1
                                 
 
                             if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
@@ -1182,9 +1179,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         }
                                             
                     }
-                
-            }
-            con.close();
+                    con.close();
+                }    
             } catch (Exception e) {
             jDialog1.setVisible(false);
             JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
