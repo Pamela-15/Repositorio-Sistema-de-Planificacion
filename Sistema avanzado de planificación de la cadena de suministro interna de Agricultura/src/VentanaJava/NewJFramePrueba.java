@@ -20,7 +20,8 @@ public class NewJFramePrueba extends javax.swing.JFrame {
      */
     public NewJFramePrueba() {
         initComponents();
-        DatosCosechas cosechas = new DatosCosechas(100);        RequeridoPlanta requerido = new RequeridoPlanta(100);
+        DatosCosechas cosechas = new DatosCosechas(100);        
+        RequeridoPlanta requerido = new RequeridoPlanta(100);
         ArrayList<DatosCosechas> listDatosCosechas = new ArrayList<DatosCosechas>(0);
         ArrayList<RequeridoPlanta> listRequeridoPlanta = new ArrayList<RequeridoPlanta>(0);
 
@@ -115,7 +116,7 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         cosechas3.setCuadrilla(3);
         cosechas3.setHora_liberacion_cuadrilla(hora3);
         listDatosCosechas.add(cosechas3);
-        
+        //porq hasta tres????
         RequeridoPlanta requerido1 = new RequeridoPlanta(1);
         requerido1.setSecuencia(1);
         requerido1.setRango("Pequeño");

@@ -1252,7 +1252,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         int camionesLibres = 23 - camionesUsados;
         int secuenciaAPlanificar = ultimaSecuencia + 1;
         int secuenciaSiguiente = secuenciaAPlanificar + 1;
-        int camionesRequeridos = 0;
+        int camionesRequeridos = 0;//xq cero?
         Calendar horaRequerida = Calendar.getInstance();
         int camionesRequeridos2 = 0;
         Calendar horaRequerida2 = Calendar.getInstance();
@@ -1298,7 +1298,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 }
             }
         }
-        if(tiempoEnMillisegundos(horaRequerida) - tiempoEnMillisegundos(ultimaHora)  > 4 * 60 * 60 * 1000){
+        if(tiempoEnMillisegundos(horaRequerida) - tiempoEnMillisegundos(ultimaHora)  > 4 * 60 * 60 * 1000){//consultar el valor de las horas desde mysql?
             int camionesAAsignar = camionesRequeridos;
             for (int i = 0; i < datosCosechas.size(); i++) {
                 System.out.println(camionesAAsignar);
