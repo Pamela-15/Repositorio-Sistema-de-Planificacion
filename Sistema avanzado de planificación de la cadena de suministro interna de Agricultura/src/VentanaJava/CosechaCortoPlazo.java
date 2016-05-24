@@ -28,7 +28,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     int camionesusados;
     String[][] galeras;
     String[][][] secuenciautilizar=new String[16][3][7];
-    String [][][] planta =new String[7][16][6];
+    String[][][] planta =new String[7][16][6];
     int secuenciasUsadas23=0;
     int[] rangoscamiones=new int[3];
     int[][] cantidadcosechada= new int[7][3]; 
@@ -136,7 +136,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
 
     private void GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {                                               
 //GEN-FIRST:event_GenerarReporteActionPerformed
-        jDialog1.setVisible(true);
+        jDialog1.setVisible(true);//lo que no funciona
         jDialog1.setLocationRelativeTo(null);
         jDialog1.setTitle("Generando.....");
         jDialog1.setSize(200,50);
@@ -921,8 +921,16 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 mep=Math.abs(errorpraleado);
                                 indicadorraleo=1;
 
+
+                                }//p1
+                                if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
+                                    galeramejor=tamaño; //mismo caso
+
+                            }
+
                             }//terminé por aqui
                                 
+
                             if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
                                     System.out.println("Entro al if completo");
                                     galeramejor=tamaño; 
@@ -932,7 +940,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     tiempoentregaleras=distancia[tamaño][2]; 
                                     mep=Math.abs(errorp);
                                     indicadorraleo=0;
-                            }
+                            }//p2
                                 int uniongalerasp=0;
                                 float total=Float.parseFloat(galeras[p][1]);
                                 int gama=0;
@@ -959,8 +967,14 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     
                                 }
                                                 
+
+                        }//termina p3
+                        System.out.println("cierra while"+dia);
+                        if(indicadorcompiladas==0){//inicia llenar plan sin compiladas
+
                         }
                         if(indicadorcompiladas==0){
+
                             planborradorcosecha[dia][n][0]=Integer.toString(cambios);
                             planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
                             planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][5+rango]);
@@ -992,7 +1006,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }else{
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][11]=fechaB.toString();
                             }
-                        }else{
+                        }else{ //inicia llenar compilada
                             for(int yu=0;yu<indicadorcompiladas;yu++){
                                 planborradorcosecha[dia][yu+n][0]=Integer.toString(cambios);
                                 planborradorcosecha[dia][yu+n][1]=planta[dia][cambios][1];
