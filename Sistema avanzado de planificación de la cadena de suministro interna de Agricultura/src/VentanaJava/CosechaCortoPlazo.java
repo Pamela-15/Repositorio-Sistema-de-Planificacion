@@ -1178,7 +1178,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             horasllegadaplanta=horacubierta.getTime();
                             camionesusados=camionesusados+java.lang.Math.round(cantidadcosechar/rangoscamiones[rango]);
                             galerascosechadas[cuadrilla]=(java.lang.Math.round(distancia[galeramejor][0]));
-                            n=n+indicadorcompiladas;
+                            n=n+indicadorcompiladas;//
                         }
                                             
                     }
