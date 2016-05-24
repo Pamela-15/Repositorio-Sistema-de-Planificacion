@@ -896,7 +896,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     mep=Math.abs(errorpraleado);
                                     indicadorraleo=1;
 
-                                }//terminé por aqui
+                                }//p1
                                 if(Math.abs(errorp)<mep && (galeras[p][11]==null && (galeras[p][10]==null||(formatodeltexto.parse(galeras[idgalera[java.lang.Math.round(distancia[tamaño][0])]][10]).before(sqlraleoA))))){
                                     galeramejor=tamaño; //mismo caso
 
@@ -910,7 +910,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     tiempoentregaleras=distancia[tamaño][2]; 
                                     mep=Math.abs(errorp);
                                     indicadorraleo=0;
-                            }
+                            }//p2
                                 int uniongalerasp=0;
                                 System.out.println(uniongalerasp);
                                 float total=Float.parseFloat(galeras[p][1]);
@@ -951,9 +951,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                                     
                                 }
                                                 
-                        }
+                        }//termina p3
                         System.out.println("cierra while"+dia);
-                        if(indicadorcompiladas==0){
+                        if(indicadorcompiladas==0){//inicia llenar plan sin compiladas
                             planborradorcosecha[dia][n][0]=Integer.toString(cambios);
                             planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
                             planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][5+rango]);
@@ -978,7 +978,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }else{
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][11]=fechaB.toString();
                             }
-                        }else{
+                        }else{ //inicia llenar compilada
                             for(int yu=0;yu<indicadorcompiladas;yu++){
                                 planborradorcosecha[dia][yu+n][0]=Integer.toString(cambios);
                                 planborradorcosecha[dia][yu+n][1]=planta[dia][cambios][1];
