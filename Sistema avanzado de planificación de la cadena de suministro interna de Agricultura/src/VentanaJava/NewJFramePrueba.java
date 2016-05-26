@@ -186,7 +186,7 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         System.out.println(listRequeridoPlanta.get(6).getRango());
        //Prueba
         CosechaCortoPlazo cosechaCorto = new CosechaCortoPlazo(1); 
-        cosechaCorto.GestionDatosMayor23(1, 20, 3, listDatosCosechas,listRequeridoPlanta);
+        //cosechaCorto.GestionDatosMayor23(1, 20, 3, listDatosCosechas,listRequeridoPlanta);
         
     }
 
@@ -241,6 +241,9 @@ public class NewJFramePrueba extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(NewJFramePrueba.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

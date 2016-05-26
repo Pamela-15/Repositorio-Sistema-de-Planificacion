@@ -1207,8 +1207,6 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                  
     }
 
-    
-    //1- por cada día debe entrar la cantidad de camiones (de los primeros 23) que no se usaron
 
     public ArrayList<DatosCosechas> LlenarDatosCosechas(int dia) {
         ArrayList<DatosCosechas> listDatosCosechas = new ArrayList<>();
@@ -1264,24 +1262,18 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         return listRequeridoPlanta;
     }
 
-//    private interface SeleccionarZona {
-//
-//        public void Zona(
-//                Calendar ultimaHora,
-//                Calendar horaRequerida,
-//                int camionesRequeridos2,
-//                Calendar horaRequerida2,
-//                int camionesSobrantes,
-//                List<DatosCosechas> cosechasSobrantes);
-//    }
-
-    private Calendar calcularUltimaHora(int dia, int camionesUsados,
+private Calendar calcularUltimaHora(int dia, int camionesUsados,
             int ultimaSecuencia, ArrayList<DatosCosechas> datosCosechas,
-            ArrayList<RequeridoPlanta> requeridosPlanta) {
+            ArrayList<RequeridoPlanta> requeridosPlanta, float raleo,java.sql.Date sqlraleoA, 
+            java.sql.Date fechaB, float[][] necesidadActualizadaAves, 
+            int[][] tamañored, String[][][] redgaleras,  int cambios, int[] idgalera, 
+            float[][] pesoproyectado, String[][] rangospredeterminado) {
         int camionesLibres = 23 - camionesUsados;
         int secuenciaAPlanificar = ultimaSecuencia + 1;
         int secuenciaSiguiente = secuenciaAPlanificar + 1;
-        int camionesRequeridos = 0;//xq cero?
+        int camionesRequeridos = 0;
+        int reqRango = 0;
+        int reqRango2 =0;
         Calendar horaRequerida = Calendar.getInstance();
         int camionesRequeridos2 = 0;
         Calendar horaRequerida2 = Calendar.getInstance();
@@ -1289,118 +1281,183 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         Calendar ultimaHora = Calendar.getInstance();
         Calendar ultimaHora1 = Calendar.getInstance();
         Calendar ultimaHora2 = Calendar.getInstance();
+        Calendar ultimaHoraSobrante = Calendar.getInstance();
 
         for (RequeridoPlanta requerido : requeridosPlanta) {
             if (requerido.getSecuencia() == secuenciaAPlanificar) {
                 camionesRequeridos = requerido.getCantidad_camiones();
                 horaRequerida = requerido.getHora_planta();
-                break;
-            } else {
-                System.out.println(requerido.getSecuencia());
+                switch(requerido.getRango()){
+                    case "Pequeño": 
+                        reqRango = 0;
+                        break;
+                    case "Mediano":
+                        reqRango = 1;
+                        break;
+                    case "Grande":
+                        reqRango = 2;
+                        break;
+                }
             }
-
         }
 
         for (RequeridoPlanta requerido : requeridosPlanta) {
             if (requerido.getSecuencia() == secuenciaSiguiente) {
                 camionesRequeridos2 = requerido.getCantidad_camiones();
                 horaRequerida2 = requerido.getHora_planta();
-                System.out.println(requerido.getSecuencia());
-                break;
-            } else {
-                System.out.println(requerido.getSecuencia());
+                switch(requerido.getRango()){
+                    case "Pequeño": 
+                        reqRango2 = 0;
+                        break;
+                    case "Mediano":
+                        reqRango2 = 1;
+                        break;
+                    case "Grande":
+                        reqRango2 = 2;
+                        break;
             }
+                break;
+            } 
         }
-//Borrar intento for
 
         int contCamiones = 0;
-        int camionesSobrantes = 0;
-        List<DatosCosechas> cosechasSobrantes = new ArrayList<DatosCosechas>();
+        
         for (int i = 0; i < datosCosechas.size(); i++) {
             DatosCosechas row = datosCosechas.get(i);
             if (horaRequerida.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
                 contCamiones += row.getCantidad_camiones();
                 if (camionesLibres + contCamiones >= camionesRequeridos) {
                     ultimaHora = row.getHora_planta();                    
-                    camionesSobrantes = camionesLibres + contCamiones - camionesRequeridos;
                     break;
                 }
             }
         }
-        if(tiempoEnMillisegundos(horaRequerida) - tiempoEnMillisegundos(ultimaHora)  > 4 * 60 * 60 * 1000){//consultar el valor de las horas desde mysql?
+        long tiempoDisponiblemilisegundos = tiempoEnMillisegundos(horaRequerida) - tiempoEnMillisegundos(ultimaHora);
+        float tiempoDisponibleHoras = tiempoDisponiblemilisegundos/(1000*60*60);
+        if(ultimaHora != null && tiempoDisponiblemilisegundos  >= 4 * 60 * 60 * 1000){
             int camionesAAsignar = camionesRequeridos;
             for (int i = 0; i < datosCosechas.size(); i++) {
-                System.out.println(camionesAAsignar);
                 DatosCosechas row = datosCosechas.get(i);
                 if(camionesAAsignar >= row.getCantidad_camiones()){
                     camionesAAsignar = camionesAAsignar - row.getCantidad_camiones();
                     row.setCantidad_camiones(0);
-                    System.out.println(camionesAAsignar);
-                }else{
-                    row.setCantidad_camiones(row.getCantidad_camiones()-camionesAAsignar);
+                }else {
+                    row.setCantidad_camiones(row.getCantidad_camiones() - camionesAAsignar);
+                    DatosCosechas cosechasi = new DatosCosechas(1);
+                    cosechasi.setSecuencia(secuenciaAPlanificar);
+                    cosechasi.setCantidad_camiones(camionesRequeridos);
+                    cosechasi.setHora_planta(horaRequerida);
+                    datosCosechas.add(cosechasi);
+                    
                     break;
                 }
             }
-            SeleccionarGaleraMayor23();//NORTE
+            SeleccionarGaleraMayor23(1, tiempoDisponibleHoras,raleo, sqlraleoA, 
+            fechaB, necesidadActualizadaAves, reqRango, dia, tamañored, redgaleras,  
+            cambios, idgalera, pesoproyectado, rangospredeterminado);//NORTE y tiempoDisponiblemilisegundos
             if(secuenciaAPlanificar < requeridosPlanta.size()){
-                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta);
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
+                raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras,  cambios,
+                idgalera, pesoproyectado, rangospredeterminado);
             }
         } else {
-            
+            int camionesSobrantes = 0;
+            List<DatosCosechas> cosechasSobrantes = new ArrayList<DatosCosechas>();
             for (int i = 0; i < datosCosechas.size(); i++) {
             DatosCosechas row = datosCosechas.get(i);
             if (horaRequerida2.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
                 contCamiones += row.getCantidad_camiones();
                 if (camionesLibres + contCamiones >= camionesRequeridos2) {
-                    ultimaHora2 = row.getHora_planta();                    
+                    ultimaHora2 = row.getHora_planta();      
                     cosechasSobrantes = datosCosechas.subList(i, datosCosechas.size());
                     camionesSobrantes = camionesLibres + contCamiones - camionesRequeridos2;
                     break;
                 }
             }
         }
-            //Collections.reverse(datosCosechas);
-            if(ultimaHora2 != null){
-            for (int i = 0; i < cosechasSobrantes.size(); i++) {
-            DatosCosechas row = cosechasSobrantes.get(i);
-            if (horaRequerida.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
-                contCamiones += row.getCantidad_camiones();
-                if (camionesLibres + contCamiones >= camionesRequeridos) {
-                    ultimaHora1 = row.getHora_planta();                    
-                    camionesSobrantes = camionesLibres + contCamiones - camionesRequeridos2;
-                    break;
-                }
-            }
-        }
-            if(ultimaHora1 != null){
-                SeleccionarGaleraMayor23();//CENTRAL secuenciaAPlanificar - ultimaHora = utimaHora1
-                SeleccionarGaleraMayor23();//NORTE secuenciaSiguiente ultimaHora = utimaHora2
-                if(secuenciaAPlanificar < requeridosPlanta.size()){
-                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta);
-                }
-            }
-            
-            }else{
-            SeleccionarGaleraMayor23();//CENTRAL
-            if(secuenciaAPlanificar < requeridosPlanta.size()){
-                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta);
-                }
-            }
-            
-            DatosCosechas primeraFila = cosechasSobrantes.remove(0);
 
             if (camionesSobrantes > 0) {
-                ultimaHora2 = primeraFila.getHora_planta();
+                DatosCosechas primeraFila = cosechasSobrantes.get(0);
+                primeraFila.setCantidad_camiones(camionesSobrantes);
             } else {
-                ultimaHora2 = cosechasSobrantes.get(0).getHora_planta();
+                cosechasSobrantes.remove(0);
             }
             for (DatosCosechas cosechaSobrante : cosechasSobrantes) {
                 camionesSobrantes += cosechaSobrante.getCantidad_camiones();
             }
             
-            
-//            z.Zona(ultimaHora, horaRequerida, camionesRequeridos2, horaRequerida2,
-//                            camionesSobrantes, cosechasSobrantes);
+            for (int i = 0; i < cosechasSobrantes.size(); i++) {
+            DatosCosechas row = cosechasSobrantes.get(i);
+            if (horaRequerida.getTimeInMillis() > row.getHora_planta().getTimeInMillis()) {
+                contCamiones += row.getCantidad_camiones();
+                if (contCamiones >= camionesRequeridos) {
+                    ultimaHora1 = row.getHora_planta();                  
+                    break;
+                }
+            }
+        }
+            long tiempoDisponiblemilisegundos2 = tiempoEnMillisegundos(horaRequerida2) - tiempoEnMillisegundos(ultimaHora2);
+            if(ultimaHora2 != null && ultimaHora1 != null && tiempoDisponiblemilisegundos2 >= 4){
+                int camionesAAsignarTotal = camionesRequeridos2 + camionesRequeridos;
+                for (int i = 0; i < datosCosechas.size(); i++) {
+                DatosCosechas row = datosCosechas.get(i);
+                if(camionesAAsignarTotal >= row.getCantidad_camiones()){
+                    camionesAAsignarTotal = camionesAAsignarTotal - row.getCantidad_camiones();
+                    row.setCantidad_camiones(0);
+                }else {
+                    row.setCantidad_camiones(row.getCantidad_camiones() - camionesAAsignarTotal);
+                    DatosCosechas cosechasi1 = new DatosCosechas(1);
+                    cosechasi1.setSecuencia(secuenciaAPlanificar);
+                    cosechasi1.setCantidad_camiones(camionesRequeridos);
+                    cosechasi1.setHora_planta(horaRequerida);
+                    datosCosechas.add(cosechasi1);
+                    DatosCosechas cosechasi2 = new DatosCosechas(1);
+                    cosechasi2.setSecuencia(secuenciaSiguiente);
+                    cosechasi2.setCantidad_camiones(camionesRequeridos2);
+                    cosechasi2.setHora_planta(horaRequerida2);
+                    datosCosechas.add(cosechasi2);
+                    break;
+                }
+            }
+                float tiempoDisponibleHoras2 = tiempoDisponiblemilisegundos2 / (1000*60*60);
+                SeleccionarGaleraMayor23(0, tiempoDisponibleHoras,raleo,sqlraleoA, fechaB, 
+                necesidadActualizadaAves,reqRango, dia, tamañored, redgaleras, cambios, idgalera, 
+                pesoproyectado, rangospredeterminado);//CENTRAL secuenciaAPlanificar - ultimaHora = utimaHora1
+                SeleccionarGaleraMayor23(1, tiempoDisponibleHoras2,raleo,sqlraleoA, fechaB, 
+                necesidadActualizadaAves,reqRango2, dia, tamañored, redgaleras, cambios, idgalera, 
+                pesoproyectado, rangospredeterminado);//NORTE secuenciaSiguiente ultimaHora = utimaHora2
+                if(secuenciaAPlanificar < requeridosPlanta.size()){
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
+                raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras,  cambios,
+                idgalera, pesoproyectado, rangospredeterminado);
+                }
+            }else{
+                int camionesAAsignar = camionesRequeridos;
+                for (int i = 0; i < datosCosechas.size(); i++) {
+                DatosCosechas row = datosCosechas.get(i);
+                if(camionesAAsignar >= row.getCantidad_camiones()){
+                    camionesAAsignar = camionesAAsignar - row.getCantidad_camiones();
+                    row.setCantidad_camiones(0);
+                }else {
+                    row.setCantidad_camiones(row.getCantidad_camiones() - camionesAAsignar);
+                    DatosCosechas cosechasi1 = new DatosCosechas(1);
+                    cosechasi1.setSecuencia(secuenciaAPlanificar);
+                    cosechasi1.setCantidad_camiones(camionesRequeridos);
+                    cosechasi1.setHora_planta(horaRequerida);
+                    datosCosechas.add(cosechasi1);
+                }
+            }
+                SeleccionarGaleraMayor23(0, tiempoDisponibleHoras,raleo,sqlraleoA, fechaB, 
+                necesidadActualizadaAves,reqRango, dia, tamañored, redgaleras, cambios, idgalera, 
+                pesoproyectado, rangospredeterminado);//CENTRAL
+            if(secuenciaAPlanificar < requeridosPlanta.size()){
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
+                raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras,  cambios,
+                idgalera, pesoproyectado, rangospredeterminado
+                        );
+                }
+            }
+
         }    
 
         return ultimaHora;
@@ -1420,8 +1477,13 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         final int camionesUsados, 
         final int ultimaSecuencia,             
         final ArrayList<DatosCosechas> listDatosCosechas,
-        final ArrayList<RequeridoPlanta> listRequeridoPlanta
-        
+        final ArrayList<RequeridoPlanta> listRequeridoPlanta,
+        float raleo,java.sql.Date sqlraleoA, 
+        java.sql.Date fechaB, 
+        float[][] necesidadActualizadaAves, 
+        int[][] tamañored, String[][][] redgaleras,  
+        int cambios, int[] idgalera, 
+        float[][] pesoproyectado, String[][] rangospredeterminado        
             ) {
         Collections.sort(listDatosCosechas);
             calcularUltimaHora(
@@ -1429,43 +1491,13 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     camionesUsados,
                     ultimaSecuencia,
                     listDatosCosechas,
-                    listRequeridoPlanta);
-//                     {
-//                @Override
-//                public void Zona(
-//                        Calendar ultimaHora,
-//                        Calendar horaRequerida,
-//                        int camionesRequeridos2,
-//                        Calendar horaRequerida2,
-//                        int camionesSobrantes,
-//                        List<DatosCosechas> cosechasSobrantes) {
-//
-//                    
-//                    calcularUltimaHora(dia, camionesUsados, ultimaSecuencia, listDatosCosechas, listRequeridoPlanta, new SeleccionarZona() {
-//                        @Override
-//                        public void Zona(
-//                                Calendar ultimaHora,
-//                                Calendar horaRequerida,
-//                                int camionesRequeridos2,
-//                                Calendar horaRequerida2,
-//                                int camionesSobrantes,
-//                                List<DatosCosechas> cosechasSobrantes) {
-//                        }
-//                    });
-//                }
-//
-//                public long tiempoEnMillisegundos(Calendar horaConFecha) {
-//                    Calendar hoy = Calendar.getInstance();
-//                    hoy.set(Calendar.HOUR, 0);
-//                    hoy.set(Calendar.MINUTE, 0);
-//                    hoy.set(Calendar.SECOND, 0);
-//                    hoy.set(Calendar.MILLISECOND, 0);
-//                    return horaConFecha.getTimeInMillis() - hoy.getTimeInMillis();
-//                }
-//            });
-        }
+                    listRequeridoPlanta,
+                    raleo, sqlraleoA, fechaB, 
+                    necesidadActualizadaAves, 
+                    tamañored, redgaleras, cambios, idgalera, 
+                    pesoproyectado, rangospredeterminado);
 
-        
+        }
     
     
 
@@ -1695,6 +1727,9 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CosechaCortoPlazo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
