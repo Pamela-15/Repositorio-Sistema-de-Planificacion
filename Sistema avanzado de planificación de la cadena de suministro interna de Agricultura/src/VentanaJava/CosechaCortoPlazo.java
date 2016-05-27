@@ -690,7 +690,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                      tamañored[r][1]++;
                                      tamañored[r][4]++;
                                      tamañored[r][10]++;
-                            } else if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[2][2])){
+                            } else if(pesoproyectado[r][q]>Float.parseFloat(rangospredeterminado[2][2])&& pesoproyectado[r][q]<= Float.parseFloat(rangospredeterminado[2][1])){
                                      redgaleras[r][0][2]=redgaleras[r][0][2]+","+galeras[q][8];
                                      redgaleras[r][1][2]=redgaleras[r][1][2]+","+galeras[q][8];
                                      redgaleras[r][3][2]=redgaleras[r][3][2]+","+galeras[q][8];
@@ -732,6 +732,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 //LA ELECCION DE GALERAS
                 for(int diax=0;diax<7;diax++){
                     SimpleDateFormat horacero=new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss");
+                    java.text.SimpleDateFormat bac = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                     String horainicioprocesamiento="2016-01-01/19:00:00";
                     Calendar horarequeridaplanta = calendar.getInstance();
                     Date horafechainiciomatanza=horacero.parse(horainicioprocesamiento);
@@ -741,7 +742,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         planta[diax][secx][0]=String.valueOf(secx+1); //numero secuencia
                         planta[diax][secx][1]=secuenciautilizar[secx][0][diax]; //rango
                         planta[diax][secx][2]=secuenciautilizar[secx][1][diax]; //horas de procesamiento
-                        planta[diax][secx][5]=horasinicio.toString(); //hora. revisarlo
+                        planta[diax][secx][5]=bac.format(horasinicio); //hora. revisarlo
                         switch (secuenciautilizar[secx][0][diax]){
                             case "Grande": 
                                 planta[diax][secx][3]=Float.toString(Float.parseFloat(secuenciautilizar[secx][1][diax])*necesidadActualizadaAves[diax][7]);//cantidad de aves
@@ -821,7 +822,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }else{
                                 
                                     ArrayList<DatosCosechas> datosCosechas = LlenarDatosCosechas(dia); //llamar array datos cosecha;
-                                    ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia); //llamar array llenar requerido planta
+                                    ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia, tamañosecuenciautilizar); //llamar array llenar requerido planta
                                     GestionDatosMayor23(dia, camionesusados, secuenciasUsadas23, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, cambios, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23
                                 break;
                                     
@@ -830,6 +831,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     }
                     float notap, notam, notag, cantidadfaltantedemanda;
                     if((0.95*necesidadActualizadaAves[dia][1])>(cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])){//aqui hay que hacer lo de que una vez finalizado analizar la cantidad que se lleva.
+                        java.text.SimpleDateFormat def = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                         cantidadfaltantedemanda=necesidadActualizadaAves[dia][1]-cantidadcosechada[dia][0]-cantidadcosechada[dia][1]-cantidadcosechada[dia][2];
                         notap=cantidadcosechada[dia][0]/java.lang.Math.round(demandanum[dia]*necesidadActualizadaAves[dia][2]);
                         notam=cantidadcosechada[dia][1]/java.lang.Math.round(demandanum[dia]*necesidadActualizadaAves[dia][3]);
@@ -837,7 +839,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         int ultimasecuencia = tamañosecuenciautilizar[dia];//secuenciaUsada23=cantidadtotaldeldia
                         tamañosecuenciautilizar[dia]++;
                         planta[dia][ultimasecuencia][0]=String.valueOf(ultimasecuencia+1); //numero secuencia
-                        planta[dia][ultimasecuencia][5]=horacierresecuenciapordia[dia].toString(); //hora.
+                        planta[dia][ultimasecuencia][5]=def.format(horacierresecuenciapordia[dia]); //hora.
                         planta[dia][ultimasecuencia][3]=Float.toString(cantidadfaltantedemanda);//cantidad de aves
                         if(notap<=notam && notap<=notag){
                             planta[dia][ultimasecuencia][1]="Pequeño"; //rango
@@ -854,7 +856,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         }//agregar en planta la situacion 
                         ultimasecuencia--;
                         ArrayList<DatosCosechas> datosCosechas = LlenarDatosCosechas(dia); //llamar array datos cosecha;
-                        ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia); //llamar array llenar requerido planta
+                        ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia, tamañosecuenciautilizar); //llamar array llenar requerido planta
                         GestionDatosMayor23(dia, camionesusados, ultimasecuencia, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, ultimasecuencia, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23//llamar a lso tres métodos;
                     }
                     plancosecha=planborradorcosecha;
@@ -907,6 +909,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(60*cantidadhorasmas));
                             horasinicio=horarequeridaplanta.getTime();
                             int secuenciamas=16,secuenciamenos=16,secuenciaquenocambia=16;
+                            java.text.SimpleDateFormat cab = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                             for(int lamda=(tamañosecuenciautilizar[dia]-1); lamda>0; lamda++){
                                 if(planta[dia][lamda][1].equals(mejor)){
                                     planta[dia][lamda][2]=Float.toString(Float.parseFloat(planta[dia][lamda][2])+cantidadhorasmas);
@@ -917,7 +920,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     horarequeridaplanta.setTime(horasinicio);
                                     horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(60*(cantidadhorasmas-Float.parseFloat(planta[dia][lamda][2]))));
                                     horasinicio=horarequeridaplanta.getTime();
-                                    planta[dia][lamda][5]=horasinicio.toString();
+                                    planta[dia][lamda][5]=cab.format(horasinicio);
                                 }
                             }//meto en plan todo lo que hay que sumar
                             horasinicio=horacierresecuenciapordia[dia];
@@ -934,7 +937,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                     horarequeridaplanta.setTime(horasinicio);
                                     horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(60*(cantidadhorasmas-Float.parseFloat(planta[dia][lamda][2]))));
                                     horasinicio=horarequeridaplanta.getTime();
-                                    planta[dia][lamda][5]=horasinicio.toString();
+                                    planta[dia][lamda][5]=cab.format(horasinicio);
                                 }
                             }//actualizo plan con respecto a lo que tengo que quitar
                             if(secuenciamas>secuenciamenos){
@@ -959,7 +962,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }
                             //llamo los metodos para ver como se comporta ahora
                             ArrayList<DatosCosechas> datosCosechas = LlenarDatosCosechas(dia); //llamar array datos cosecha;
-                            ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia); //llamar array llenar requerido planta
+                            ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia, tamañosecuenciautilizar); //llamar array llenar requerido planta
                             GestionDatosMayor23(dia, camionesusados, secuenciaquenocambia, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, secuenciaquenocambia, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23
                             
                             notap=1-(cantidadcosechada[dia][0]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][2]));
@@ -1142,19 +1145,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         }//termina p3
                         System.out.println("pasa bien los tresa analisis");
                         if(indicadorcompiladas==0 && galeramejor>-1){//inicia llenar plan sin compiladas
-                            System.out.println("cantidad a cosechar"+cantidadcosechar);
+                            java.text.SimpleDateFormat abc = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                             planborradorcosecha[dia][n][0]=Integer.toString(cambios);
                             planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
                             planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][5+rango]);
                             planborradorcosecha[dia][n][3]=Float.toString(cantidadcosechar);
                             planborradorcosecha[dia][n][4]=Float.toString(cantidadcosechar/rangoscamiones[rango]);
-                            planborradorcosecha[dia][n][5]=horasllegadaplanta.toString();
+                            planborradorcosecha[dia][n][5]=abc.format(horasllegadaplanta);
                             planborradorcosecha[dia][n][6]=Integer.toString(java.lang.Math.round(distancia[galeramejor][0]));
                             planborradorcosecha[dia][n][7]=Integer.toString(cuadrilla+1);
                             horacubierta.setTime(horasllegadaplanta);
                             horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(tiempoentregaleras)*60));
                             cuadrillas[cuadrilla]=horacubierta.getTime();
-                            planborradorcosecha[dia][n][8]=cuadrillas[cuadrilla].toString();
+                            planborradorcosecha[dia][n][8]=abc.format(cuadrillas[cuadrilla]);
                             camionesusados=camionesusados+java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][4]));
                             galerascosechadas[cuadrilla]=(java.lang.Math.round(distancia[galeramejor][0]));
                             horacubierta.setTime(horasllegadaplanta);
@@ -1177,18 +1180,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }   
                         }else if(indicadorcompiladas>0 && galeramejor>-1){ //inicia llenar compilada
                             for(int yu=0;yu<indicadorcompiladas;yu++){
+                                java.text.SimpleDateFormat abc = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                                 planborradorcosecha[dia][yu+n][0]=Integer.toString(cambios);
                                 planborradorcosecha[dia][yu+n][1]=planta[dia][cambios][1];
                                 planborradorcosecha[dia][yu+n][2]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1])/necesidadActualizadaAves[dia][5+rango]);
                                 planborradorcosecha[dia][yu+n][3]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1]));
                                 planborradorcosecha[dia][yu+n][4]=Float.toString(Integer.parseInt(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1])/rangoscamiones[rango]);
-                                planborradorcosecha[dia][yu+n][5]=horasllegadaplanta.toString();
+                                planborradorcosecha[dia][yu+n][5]=abc.format(horasllegadaplanta);
                                 planborradorcosecha[dia][yu+n][6]=Integer.toString(java.lang.Math.round(distancia[galeramejor+yu][0]));
                                 planborradorcosecha[dia][yu+n][7]=Integer.toString(cuadrilla);
                                 horacubierta.setTime(horasllegadaplanta);
                                 horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round((cantidadcosechar/necesidadActualizadaAves[dia][5])*60)));
                                 cuadrillas[cuadrilla]=horacubierta.getTime();
-                                planborradorcosecha[dia][yu+n][8]=cuadrillas[cuadrilla].toString();
+                                planborradorcosecha[dia][yu+n][8]=abc.format(cuadrillas[cuadrilla]);
                                 galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][11]=fechaB.toString();
                                 planborradorcosecha[dia][yu+n][9]=fechaB.toString();
                                 planborradorcosecha[dia][yu+n][10]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][5];
@@ -1291,19 +1295,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         }
                         System.out.println("Analizo con las tres posibilidades");
                         if(indicadorcompiladas==0 && galeramejor>-1){
-                            System.out.println("cantidad a cosechar"+cantidadcosechar);
+                            java.text.SimpleDateFormat abc = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                             planborradorcosecha[dia][n][0]=Integer.toString(cambios);
                             planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
                             planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][5+rango]);
                             planborradorcosecha[dia][n][3]=Float.toString(cantidadcosechar);
                             planborradorcosecha[dia][n][4]=Float.toString(cantidadcosechar/rangoscamiones[rango]);
-                            planborradorcosecha[dia][n][5]=horasllegadaplanta.toString();
+                            planborradorcosecha[dia][n][5]=abc.format(horasllegadaplanta);
                             planborradorcosecha[dia][n][6]=Integer.toString(java.lang.Math.round(distancia[galeramejor][0]));
                             planborradorcosecha[dia][n][7]=Integer.toString(cuadrilla+1);
                             horacubierta.setTime(horasllegadaplanta);
                             horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(tiempoentregaleras*60)));
                             cuadrillas[cuadrilla]=horacubierta.getTime();
-                            planborradorcosecha[dia][n][8]=cuadrillas[cuadrilla].toString();
+                            planborradorcosecha[dia][n][8]=abc.format(cuadrillas[cuadrilla]);
                             camionesusados=camionesusados+java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][4]));
                             galerascosechadas[cuadrilla]=(java.lang.Math.round(distancia[galeramejor][0]));
                             horacubierta.setTime(horasllegadaplanta);
@@ -1326,18 +1330,19 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             }
                         }else if(indicadorcompiladas>0 && galeramejor>-1){
                             for(int yu=0;yu<indicadorcompiladas;yu++){
+                                java.text.SimpleDateFormat abc = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                                 planborradorcosecha[dia][yu+n][0]=Integer.toString(cambios);
                                 planborradorcosecha[dia][yu+n][1]=planta[dia][cambios][1];
                                 planborradorcosecha[dia][yu+n][2]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1])/necesidadActualizadaAves[dia][5+rango]);
                                 planborradorcosecha[dia][yu+n][3]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1]));
                                 planborradorcosecha[dia][yu+n][4]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1])/rangoscamiones[rango]);
-                                planborradorcosecha[dia][yu+n][5]=horasllegadaplanta.toString();
+                                planborradorcosecha[dia][yu+n][5]=abc.format(horasllegadaplanta);
                                 planborradorcosecha[dia][yu+n][6]=Integer.toString(java.lang.Math.round(distancia[galeramejor+yu][0]));
                                 planborradorcosecha[dia][yu+n][7]=Integer.toString(cuadrilla+1);
                                 horacubierta.setTime(horasllegadaplanta);
                                 horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round((cantidadcosechar/necesidadActualizadaAves[dia][5])*60)));
                                 cuadrillas[cuadrilla]=horacubierta.getTime();
-                                planborradorcosecha[dia][yu+n][8]=cuadrillas[cuadrilla].toString();
+                                planborradorcosecha[dia][yu+n][8]=abc.format(cuadrillas[cuadrilla]);
                                 galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][11]=fechaB.toString();
                                 planborradorcosecha[dia][yu+n][9]=fechaB.toString()    ;
                                 planborradorcosecha[dia][yu+n][10]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][5];
@@ -1371,15 +1376,15 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     public ArrayList<DatosCosechas> LlenarDatosCosechas(int dia) {
         ArrayList<DatosCosechas> listDatosCosechas = new ArrayList<>();
 
-        for (int j = 0; j < planborradorcosecha[dia].length; j++) {
+        for (int j = 0; j < n/*planborradorcosecha[dia].length*/; j++) {
             try {
                 DatosCosechas cosechas = new DatosCosechas(dia);
                 cosechas.setSecuencia(Integer.parseInt(planborradorcosecha[dia][j][0]));
                 cosechas.setRango(planborradorcosecha[dia][j][1]);
                 cosechas.setHoras_procesamiento(Float.parseFloat(planborradorcosecha[dia][j][2]));
-                cosechas.setCantidad_aves(Integer.parseInt(planborradorcosecha[dia][j][3]));
-                cosechas.setCantidad_camiones(Integer.parseInt(planborradorcosecha[dia][j][4]));
-                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
+                cosechas.setCantidad_aves(java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][j][3])));
+                cosechas.setCantidad_camiones(java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][j][4])));
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                 Date horaPlanta = formatter.parse(planborradorcosecha[dia][j][5]);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(horaPlanta);
@@ -1397,17 +1402,17 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         return listDatosCosechas;
     }
 
-    public ArrayList<RequeridoPlanta> LlenarRequeridoPlanta(int dia) {
+    public ArrayList<RequeridoPlanta> LlenarRequeridoPlanta(int dia, int[] tamañosecuenciautilizar) {
         ArrayList<RequeridoPlanta> listRequeridoPlanta = new ArrayList<>();
 
-        for (int j = 0; j < planta[dia].length; j++) {
+        for (int j = 0; j < tamañosecuenciautilizar[dia]/* planta[dia].length*/; j++) {
             try {
                 RequeridoPlanta requerido = new RequeridoPlanta(dia);
                 requerido.setSecuencia(Integer.parseInt(planta[dia][j][0]));
                 requerido.setRango(planta[dia][j][1]);
                 requerido.setHoras_procesamiento(Float.parseFloat(planta[dia][j][2]));
-                requerido.setCantidad_aves(Integer.parseInt(planta[dia][j][3]));
-                requerido.setCantidad_camiones(Integer.parseInt(planta[dia][j][4]));
+                requerido.setCantidad_aves(java.lang.Math.round(Float.parseFloat(planta[dia][j][3])));
+                requerido.setCantidad_camiones(java.lang.Math.round(Float.parseFloat(planta[dia][j][4])));
 
                 DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                 Date date = formatter.parse(planta[dia][j][5]);
@@ -1705,7 +1710,7 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                         red.close();
                         distanciared.close();
                         
-                        for(tamaño=0;tamaño<tamañored[dia][9+rango];tamaño++){
+                        for(tamaño=0;tamaño<tamañored[dia][(3*(2+irrednorte))+rango];tamaño++){
                             int p=idgalera[java.lang.Math.round(distancia[tamaño][0])];
                             Date[] analisisdisponibilidadcuadrilla=new Date[3];
                             for(int ro=0;ro<3;ro++){
@@ -1744,7 +1749,7 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                                 int gama=0;
                                 float errorcompilado=0;
                                 galerascompiladas[0]=tamaño;
-                                while(errorp < 0 && tamaño<(tamañored[dia][(3*cuadrilla)+rango]-gama-1) && analisisdisponibilidadcuadrilla[cuadrilla].before(horasllegadaplanta)){
+                                while(errorp < 0 && tamaño<(tamañored[dia][(3*(2+irrednorte))+rango]-gama-1) && analisisdisponibilidadcuadrilla[cuadrilla].before(horasllegadaplanta)){
                                     gama++;
                                     if(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][11]==null&&(galeras[idgalera[java.lang.Math.round(distancia[tamaño+gama][0])]][10]!=null||(formatodeltexto.parse(galeras[p][10]).before(sqlraleoA)))){
                                         uniongalerasp++;
@@ -1768,19 +1773,19 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                         }
                         System.out.println("Analizo con las tres posibilidades");
                         if(indicadorcompiladas==0 && galeramejor>-1){
-                            System.out.println("cantidad a cosechar"+cantidadcosechar);
+                            java.text.SimpleDateFormat abc = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                             planborradorcosecha[dia][n][0]=Integer.toString(cambios);
                             planborradorcosecha[dia][n][1]=planta[dia][cambios][1];
                             planborradorcosecha[dia][n][2]=Float.toString(cantidadcosechar/necesidadActualizadaAves[dia][5+rango]);
                             planborradorcosecha[dia][n][3]=Float.toString(cantidadcosechar);
                             planborradorcosecha[dia][n][4]=Float.toString(cantidadcosechar/rangoscamiones[rango]);
-                            planborradorcosecha[dia][n][5]=horasllegadaplanta.toString();
+                            planborradorcosecha[dia][n][5]=abc.format(horasllegadaplanta);
                             planborradorcosecha[dia][n][6]=Integer.toString(java.lang.Math.round(distancia[galeramejor][0]));
                             planborradorcosecha[dia][n][7]=Integer.toString(cuadrilla+1);
                             horacubierta.setTime(horasllegadaplanta);
                             horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round(tiempoentregaleras*60)));
                             cuadrillas[cuadrilla]=horacubierta.getTime();
-                            planborradorcosecha[dia][n][8]=cuadrillas[cuadrilla].toString();
+                            planborradorcosecha[dia][n][8]=abc.format(cuadrillas[cuadrilla]);
                             camionesusados=camionesusados+java.lang.Math.round(Float.parseFloat(planborradorcosecha[dia][n][4]));
                             galerascosechadas[cuadrilla]=(java.lang.Math.round(distancia[galeramejor][0]));
                             horacubierta.setTime(horasllegadaplanta);
@@ -1802,18 +1807,19 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                             }
                         }else if(indicadorcompiladas>0 && galeramejor>-1){
                             for(int yu=0;yu<indicadorcompiladas;yu++){
+                                java.text.SimpleDateFormat abc = new java.text.SimpleDateFormat("dd-MM-yyyy,HH:mm:ss aaa");
                                 planborradorcosecha[dia][yu+n][0]=Integer.toString(cambios);
                                 planborradorcosecha[dia][yu+n][1]=planta[dia][cambios][1];
                                 planborradorcosecha[dia][yu+n][2]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1])/necesidadActualizadaAves[dia][5+rango]);
                                 planborradorcosecha[dia][yu+n][3]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1]));
                                 planborradorcosecha[dia][yu+n][4]=Float.toString(Float.parseFloat(galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][1])/rangoscamiones[rango]);
-                                planborradorcosecha[dia][yu+n][5]=horasllegadaplanta.toString();
+                                planborradorcosecha[dia][yu+n][5]=abc.format(horasllegadaplanta);
                                 planborradorcosecha[dia][yu+n][6]=Integer.toString(java.lang.Math.round(distancia[galeramejor+yu][0]));
                                 planborradorcosecha[dia][yu+n][7]=Integer.toString(cuadrilla+1);
                                 horacubierta.setTime(horasllegadaplanta);
                                 horacubierta.add(Calendar.MINUTE,-(java.lang.Math.round((cantidadcosechar/necesidadActualizadaAves[dia][5])*60)));
                                 cuadrillas[cuadrilla]=horacubierta.getTime();
-                                planborradorcosecha[dia][yu+n][8]=cuadrillas[cuadrilla].toString();
+                                planborradorcosecha[dia][yu+n][8]=abc.format(cuadrillas[cuadrilla]);
                                 galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][11]=fechaB.toString();
                                 planborradorcosecha[dia][yu+n][9]=fechaB.toString()    ;
                                 planborradorcosecha[dia][yu+n][10]=galeras[idgalera[java.lang.Math.round(distancia[galerascompiladas[yu]][0])]][5];
