@@ -20,13 +20,15 @@ import java.util.Arrays;
 public class CosechaCortoPlazo extends javax.swing.JFrame {
 
     int idUsuarioAutenticado;
-    String[][][] planborradorcosecha = new String[7][20][15];
+    String[][][] planborradorcosecha = new String[7][20][16];
+    String[][][] plancosecha = new String[7][20][16];
     Date[] cuadrillas = new Date[3];
     int[] galerascosechadas = new int[3];
     Date horasllegadaplanta;
     int n;
     int camionesusados;
     String[][] galeras;
+    String[][]  galerasmejor;
     String[][][] secuenciautilizar=new String[16][3][7];
     String[][][] planta =new String[7][16][6];
     int secuenciasUsadas23=0;
@@ -525,6 +527,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                              
                 //meter secuencia aca, las dos la real y la especifica, y recordar que ocupo una matriz de tres dimensiones
                 galeras=new String [cantidadgalerasingresadas][12];
+                galeras=new String [cantidadgalerasingresadas][12];
                 int[] idgalera=new int[1000];
                 float[][] variablespp=new float [cantidadgalerasingresadas][22];
                 java.sql.Date[][] fechasgaleras=new java.sql.Date[cantidadgalerasingresadas][2];
@@ -725,7 +728,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     System.out.println("grande"+tamañored[r][8]);        
                     
                 }
-
+                Date[] horacierresecuenciapordia = new Date[7];
                 //LA ELECCION DE GALERAS
                 for(int diax=0;diax<7;diax++){
                     SimpleDateFormat horacero=new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss");
@@ -761,7 +764,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         horarequeridaplanta.add(Calendar.MINUTE,60*Integer.parseInt(secuenciautilizar[secx][1][diax]));
                         horasinicio=horarequeridaplanta.getTime();
                     }
-                    
+                    horacierresecuenciapordia[diax]=horasinicio;
                 }
 
                 SimpleDateFormat hcero=new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss");
@@ -805,7 +808,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                         if(tamañored[dia][9+tiporangos]>0 && cantidadcosechada[dia][tiporangos]<java.lang.Math.round(demandanum[dia]*necesidadActualizadaAves[dia][2+tiporangos])){
                             System.out.println("se analiza porque hay para el rango");
                             tamaño=0;
-                            if((camionesusados+java.lang.Math.round(Float.parseFloat(planta[dia][cambios][4])))<=23){
+                            if((camionesusados+java.lang.Math.round(Float.parseFloat(planta[dia][cambios][4])))<27){
                                 if((cuadrillas[0].before(cuadrillas[1])||cuadrillas[0].equals(cuadrillas[1]))&&(cuadrillas[0].before(cuadrillas[2])||cuadrillas[0].equals(cuadrillas[2]))){
                                     cuadrilla=0;                               //
                                 } else if(cuadrillas[1].before(cuadrillas[2])||cuadrillas[1].equals(cuadrillas[2])){
@@ -816,11 +819,164 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                                 SeleccionarGalera( raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tiporangos, cuadrilla, dia, tamañored, redgaleras, cambios, idgalera, pesoproyectado, rangospredeterminado);
                                 secuenciasUsadas23=cambios;                            
                             }else{
-                        
+                                
+                                    ArrayList<DatosCosechas> datosCosechas = LlenarDatosCosechas(dia); //llamar array datos cosecha;
+                                    ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia); //llamar array llenar requerido planta
+                                    GestionDatosMayor23(dia, camionesusados, secuenciasUsadas23, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, cambios, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23
+                                break;
+                                    
                             }
                         }    
-                    }//aqui hay que hacer lo de que una vez finalizado analizar la cantidad que se lleva.
+                    }
+                    float notap, notam, notag, cantidadfaltantedemanda;
+                    if((0.95*necesidadActualizadaAves[dia][1])>(cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])){//aqui hay que hacer lo de que una vez finalizado analizar la cantidad que se lleva.
+                        cantidadfaltantedemanda=necesidadActualizadaAves[dia][1]-cantidadcosechada[dia][0]-cantidadcosechada[dia][1]-cantidadcosechada[dia][2];
+                        notap=cantidadcosechada[dia][0]/java.lang.Math.round(demandanum[dia]*necesidadActualizadaAves[dia][2]);
+                        notam=cantidadcosechada[dia][1]/java.lang.Math.round(demandanum[dia]*necesidadActualizadaAves[dia][3]);
+                        notag=cantidadcosechada[dia][2]/java.lang.Math.round(demandanum[dia]*necesidadActualizadaAves[dia][4]);
+                        int ultimasecuencia = tamañosecuenciautilizar[dia];//secuenciaUsada23=cantidadtotaldeldia
+                        tamañosecuenciautilizar[dia]++;
+                        planta[dia][ultimasecuencia][0]=String.valueOf(ultimasecuencia+1); //numero secuencia
+                        planta[dia][ultimasecuencia][5]=horacierresecuenciapordia[dia].toString(); //hora.
+                        planta[dia][ultimasecuencia][3]=Float.toString(cantidadfaltantedemanda);//cantidad de aves
+                        if(notap<=notam && notap<=notag){
+                            planta[dia][ultimasecuencia][1]="Pequeño"; //rango
+                            planta[dia][ultimasecuencia][2]=Float.toString(cantidadfaltantedemanda/necesidadActualizadaAves[dia][5]); //horas de procesamiento
+                            planta[dia][ultimasecuencia][4]=Float.toString(cantidadfaltantedemanda/2880);//cantidad de camiones
+                        }else if (notam<=notag){
+                            planta[dia][ultimasecuencia][1]="Mediano"; //rango
+                            planta[dia][ultimasecuencia][2]=Float.toString(cantidadfaltantedemanda/necesidadActualizadaAves[dia][6]); //horas de procesamiento
+                            planta[dia][ultimasecuencia][4]=Float.toString(cantidadfaltantedemanda/2592);//cantidad de camiones
+                        } else {
+                            planta[dia][ultimasecuencia][1]="Grande"; //rango
+                            planta[dia][ultimasecuencia][2]=Float.toString(cantidadfaltantedemanda/necesidadActualizadaAves[dia][7]); //horas de procesamiento
+                            planta[dia][ultimasecuencia][4]=Float.toString(cantidadfaltantedemanda/2316);//cantidad de camiones
+                        }//agregar en planta la situacion 
+                        ultimasecuencia--;
+                        ArrayList<DatosCosechas> datosCosechas = LlenarDatosCosechas(dia); //llamar array datos cosecha;
+                        ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia); //llamar array llenar requerido planta
+                        GestionDatosMayor23(dia, camionesusados, ultimasecuencia, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, ultimasecuencia, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23//llamar a lso tres métodos;
+                    }
+                    plancosecha=planborradorcosecha;
+                    galerasmejor=galeras;
+                    notap=1-(cantidadcosechada[dia][0]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][2]));
+                    notam=1-(cantidadcosechada[dia][1]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][3]));
+                    notag=1-(cantidadcosechada[dia][2]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][4]));
+                    if(Math.abs(notap)>0.05 ||Math.abs(notam)>0.05 || Math.abs(notag)>0.05){
+                        float notatotal=Math.abs(notap)+Math.abs(notam)+Math.abs(notag);
+                        for(int epsilon=0; epsilon<9; epsilon++){
+                            int secuenciacambiar;
+                            String mejor,peor;
+                            float cantidadhorasmas=0, cantidadhorasmenos=0, cantidadcamionesmas=0, cantidadcamionesmenos=0, cantidadmas=0, cantidadmenos=0;
+                            if(notap<notam && notap< notag){
+                                peor="Pequeño";
+                                cantidadmas=Math.abs(notap)*((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][2]);
+                                cantidadhorasmas=cantidadmas/necesidadActualizadaAves[dia][5];
+                                cantidadcamionesmas=cantidadmas/2880;
+                            }else if(notam<notap && notam<notag){
+                                peor="Mediano";
+                                cantidadmas=Math.abs(notam)*((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][3]);
+                                cantidadhorasmas=cantidadmas/necesidadActualizadaAves[dia][6];
+                                cantidadcamionesmas=cantidadmas/2592;
+                            }else{
+                                peor="Grande";
+                                cantidadmas=Math.abs(notag)*((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][4]);
+                                cantidadhorasmas=cantidadmas/necesidadActualizadaAves[dia][7];
+                                cantidadcamionesmas=cantidadmas/2316;
+                            }
+                            //veo cual de los tres es el que le falta mas para llegar a la meta
+                            if(notap>notam && notap>notag){
+                                mejor="Pequeño";
+                                cantidadmenos=Math.abs(notap)*((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][2]);
+                                cantidadhorasmenos=cantidadmenos/necesidadActualizadaAves[dia][5];
+                                cantidadcamionesmenos=cantidadmenos/2880;
+                            }else if(notam>notap && notam>notag){
+                                mejor="Mediano";
+                                cantidadmenos=Math.abs(notam)*((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][3]);
+                                cantidadhorasmenos=cantidadmenos/necesidadActualizadaAves[dia][6];
+                                cantidadcamionesmenos=cantidadmenos/2592;
+                            }else{
+                                mejor="Grande";
+                                cantidadmenos=Math.abs(notag)*((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][4]);
+                                cantidadhorasmenos=cantidadmenos/necesidadActualizadaAves[dia][7];
+                                cantidadcamionesmenos=cantidadmenos/2316;
+                            }//analizo cual de los tres es el que le sobra mas parar llegar a la meta
+                            Calendar horarequeridaplanta = Calendar.getInstance();
+                            Date horasinicio=horacierresecuenciapordia[dia];
+                            horarequeridaplanta.setTime(horasinicio);
+                            horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(60*cantidadhorasmas));
+                            horasinicio=horarequeridaplanta.getTime();
+                            int secuenciamas=16,secuenciamenos=16,secuenciaquenocambia=16;
+                            for(int lamda=(tamañosecuenciautilizar[dia]-1); lamda>0; lamda++){
+                                if(planta[dia][lamda][1].equals(mejor)){
+                                    planta[dia][lamda][2]=Float.toString(Float.parseFloat(planta[dia][lamda][2])+cantidadhorasmas);
+                                    planta[dia][lamda][3]=Float.toString(Float.parseFloat(planta[dia][lamda][3])+cantidadmas);
+                                    planta[dia][lamda][4]=Float.toString(Float.parseFloat(planta[dia][lamda][4])+cantidadcamionesmas)
+;                                   secuenciamas=lamda;
+                                }else{
+                                    horarequeridaplanta.setTime(horasinicio);
+                                    horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(60*(cantidadhorasmas-Float.parseFloat(planta[dia][lamda][2]))));
+                                    horasinicio=horarequeridaplanta.getTime();
+                                    planta[dia][lamda][5]=horasinicio.toString();
+                                }
+                            }//meto en plan todo lo que hay que sumar
+                            horasinicio=horacierresecuenciapordia[dia];
+                            horarequeridaplanta.setTime(horasinicio);
+                            horarequeridaplanta.add(Calendar.MINUTE,-java.lang.Math.round(60*cantidadhorasmenos));
+                            horasinicio=horarequeridaplanta.getTime();
+                            for(int lamda=(tamañosecuenciautilizar[dia]-1); lamda>0; lamda++){
+                                if(planta[dia][lamda][1].equals(mejor)){
+                                    planta[dia][lamda][2]=Float.toString(Float.parseFloat(planta[dia][lamda][2])-cantidadhorasmenos);
+                                    planta[dia][lamda][3]=Float.toString(Float.parseFloat(planta[dia][lamda][3])-cantidadmenos);
+                                    planta[dia][lamda][4]=Float.toString(Float.parseFloat(planta[dia][lamda][4])-cantidadcamionesmenos)
+;                                   secuenciamenos=lamda;
+                                }else{
+                                    horarequeridaplanta.setTime(horasinicio);
+                                    horarequeridaplanta.add(Calendar.MINUTE,java.lang.Math.round(60*(cantidadhorasmas-Float.parseFloat(planta[dia][lamda][2]))));
+                                    horasinicio=horarequeridaplanta.getTime();
+                                    planta[dia][lamda][5]=horasinicio.toString();
+                                }
+                            }//actualizo plan con respecto a lo que tengo que quitar
+                            if(secuenciamas>secuenciamenos){
+                                secuenciaquenocambia=secuenciamenos;
+                            }else{
+                                secuenciaquenocambia=secuenciamas;
+                            }
+                            for(int alfa=secuenciaquenocambia;alfa<20;alfa++){
+                                if(Integer.parseInt(planborradorcosecha[dia][alfa][0])>=alfa){
+                                    if(planborradorcosecha[dia][alfa][6].equals("Si")){
+                                        galeras[idgalera[Integer.parseInt(planborradorcosecha[dia][alfa][6])]][10]=null;
+                                    }else{
+                                        galeras[idgalera[Integer.parseInt(planborradorcosecha[dia][alfa][6])]][11]=null;
+                                    }
+                                    galeras[idgalera[Integer.parseInt(planborradorcosecha[dia][alfa][6])]][1]=planborradorcosecha[dia][alfa][12];
+                                    for(int beta=0;beta<16;beta++){
+                                        planborradorcosecha[dia][alfa][beta]=null;
+                                    }
+                                }else{
+                                    n=alfa;
+                                }
+                            }
+                            //llamo los metodos para ver como se comporta ahora
+                            ArrayList<DatosCosechas> datosCosechas = LlenarDatosCosechas(dia); //llamar array datos cosecha;
+                            ArrayList<RequeridoPlanta> requeridosPlanta = LlenarRequeridoPlanta(dia); //llamar array llenar requerido planta
+                            GestionDatosMayor23(dia, camionesusados, secuenciaquenocambia, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, secuenciaquenocambia, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23
+                            
+                            notap=1-(cantidadcosechada[dia][0]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][2]));
+                            notam=1-(cantidadcosechada[dia][1]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][3]));
+                            notag=1-(cantidadcosechada[dia][2]/java.lang.Math.round((cantidadcosechada[dia][0]+cantidadcosechada[dia][1]+cantidadcosechada[dia][2])*necesidadActualizadaAves[dia][4]));
+                            if(notatotal>(Math.abs(notap)+Math.abs(notam)+Math.abs(notag))){
+                                notatotal=Math.abs(notap)+Math.abs(notam)+Math.abs(notag);
+                                galerasmejor=galeras;
+                                plancosecha=planborradorcosecha;
+                            }
+                            
+                        }
+                        
+                    }//analiso el cumplimiento de rangos, si no se cumplen, le quito al rango mayor a la ultimo de la secuencia la cantidad sobrante, y le agrego a la secuencia de la que falta la cantidad faltante .
                     numerogalerascosechadaspordia[dia]=n;
+                    galeras=galerasmejor;
+                    planborradorcosecha=plancosecha;
                 
                 }
                 con.close();
@@ -901,6 +1057,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                     if(galerascosechadas[cuadrilla]==-1){
                         
                         distancia= new float[tamañored[dia][(3*cuadrilla)+rango]][6];
+                        String analizarred=redgaleras[dia][cuadrilla][rango];
+                        int analizarrednumero=tamañored[dia][(3*cuadrilla)+rango];
                         PreparedStatement red= con.prepareStatement("select * from `cargill`.`distanciagaleras` where `distanciagaleras`.`galerasaliente`=0 and `distanciagaleras`.`galeraentrante` in ("+redgaleras[dia][cuadrilla][rango]+") order by `distanciagaleras`.`distancia`desc");
                         ResultSet distanciared=red.executeQuery();
                         while(distanciared.next()){
@@ -1013,6 +1171,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             n++;
                             if(indicadorraleo==1){
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][10]=fechaB.toString();
+                                planborradorcosecha[dia][n-1][15]="Si";
                             }else{
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][11]=fechaB.toString();
                             }   
@@ -1161,6 +1320,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                             n++;
                             if(indicadorraleo==1){
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][10]=fechaB.toString();
+                                planborradorcosecha[dia][n-1][15]="Si";
                             }else{
                                 galeras[idgalera[java.lang.Math.round(distancia[galeramejor][0])]][11]=fechaB.toString();
                             }
@@ -1289,7 +1449,7 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                 horaRequerida = requerido.getHora_planta();
                 switch(requerido.getRango()){
                     case "Pequeño": 
-                        reqRango = 0;
+                        reqRango = 0;//analizar si hasy galeras y si hay sobrante para recibir
                         break;
                     case "Mediano":
                         reqRango = 1;
