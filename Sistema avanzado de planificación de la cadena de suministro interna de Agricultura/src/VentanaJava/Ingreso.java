@@ -182,7 +182,7 @@ public class Ingreso extends javax.swing.JFrame {
                 java.util.Date javaFechaIngreso = FechaIngreso.getDate();
                 java.sql.Date sqlFechaIngreso = new java.sql.Date(javaFechaIngreso.getTime());
                 
-                PreparedStatement ingreso = con.prepareStatement("INSERT INTO ingresos (`idIngresos`, `Fecha de Ingreso`, `Cantidad de aves`, `Edad de reproductora`, `Galera_idGalera`,`PesoPollito` ) VALUES (?,?,?,?,?,?);");
+                PreparedStatement ingreso = con.prepareStatement("INSERT INTO ingresos (`idIngresos`, `Fecha de Ingreso`, `Aves Ingresadas`, `Edad de reproductora`, `Galera_idGalera`,`PesoPollito` ) VALUES (?,?,?,?,?,?);");
                 ingreso.setInt(1, idingreso + 1);
                 ingreso.setDate(2, sqlFechaIngreso);
                 ingreso.setInt(3, Integer.parseInt(CantidadAves.getText()));
