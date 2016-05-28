@@ -33,7 +33,8 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
     String[][][] planta =new String[7][16][6];
     int secuenciasUsadas23=0;
     int[] rangoscamiones=new int[3];
-    int[][] cantidadcosechada= new int[7][3]; 
+    int[][] cantidadcosechada= new int[7][3];
+    float[] demandanum = new float[7];
 
 
     /**
@@ -143,23 +144,25 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
         jDialog1.setTitle("Generando.....");
         jDialog1.setSize(200,50);
         
-        int[] numerogalerascosechadaspordia = new int[7];
-        Date hoy=new Date();
-        Calendar calendar = Calendar.getInstance();
-        Calendar desfasesemanal= Calendar.getInstance();
-        calendar.setTime(hoy);
-        calendar.add(Calendar.DAY_OF_YEAR, 2);
-        Date inicio=calendar.getTime();
-        java.sql.Date sqlFechaInicial = new java.sql.Date(inicio.getTime());
-        calendar.setTime(inicio);
-        calendar.add(Calendar.DAY_OF_YEAR, 7);
-        Date fin=calendar.getTime();
-        java.sql.Date sqlFechaFinal = new java.sql.Date(fin.getTime());
         String driver = "com.mysql.jdbc.Driver";
         String connection = "jdbc:mysql://localhost:3306/cargill";
         String user = "root";
         String password = "admi";
         try {
+            SimpleDateFormat ghi = new SimpleDateFormat("dd-MM-yyyy");
+            String fechahoy="25-11-2016";
+            int[] numerogalerascosechadaspordia = new int[7];
+            Date hoy=ghi.parse(fechahoy);
+            Calendar calendar = Calendar.getInstance();
+            Calendar desfasesemanal= Calendar.getInstance();
+            calendar.setTime(hoy);
+            calendar.add(Calendar.DAY_OF_YEAR, 2);
+            Date inicio=calendar.getTime();
+            java.sql.Date sqlFechaInicial = new java.sql.Date(inicio.getTime());
+            calendar.setTime(inicio);
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+            Date fin=calendar.getTime();
+            java.sql.Date sqlFechaFinal = new java.sql.Date(fin.getTime());
             Class.forName(driver);
             Connection con = DriverManager.getConnection(connection, user, password);
                            
@@ -167,7 +170,7 @@ public class CosechaCortoPlazo extends javax.swing.JFrame {
                 
                 int o;
                 float raleo;
-                float[] demandanum = new float[7];
+                
                 float[] desglosesemanal = new float[7];
                 java.util.Date fechaA;
                 java.sql.Date fechaB;
@@ -1437,7 +1440,7 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
             java.sql.Date fechaB, float[][] necesidadActualizadaAves, 
             int[][] tamañored, String[][][] redgaleras,  int cambios, int[] idgalera, 
             float[][] pesoproyectado, String[][] rangospredeterminado) {
-        int camionesLibres = 27 - camionesUsados;
+        int camionesLibres = 23 - camionesUsados;
         int secuenciaAPlanificar = ultimaSecuencia + 1;
         int secuenciaSiguiente = secuenciaAPlanificar + 1;
         int camionesRequeridos = 0;
@@ -1488,8 +1491,13 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                 break;
             } 
         }
-
-        int contCamiones = 0;
+        
+        
+                
+       if (tamañored[dia][9 + reqRango] > 0 && cantidadcosechada[dia][reqRango] < java.lang.Math.round(demandanum[dia] * necesidadActualizadaAves[dia][2 + reqRango])) {
+        System.out.println("se analiza porque hay para el rango");
+        
+                int contCamiones = 0;
         
         for (int i = 0; i < datosCosechas.size(); i++) {
             DatosCosechas row = datosCosechas.get(i);
@@ -1525,7 +1533,7 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
             fechaB, necesidadActualizadaAves, reqRango, dia, tamañored, redgaleras,  
             cambios, idgalera, pesoproyectado, rangospredeterminado);//NORTE y tiempoDisponiblemilisegundos
             if(secuenciaAPlanificar < requeridosPlanta.size()){
-                GestionDatosMayor23(dia, 27, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
                 raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras,  cambios,
                 idgalera, pesoproyectado, rangospredeterminado);
             }
@@ -1596,7 +1604,7 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                 necesidadActualizadaAves,reqRango2, dia, tamañored, redgaleras, cambios, idgalera, 
                 pesoproyectado, rangospredeterminado);//NORTE secuenciaSiguiente ultimaHora = utimaHora2
                 if(secuenciaAPlanificar < requeridosPlanta.size()){
-                GestionDatosMayor23(dia, 27, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
                 raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras,  cambios,
                 idgalera, pesoproyectado, rangospredeterminado);
                 }
@@ -1620,14 +1628,21 @@ private Calendar calcularUltimaHora(int dia, int camionesUsados,
                 necesidadActualizadaAves,reqRango, dia, tamañored, redgaleras, cambios, idgalera, 
                 pesoproyectado, rangospredeterminado);//CENTRAL
             if(secuenciaAPlanificar < requeridosPlanta.size()){
-                GestionDatosMayor23(dia, 27, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
+                GestionDatosMayor23(dia, 23, secuenciaAPlanificar, datosCosechas,requeridosPlanta,
                 raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras,  cambios,
                 idgalera, pesoproyectado, rangospredeterminado
                         );
                 }
             }
 
-        }    
+        }
+        
+
+    }else{
+           
+            GestionDatosMayor23(dia, 27, secuenciaAPlanificar, datosCosechas, requeridosPlanta, raleo, sqlraleoA, fechaB, necesidadActualizadaAves, tamañored, redgaleras, cambios, idgalera, pesoproyectado, rangospredeterminado);//llama gestionarmayor23
+
+       }    
 
         return ultimaHora;
     }
